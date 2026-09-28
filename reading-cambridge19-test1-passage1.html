@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IELTS Reading - Cambridge 19 Test 1</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Arial', sans-serif; }
+        html, body { background-color: #ffffff; height: 100%; overflow-y: auto; }
+        
+        /* TOP BAR */
+        .top-bar { 
+            background-color: #ffffff; 
+            padding: 10px 25px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            position: sticky; 
+            top: 0; 
+            z-index: 100; 
+            border-bottom: 1px solid #e5e5e5;
+        }
+        .logo { 
+            height: 55px;
+            width: auto; 
+        }
+        
+        /* MAIN TWO-COLUMN LAYOUT */
+        .main-grid { display: flex; min-height: calc(100vh - 75px - 48px); gap: 2px; }
+        
+        /* LEFT: PASSAGE PANEL */
+        .passage-pane { 
+            width: 50%; 
+            background: #ffffff; 
+            overflow-y: auto; 
+            padding: 25px; 
+            border-right: 1px solid #eee; 
+            max-height: calc(100vh - 75px - 48px); 
+            position: sticky; 
+            top: 75px; 
+        }
+        .passage-pane h2 { 
+            color: #1f3a5f; 
+            margin: 0 0 12px; 
+            font-size: 20px; 
+            padding-bottom: 6px; 
+            border-bottom: 1px solid #eee; 
+        }
+        .exam-title {
+            text-align: center;
+            color: #1f3a5f;
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #1f3a5f;
+        }
+        .instruction { 
+            background-color: #f9f9f9; 
+            border-left: 3px solid #1f3a5f; 
+            padding: 12px; 
+            margin-bottom: 18px; 
+            border-radius: 4px; 
+            font-weight: 500; 
+            font-size: 15px; 
+        }
+        .passage-text { font-size: 16px; line-height: 1.7; }
+        .passage-text p { margin-bottom: 14px; text-align: justify; }
+        .passage-section { display: none; }
+        .passage-section.active { display: block; }
+        
+        /* RIGHT: QUESTIONS PANEL */
+        .questions-pane { 
+            width: 50%; 
+            background: #ffffff; 
+            overflow-y: auto; 
+            padding: 25px; 
+            max-height: calc(100vh - 75px - 48px); 
+            position: sticky; 
+            top: 75px; 
+        }
+        .questions-block { margin-bottom: 35px; display: none; }
+        .questions-block.active { display: block; }
+        .questions-block h3 { color: #1f3a5f; margin-bottom: 10px; font-size: 18px; }
+        .q-row { display: flex; align-items: flex-start; gap: 10px; margin: 14px 0; font-size: 16px; flex-wrap: wrap; }
+        .q-row.current { 
+            background-color: #eaf1fa; 
+            padding: 10px 8px; 
+            border-radius: 4px;
+            margin-left: -8px;
+            margin-right: -8px;
+        }
+        .q-num { font-weight: bold; min-width: 28px; color: #1f3a5f; flex-shrink: 0; }
+        .true-false-box { display: flex; gap: 18px; flex-wrap: wrap; margin-top: 4px; }
+        .tf-option { display: flex; align-items: center; gap: 5px; cursor: pointer; padding: 3px 0; }
+        .input-answer { 
+            width: 220px; 
+            padding: 7px 10px; 
+            border: 1px solid #ddd; 
+            border-radius: 4px; 
+            font-size: 16px; 
+            background: #ffffff; 
+        }
+        .input-answer:focus { outline: none; border-color: #1f3a5f; }
+        .input-answer.filled { background-color: #f5f8ff; border-color: #1f3a5f; }
+        
+        /* HIGHLIGHT + NOTE */
+        .highlight { 
+            background-color: #ffd700; 
+            padding: 2px 4px; 
+            border-radius: 2px; 
+            cursor: pointer; 
+            display: inline; 
+            color: #000; 
+            position: relative; 
+        }
+        .note-marker { 
+            position: absolute; 
+            top: -8px; 
+            right: -8px; 
+            width: 18px; 
+            height: 18px; 
+            background: #1f3a5f; 
+            color: white; 
+            border-radius: 50%; 
+            font-size: 11px; 
+            font-weight: bold; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            cursor: pointer; 
+            z-index: 10; 
+        }
+        .context-menu { 
+            position: absolute; 
+            background: #ffffff; 
+            border: 1px solid #ddd; 
+            border-radius: 4px; 
+            box-shadow: 0 2px 12px rgba(0,0,0,0.1); 
+            z-index: 9999; 
+            display: none; 
+            min-width: 180px; 
+        }
+        .context-menu div { 
+            padding: 10px 14px; 
+            cursor: pointer; 
+            font-size: 14px; 
+            border-bottom: 1px solid #f5f5f5; 
+        }
+        .context-menu div:last-child { border-bottom: none; }
+        .context-menu div:hover { background: #f5f5f5; }
+        
+        /* DRAGGABLE NOTE BOX */
+        .note-box { 
+            position: absolute; 
+            width: 260px; 
+            min-height: 80px; 
+            background: #fffde7; 
+            border: 1px solid #f9d423; 
+            border-radius: 6px; 
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1); 
+            z-index: 9990; 
+            display: none; 
+        }
+        .note-header { 
+            background: #f9d423; 
+            padding: 6px 10px; 
+            font-size: 13px; 
+            font-weight: bold; 
+            cursor: move; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            color: #333; 
+        }
+        .note-close { cursor: pointer; font-weight: bold; font-size: 16px; line-height: 1; }
+        .note-textarea { 
+            width: 100%; 
+            min-height: 60px; 
+            border: none; 
+            padding: 10px; 
+            font-size: 14px; 
+            resize: vertical; 
+            background: transparent; 
+            outline: none; 
+        }
+        
+        /* BOTTOM NAVIGATION */
+        .bottom-nav { 
+            min-height: 48px; 
+            background: #ffffff; 
+            border-top: 1px solid #eee; 
+            display: flex; 
+            align-items: center; 
+            justify-content: space-between;
+            padding: 8px 15px; 
+            gap: 8px; 
+            overflow-x: auto;
+            overflow-y: hidden;
+            flex-wrap: nowrap;
+            position: sticky; 
+            bottom: 0; 
+            z-index: 90; 
+        }
+        .nav-group {
+            display: flex;
+            align-items: center;
+            gap: 2px;
+            flex-wrap: nowrap;
+        }
+        .part-label { 
+            font-size: 9px; 
+            font-weight: 600; 
+            color: #1f3a5f; 
+            margin: 0 4px; 
+            white-space: nowrap; 
+        }
+        .q-indicator { 
+            width: 24px; 
+            height: 24px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            border-radius: 3px; 
+            border: 1px solid #ddd; 
+            background: #fff; 
+            color: #333; 
+            font-size: 11px; 
+            cursor: pointer; 
+            transition: all 0.2s; 
+            flex-shrink: 0; 
+        }
+        .q-indicator:hover { border-color: #1f3a5f; }
+        .q-indicator.answered { 
+            background: #10b981 !important; 
+            color: white !important; 
+            border-color: #10b981 !important; 
+        }
+        .q-indicator.current { 
+            background-color: #eaf1fa; 
+            border-color: #1f3a5f;
+            border-width: 2px;
+            font-weight: bold;
+        }
+        
+        .back-btn {
+            padding: 6px 14px;
+            background-color: #6b7280;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 13px;
+            cursor: pointer;
+            font-weight: bold;
+            flex-shrink: 0;
+            text-decoration: none;
+        }
+        .back-btn:hover { background-color: #4b5563; }
+        .next-passage-btn {
+            padding: 6px 14px;
+            background-color: #10b981;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 13px;
+            cursor: pointer;
+            font-weight: bold;
+            flex-shrink: 0;
+            text-decoration: none;
+        }
+        .next-passage-btn:hover { background-color: #059669; }
+        .clear-btn { 
+            background-color: #dc2626; 
+            color: white; 
+            border: none; 
+            padding: 6px 12px; 
+            border-radius: 4px; 
+            cursor: pointer; 
+            font-size: 12px; 
+            font-weight: bold; 
+            white-space: nowrap; 
+            flex-shrink: 0;
+        }
+        .clear-btn:hover { background-color: #b91c1c; }
+    </style>
+</head>
+<body>
+    <!-- Right-click Menu -->
+    <div class="context-menu" id="contextMenu">
+        <div id="menuHighlight">🖍️ Highlight</div>
+        <div id="menuAddNote">📝 Add Note</div>
+        <div id="menuRemove">❌ Remove Highlight & Note</div>
+    </div>
+    
+    <!-- Draggable Note Box -->
+    <div class="note-box" id="noteBox">
+        <div class="note-header" id="noteDragHandle">
+            <span>📝 Note</span>
+            <span class="note-close" id="noteClose">×</span>
+        </div>
+        <textarea class="note-textarea" id="noteText" placeholder="Type your note here…"></textarea>
+    </div>
+    
+    <!-- TOP BAR -->
+    <div class="top-bar">
+        <img src="ielts-logo.png" alt="IELTS Logo" class="logo">
+    </div>
+    
+    <!-- MAIN CONTENT -->
+    <div class="main-grid">
+        <!-- LEFT PANEL: PASSAGE -->
+        <div class="passage-pane" id="passageArea">
+            <div class="exam-title">READING — CAMBRIDGE 19 TEST 1</div>
+            
+            <div class="passage-section active" id="passage-1">
+                <h2>READING PASSAGE 1</h2>
+                <div class="instruction">You should spend about 20 minutes on Questions 1–13, which are based on Reading Passage 1 below.</div>
+                <h3 style="color:#1f3a5f; margin:15px 0; font-size:22px; text-align:center;">The Industrial Revolution in Britain</h3>
+                <div class="passage-text">
+<p>The Industrial Revolution began in Britain in the mid‑1700s and by the 1830s and 1840s had spread to many other parts of the world, including the United States. In Britain, it was a period when a largely rural, agrarian society was transformed into an industrialised, urban one. Goods that had once been crafted by hand started to be produced in mass quantities by machines in factories, thanks to the invention of steam power and the introduction of new machines and manufacturing techniques in textiles, iron‑making and other industries.</p>
+<p>The foundations of the Industrial Revolution date back to the early 1700s, when the English inventor Thomas Newcomen designed the first modern steam engine. Called the 'atmospheric steam engine', Newcomen's invention was originally used to power machines that pumped water out of mines. In the 1760s, the Scottish engineer James Watt started to adapt one of Newcomen's models, and succeeded in making it far more efficient. Watt later worked with the English manufacturer Matthew Boulton to invent a new steam engine driven by both the forward and backward motion of the piston, while the gear mechanism it was connected to produced rotary strokes. It was a key innovation that would allow steam power to spread across British industries.</p>
+<p>The demand for coal, which was a relatively cheap energy source, grew rapidly during the Industrial Revolution, as it was needed to run not only the factories used to produce manufactured goods, but also steam‑powered transportation. In the early 1800s, the English engineer Richard Trevithick built a steam‑powered locomotive, and by 1830 goods and passengers were being transported between the industrial centres of Manchester and Liverpool. In addition, steam‑powered boats and ships were widely used to carry goods along Britain's canals as well as across the Atlantic.</p>
+<p>Britain had produced textiles like wool, linen and cotton, for hundreds of years, yet prior to the Industrial Revolution, the British textile business was a true 'cottage industry', with the work performed in small workshops or even homes by individual spinners, weavers and dyers. Starting in the mid‑1700s, innovations like the spinning jenny and the power loom made weaving cloth and spinning yarn and thread much easier. With these machines, relatively little labour was required to produce cloth, and the new, mechanised textile factories that opened around the country were quickly able to meet customer demand for cloth both at home and abroad.</p>
+<p>The British iron industry also underwent major changes as it adopted new innovations. Chief among the new techniques was the smelting of iron ore with coke (a material made by heating coal) instead of the traditional charcoal. This method was cheaper and produced metals that were of a higher quality, enabling Britain's iron and steel production to expand in response to demand created by the Napoleonic Wars (1803–15) and the expansion of the railways from the 1830s.</p>
+<p>The latter part of the Industrial Revolution also saw key advances in communication methods, as people increasingly saw the need to communicate efficiently over long distances. In 1837, British inventors William Cooke and Charles Wheatstone patented the first commercial telegraph system. In the 1830s and 1840s, Samuel Morse and other inventors worked on their own versions in the United States and other countries. Cooke and Wheatstone's system was soon used for railway signalling in the UK. As the speed of the new locomotives increased, it was essential to have a fast and effective means of avoiding collisions.</p>
+<p>The impact of the Industrial Revolution on people's lives was immense. Although many people in Britain had begun moving to the cities from rural areas before the Industrial Revolution, this accelerated dramatically with industrialisation, as the rise of large factories turned smaller towns into major cities in just a few decades. This rapid urbanisation brought significant challenges, as overcrowded cities suffered from pollution and inadequate sanitation.</p>
+<p>Although industrialisation increased the country's economic output and improved the standard of living for the middle and upper classes, many poor people continued to struggle. Factory workers had to work long hours in dangerous conditions for extremely low wages. These conditions along with the rapid pace of change fuelled opposition to industrialisation. A group of British workers who became known as 'Luddites' were British weavers and textile workers who objected to the increased use of mechanised looms and knitting frames. Many had spent years learning their craft, and they feared that unskilled machine operators were robbing them of their livelihood. A small number of desperate weavers began breaking into factories and smashing textile machines. They called themselves Luddites after Ned Ludd, a young apprentice who was rumoured to have wrecked a textile machine in 1779.</p>
+<p>The first major instances of machine breaking took place in 1811 in the county of Nottingham, and the practice soon spread across the country. Machine‑breaking Luddites attacked and burned factories, and in some cases they even exchanged gunfire with company guards and soldiers. The workers wanted employers to stop installing new machinery, but the British government responded to the uprisings by making machine‑breaking punishable by death. The unrest finally reached its peak in April 1812, when a few Luddites were shot during an attack on a mill near Huddersfield. In the days that followed, other Luddites were arrested, and dozens were hanged or transported to Australia. By 1813, the Luddite resistance had all but vanished.</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- RIGHT PANEL: QUESTIONS -->
+        <div class="questions-pane" id="questionsArea">
+            <div class="questions-block active" id="questions-1">
+                <h3>Questions 1–7</h3>
+                <div class="instruction">Complete the notes below.<br>Choose <strong>ONE WORD ONLY</strong> from the passage for each answer.</div>
+                <h4 style="margin: 15px 0; font-size:17px; color:#1f3a5f;">Britain's Industrial Revolution</h4>
+                
+                <p style="font-weight:bold; margin:18px 0 8px;">Steam power</p>
+                <div class="q-row" id="q1">
+                    <span class="q-num">1</span>
+                    <span>In Watt and Boulton's steam engine, the movement of the</span>
+                    <input type="text" class="input-answer" id="ans1" placeholder="Answer">
+                    <span>was linked to a gear system.</span>
+                </div>
+                <div class="q-row" id="q2">
+                    <span class="q-num">2</span>
+                    <span>A greater supply of</span>
+                    <input type="text" class="input-answer" id="ans2" placeholder="Answer">
+                    <span>was required to power steam engines.</span>
+                </div>
+                
+                <p style="font-weight:bold; margin:25px 0 8px;">Textile industry</p>
+                <div class="q-row" id="q3">
+                    <span class="q-num">3</span>
+                    <span>Before the Industrial Revolution, spinners and weavers worked at home and in</span>
+                    <input type="text" class="input-answer" id="ans3" placeholder="Answer">
+                    <span>.</span>
+                </div>
+                <div class="q-row" id="q4">
+                    <span class="q-num">4</span>
+                    <span>Not as much</span>
+                    <input type="text" class="input-answer" id="ans4" placeholder="Answer">
+                    <span>was needed to produce cloth once the spinning jenny and power loom were invented.</span>
+                </div>
+                
+                <p style="font-weight:bold; margin:25px 0 8px;">Iron industry</p>
+                <div class="q-row" id="q5">
+                    <span class="q-num">5</span>
+                    <span>Smelting of iron ore with coke resulted in material that was better</span>
+                    <input type="text" class="input-answer" id="ans5" placeholder="Answer">
+                    <span>.</span>
+                </div>
+                <div class="q-row" id="q6">
+                    <span class="q-num">6</span>
+                    <span>Demand for iron increased with the growth of the</span>
+                    <input type="text" class="input-answer" id="ans6" placeholder="Answer">
+                    <span>.</span>
+                </div>
+                
+                <p style="font-weight:bold; margin:25px 0 8px;">Urbanisation</p>
+                <div class="q-row" id="q7">
+                    <span class="q-num">7</span>
+                    <span>The new cities were dirty, crowded and lacked sufficient</span>
+                    <input type="text" class="input-answer" id="ans7" placeholder="Answer">
+                    <span>.</span>
+                </div>
+
+                <h3 style="margin-top:35px;">Questions 8–13</h3>
+                <div class="instruction">Do the following statements agree with the information given in Reading Passage 1?<br><br>Write:</div>
+                <div style="margin: 8px 0 15px 15px;">
+                    <p><strong>TRUE</strong>&nbsp;&nbsp;&nbsp;– if the statement agrees with the information</p>
+                    <p><strong>FALSE</strong>&nbsp;&nbsp;– if the statement contradicts the information</p>
+                    <p><strong>NOT GIVEN</strong>&nbsp;– if there is no information on this</p>
+                </div>
+                
+                <div class="q-row" id="q8">
+                    <span class="q-num">8</span>
+                    <span>Britain's canal network grew rapidly so that more goods could be transported around the country.</span>
+                    <div class="true-false-box">
+                        <label class="tf-option"><input type="radio" name="q8" value="TRUE"> TRUE</label>
+                        <label class="tf-option"><input type="radio" name="q8" value="FALSE"> FALSE</label>
+                        <label class="tf-option"><input type="radio" name="q8" value="NOT GIVEN"> NOT GIVEN</label>
+                    </div>
+                </div>
+                <div class="q-row" id="q9">
+                    <span class="q-num">9</span>
+                    <span>Costs in the iron industry rose when the technique of smelting iron ore with coke was introduced.</span>
+                    <div class="true-false-box">
+                        <label class="tf-option"><input type="radio" name="q9" value="TRUE"> TRUE</label>
+                        <label class="tf-option"><input type="radio" name="q9" value="FALSE"> FALSE</label>
+                        <label class="tf-option"><input type="radio" name="q9" value="NOT GIVEN"> NOT GIVEN</label>
+                    </div>
+                </div>
+                <div class="q-row" id="q10">
+                    <span class="q-num">10</span>
+                    <span>Samuel Morse's communication system was more reliable than that developed by William Cooke and Charles Wheatstone.</span>
+                    <div class="true-false-box">
+                        <label class="tf-option"><input type="radio" name="q10" value="TRUE"> TRUE</label>
+                        <label class="tf-option"><input type="radio" name="q10" value="FALSE"> FALSE</label>
+                        <label class="tf-option"><input type="radio" name="q10" value="NOT GIVEN"> NOT GIVEN</label>
+                    </div>
+                </div>
+                <div class="q-row" id="q11">
+                    <span class="q-num">11</span>
+                    <span>The economic benefits of industrialisation were limited to certain sectors of society.</span>
+                    <div class="true-false-box">
+                        <label class="tf-option"><input type="radio" name="q11" value="TRUE"> TRUE</label>
+                        <label class="tf-option"><input type="radio" name="q11" value="FALSE"> FALSE</label>
+                        <label class="tf-option"><input type="radio" name="q11" value="NOT GIVEN"> NOT GIVEN</label>
+                    </div>
+                </div>
+                <div class="q-row" id="q12">
+                    <span class="q-num">12</span>
+                    <span>Some skilled weavers believed that the introduction of the new textile machines would lead to job losses.</span>
+                    <div class="true-false-box">
+                        <label class="tf-option"><input type="radio" name="q12" value="TRUE"> TRUE</label>
+                        <label class="tf-option"><input type="radio" name="q12" value="FALSE"> FALSE</label>
+                        <label class="tf-option"><input type="radio" name="q12" value="NOT GIVEN"> NOT GIVEN</label>
+                    </div>
+                </div>
+                <div class="q-row" id="q13">
+                    <span class="q-num">13</span>
+                    <span>There was some sympathy among local people for the Luddites who were arrested near Huddersfield.</span>
+                    <div class="true-false-box">
+                        <label class="tf-option"><input type="radio" name="q13" value="TRUE"> TRUE</label>
+                        <label class="tf-option"><input type="radio" name="q13" value="FALSE"> FALSE</label>
+                        <label class="tf-option"><input type="radio" name="q13" value="NOT GIVEN"> NOT GIVEN</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- BOTTOM NAVIGATION -->
+    <div class="bottom-nav">
+        <!-- FAR LEFT: Back & Clear -->
+        <div style="display:flex; gap:8px; align-items:center;">
+            <a href="reading-intro.html" class="back-btn">← Back</a>
+            <button class="clear-btn" id="clearAllBtn">🗑️ Clear</button>
+        </div>
+        
+        <!-- CENTER: Question Indicators -->
+        <div class="nav-group">
+            <span class="part-label">P1:</span>
+            <div class="q-indicator" data-q="1" data-passage="1">1</div>
+            <div class="q-indicator" data-q="2" data-passage="1">2</div>
+            <div class="q-indicator" data-q="3" data-passage="1">3</div>
+            <div class="q-indicator" data-q="4" data-passage="1">4</div>
+            <div class="q-indicator" data-q="5" data-passage="1">5</div>
+            <div class="q-indicator" data-q="6" data-passage="1">6</div>
+            <div class="q-indicator" data-q="7" data-passage="1">7</div>
+            <div class="q-indicator" data-q="8" data-passage="1">8</div>
+            <div class="q-indicator" data-q="9" data-passage="1">9</div>
+            <div class="q-indicator" data-q="10" data-passage="1">10</div>
+            <div class="q-indicator" data-q="11" data-passage="1">11</div>
+            <div class="q-indicator" data-q="12" data-passage="1">12</div>
+            <div class="q-indicator" data-q="13" data-passage="1">13</div>
+        </div>
+        
+        <!-- FAR RIGHT: Next -->
+        <a href="reading-cambridge19-test1-passage2.html" class="next-passage-btn">Next →</a>
+    </div>
+
+<script>
+const STORAGE_KEY = 'Cambridge19_Test1_Reading_P1';
+const passageId = 'reading-cambridge19-test1-p1';
+let currentRange = null;
+let activeHighlight = null;
+let currentQuestionNum = 1;
+
+// Update current question highlighting
+function setCurrentQuestion(qNum) {
+    document.querySelectorAll('.q-row.current').forEach(r => r.classList.remove('current'));
+    document.querySelectorAll('.q-indicator.current').forEach(b => b.classList.remove('current'));
+    
+    currentQuestionNum = qNum;
+    const row = document.getElementById(`q${qNum}`);
+    const indicator = document.querySelector(`.q-indicator[data-q="${qNum}"]`);
+    
+    if (row) row.classList.add('current');
+    if (indicator) indicator.classList.add('current');
+}
+
+// STATUS UPDATE — Shade answered boxes green
+function updateStatus() {
+    for (let q = 1; q <= 13; q++) {
+        const btn = document.querySelector(`.q-indicator[data-q="${q}"]`);
+        if (!btn) continue;
+        let val = localStorage.getItem(`${STORAGE_KEY}_q${q}`) || '';
+        btn.classList.toggle('answered', val.trim().length > 0);
+    }
+}
+
+// CLICK QUESTION INDICATOR → Highlight row
+document.querySelectorAll('.q-indicator').forEach(btn => {
+    btn.addEventListener('click', () => {
+        const qNum = parseInt(btn.dataset.q);
+        setCurrentQuestion(qNum);
+        const target = document.getElementById(`q${qNum}`);
+        if (target) {
+            target.scrollIntoView({behavior:'smooth', block:'center'});
+        }
+    });
+});
+
+// SELECTION VALIDATION — works in BOTH panels
+function isSelectionValid(sel) {
+    if (!sel || sel.isCollapsed || !sel.toString().trim()) return false;
+    try {
+        const r = sel.getRangeAt(0);
+        const p = r.commonAncestorContainer.nodeType === Node.TEXT_NODE
+            ? r.commonAncestorContainer.parentElement : r.commonAncestorContainer;
+        const inPassage = document.getElementById('passageArea').contains(p);
+        const inQuestions = document.getElementById('questionsArea').contains(p);
+        const inInput = p.closest('input,textarea,button,label,.context-menu,.note-box,.true-false-box,.input-answer');
+        return (inPassage || inQuestions) && !inInput;
+    } catch { return false; }
+}
+
+// HIGHLIGHT STORAGE
+function saveHighlightsData() {
+    const highlights = [];
+    document.querySelectorAll('.highlight').forEach((hl, idx) => {
+        highlights.push({
+            id: idx,
+            text: hl.textContent,
+            note: hl.getAttribute('data-note') || ''
+        });
+    });
+    localStorage.setItem(`${passageId}_highlights`, JSON.stringify(highlights));
+}
+
+// Restore note markers
+function restoreNoteMarkers() {
+    document.querySelectorAll('.highlight').forEach(hl => {
+        if (hl.getAttribute('data-note')) {
+            if (!hl.querySelector('.note-marker')) {
+                const marker = document.createElement('span');
+                marker.className = 'note-marker';
+                marker.textContent = '!';
+                hl.appendChild(marker);
+            }
+        }
+    });
+}
+
+// DRAGGABLE NOTE BOX
+const noteBox = document.getElementById('noteBox');
+const noteText = document.getElementById('noteText');
+const noteClose = document.getElementById('noteClose');
+
+noteClose.addEventListener('click', () => { 
+    noteBox.style.display = 'none'; 
+    activeHighlight = null; 
+});
+noteText.addEventListener('input', () => {
+    if (activeHighlight) {
+        activeHighlight.setAttribute('data-note', noteText.value);
+        if (noteText.value && !activeHighlight.querySelector('.note-marker')) {
+            const marker = document.createElement('span');
+            marker.className = 'note-marker';
+            marker.textContent = '!';
+            activeHighlight.appendChild(marker);
+        }
+        if (!noteText.value) {
+            const m = activeHighlight.querySelector('.note-marker');
+            if (m) m.remove();
+        }
+        saveHighlightsData();
+    }
+});
+
+let isDraggingNote = false, dragOffsetX = 0, dragOffsetY = 0;
+document.addEventListener('mousedown', e => {
+    if (!e.target.closest('.note-header')) return;
+    isDraggingNote = true;
+    const rc = noteBox.getBoundingClientRect();
+    dragOffsetX = e.clientX - rc.left;
+    dragOffsetY = e.clientY - rc.top;
+});
+document.addEventListener('mousemove', e => {
+    if (!isDraggingNote) return;
+    noteBox.style.left = (e.clientX - dragOffsetX) + 'px';
+    noteBox.style.top = (e.clientY - dragOffsetY) + 'px';
+});
+document.addEventListener('mouseup', () => isDraggingNote = false);
+
+// RIGHT-CLICK MENU
+const contextMenu = document.getElementById('contextMenu');
+document.addEventListener('contextmenu', e => {
+    const sel = window.getSelection();
+    const targetHl = e.target.closest('.highlight');
+    if (targetHl) {
+        e.preventDefault();
+        activeHighlight = targetHl;
+        const rc = targetHl.getBoundingClientRect();
+        contextMenu.style.left = (rc.left + window.scrollX) + 'px';
+        contextMenu.style.top = (rc.bottom + window.scrollY + 5) + 'px';
+        contextMenu.style.display = 'block';
+    } else if (isSelectionValid(sel)) {
+        e.preventDefault();
+        currentRange = sel.getRangeAt(0).cloneRange();
+        const rc = currentRange.getBoundingClientRect();
+        contextMenu.style.left = (rc.left + window.scrollX) + 'px';
+        contextMenu.style.top = (rc.bottom + window.scrollY + 5) + 'px';
+        contextMenu.style.display = 'block';
+        activeHighlight = null;
+    } else {
+        contextMenu.style.display = 'none';
+    }
+});
+document.addEventListener('click', e => { if (!contextMenu.contains(e.target)) contextMenu.style.display = 'none'; });
+
+// MENU ACTIONS
+document.getElementById('menuHighlight').addEventListener('click', () => {
+    if (!currentRange) return;
+    try {
+        const sp = document.createElement('span');
+        sp.className = 'highlight';
+        sp.textContent = currentRange.toString();
+        currentRange.deleteContents();
+        currentRange.insertNode(sp);
+        window.getSelection().removeAllRanges();
+        saveHighlightsData();
+    } catch { alert('⚠️ Select smaller text.'); }
+    contextMenu.style.display = 'none';
+});
+
+document.getElementById('menuAddNote').addEventListener('click', () => {
+    contextMenu.style.display = 'none';
+    if (!activeHighlight) {
+        if (!currentRange) return;
+        try {
+            const sp = document.createElement('span');
+            sp.className = 'highlight';
+            sp.textContent = currentRange.toString();
+            currentRange.deleteContents();
+            currentRange.insertNode(sp);
+            window.getSelection().removeAllRanges();
+            activeHighlight = sp;
+            saveHighlightsData();
+        } catch { alert('⚠️ Select smaller text.'); return; }
+    }
+    const rc = activeHighlight.getBoundingClientRect();
+    noteBox.style.left = (rc.right + window.scrollX + 10) + 'px';
+    noteBox.style.top = (rc.top + window.scrollY) + 'px';
+    noteBox.style.display = 'block';
+    noteText.value = activeHighlight.getAttribute('data-note') || '';
+    noteText.focus();
+});
+
+document.getElementById('menuRemove').addEventListener('click', () => {
+    contextMenu.style.display = 'none';
+    noteBox.style.display = 'none';
+    if (!activeHighlight) return;
+    const parent = activeHighlight.parentNode;
+    parent.replaceChild(document.createTextNode(activeHighlight.textContent), activeHighlight);
+    parent.normalize();
+    activeHighlight = null;
+    saveHighlightsData();
+});
+
+// SAVE ANSWERS
+function saveAnswer(q, val) {
+    localStorage.setItem(`${STORAGE_KEY}_q${q}`, val);
+    updateStatus();
+}
+
+// CLEAR ALL
+function clearAllData() {
+    if (!confirm('⚠️ Are you sure you want to clear ALL answers, highlights, and notes? This cannot be undone.')) return;
+    for (let q = 1; q <= 13; q++) {
+        localStorage.removeItem(`${STORAGE_KEY}_q${q}`);
+    }
+    localStorage.removeItem(`${passageId}_highlights`);
+    document.querySelectorAll('input[type=radio]').forEach(i => i.checked = false);
+    document.querySelectorAll('.input-answer').forEach(i => {
+        i.value = '';
+        i.classList.remove('filled');
+    });
+    document.querySelectorAll('.highlight').forEach(hl => {
+        const parent = hl.parentNode;
+        parent.replaceChild(document.createTextNode(hl.textContent), hl);
+        parent.normalize();
+    });
+    noteBox.style.display = 'none';
+    location.reload();
+}
+document.getElementById('clearAllBtn').addEventListener('click', clearAllData);
+
+// INITIALIZE
+document.addEventListener('DOMContentLoaded', () => {
+    restoreNoteMarkers();
+    
+    // Restore answers Q1–7 (text input)
+    for (let q = 1; q <= 7; q++) {
+        const inp = document.getElementById(`ans${q}`);
+        if (!inp) continue;
+        const saved = localStorage.getItem(`${STORAGE_KEY}_q${q}`);
+        if (saved) {
+            inp.value = saved;
+            inp.classList.add('filled');
+        }
+        inp.addEventListener('input', () => {
+            const val = inp.value.trim();
+            val ? inp.classList.add('filled') : inp.classList.remove('filled');
+            saveAnswer(q, val);
+        });
+    }
+    
+    // Restore answers Q8–13 (True/False/Not Given)
+    for (let q = 8; q <= 13; q++) {
+        const saved = localStorage.getItem(`${STORAGE_KEY}_q${q}`);
+        if (saved) {
+            const inp = document.querySelector(`input[name="q${q}"][value="${saved}"]`);
+            if (inp) inp.checked = true;
+        }
+        document.querySelectorAll(`input[name="q${q}"]`).forEach(r => {
+            r.addEventListener('change', () => saveAnswer(q, r.value));
+        });
+    }
+    
+    setCurrentQuestion(1);
+    updateStatus();
+});
+</script>
+</body>
+</html>
