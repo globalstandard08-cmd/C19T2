@@ -163,24 +163,24 @@
     <div class="mcq-option" data-q="16" data-val="C"><input type="radio" name="q16" id="q16c" value="C"><label for="q16c">C recruits new volunteers.</label></div>
 </div>
 
-<div class="instruction"><strong>Questions 17 and 18</strong><br>Choose <strong>TWO</strong> letters, A–E.<br>Which <strong>TWO</strong> things does David say about the lifeboat volunteer training?</div>
+<div class="instruction"><strong>Questions 17 and 18</strong><br>Choose <strong>TWO</strong> letters, A–E.</div>
 <div class="mcq-block">
+    <p>Which <strong>TWO</strong> things does David say about the lifeboat volunteer training?</p>
     <div class="mcq-option" data-q="17"><input type="checkbox" name="q17" id="q17a" value="A"><label for="q17a">A The residential course developed his leadership skills.</label></div>
     <div class="mcq-option" data-q="17"><input type="checkbox" name="q17" id="q17b" value="B"><label for="q17b">B The training in use of ropes and knots was quite brief.</label></div>
     <div class="mcq-option" data-q="17"><input type="checkbox" name="q17" id="q17c" value="C"><label for="q17c">C The training exercises have built up his mental strength.</label></div>
     <div class="mcq-option" data-q="17"><input type="checkbox" name="q17" id="q17d" value="D"><label for="q17d">D The casualty care activities were particularly challenging for him.</label></div>
     <div class="mcq-option" data-q="17"><input type="checkbox" name="q17" id="q17e" value="E"><label for="q17e">E The wave tank activities provided practice in survival techniques.</label></div>
-    <p style="margin:10px 0;"><strong>17.</strong> &nbsp; <strong>18.</strong></p>
 </div>
 
-<div class="instruction"><strong>Questions 19 and 20</strong><br>Choose <strong>TWO</strong> letters, A–E.<br>Which <strong>TWO</strong> things does David find most motivating about the work he does?</div>
+<div class="instruction"><strong>Questions 19 and 20</strong><br>Choose <strong>TWO</strong> letters, A–E.</div>
 <div class="mcq-block">
+    <p>Which <strong>TWO</strong> things does David find most motivating about the work he does?</p>
     <div class="mcq-option" data-q="19"><input type="checkbox" name="q19" id="q19a" value="A"><label for="q19a">A working as part of a team</label></div>
     <div class="mcq-option" data-q="19"><input type="checkbox" name="q19" id="q19b" value="B"><label for="q19b">B experiences when working in winter</label></div>
     <div class="mcq-option" data-q="19"><input type="checkbox" name="q19" id="q19c" value="C"><label for="q19c">C being thanked by those he has helped</label></div>
     <div class="mcq-option" data-q="19"><input type="checkbox" name="q19" id="q19d" value="D"><label for="q19d">D the fact that it keeps him fit</label></div>
     <div class="mcq-option" data-q="19"><input type="checkbox" name="q19" id="q19e" value="E"><label for="q19e">E the chance to develop new equipment</label></div>
-    <p style="margin:10px 0;"><strong>19.</strong> &nbsp; <strong>20.</strong></p>
 </div>
 
 <!-- ========== PART 3 ========== -->
@@ -245,7 +245,7 @@
 <div class="notes-block">
     <div class="notes-title">Tardigrades</div>
     <p>more than 1,000 species, 0.05–1.2 millimetres long</p>
-    <p>also known as water 'bears' (due to how they <span class="q-number">31.</span><input type="text" class="input-field" id="q31" placeholder="Answer"></p>
+    <p>also known as water 'bears' (due to how they <span class="q-number">31.</span><input type="text" class="input-field" id="q31" placeholder="Answer">)</p>
     <p>and 'moss piglets')</p>
     <p style="font-weight:bold; margin:15px 0 5px;">Physical appearance</p>
     <div class="question-line"><span>a</span><span class="q-number">32.</span><input type="text" class="input-field" id="q32" placeholder="Answer"><span>round body and four pairs of legs</span></div>
@@ -296,7 +296,7 @@ const passageId = 'listening-cambridge19-test2';
 let currentRange = null;
 let activeHighlight = null;
 
-// UPDATE NAVIGATION STATUS — turns green when answered
+// UPDATE NAVIGATION STATUS
 function updateStatus() {
     for (let q = 1; q <= 40; q++) {
         const btn = document.querySelector(`.q-indicator[data-q="${q}"]`);
@@ -328,7 +328,7 @@ function saveHighlights() {
 }
 
 function loadHighlights() {
-    // Preserve structure — no full HTML restore
+    // Preserve page structure — no full HTML restore
 }
 
 // DRAGGABLE NOTE LOGIC
@@ -472,11 +472,12 @@ function clearAll() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+    // Audio error handling
     document.getElementById('audioPlayer').addEventListener('error', () => {
         document.getElementById('audioStatus').style.display = 'block';
     });
     
-    // Clear old incompatible saved state
+    // Clear old corrupted saved state
     const oldSaved = localStorage.getItem(`${passageId}_highlights`);
     if (oldSaved && oldSaved.includes('<img') === false) {
         localStorage.removeItem(`${passageId}_highlights`);
@@ -511,3 +512,5 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     
     // RADIO Q11–16, 21–24, 29–30
+    [11,12,13,14,15,16,21,22,23,24,29,30].forEach(q => {
+        const saved = localStorage.getItem(`${STORAGE
