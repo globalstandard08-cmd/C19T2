@@ -119,7 +119,8 @@
             padding: 6px 0;
             cursor: pointer;
         }
-        .mc-option input { margin-top: 3px; }
+        .mc-option input { margin-top: 3px; flex-shrink: 0; }
+        .mc-option-text { flex: 1; }
         
         /* HIGHLIGHT + NOTE */
         .highlight { 
@@ -429,11 +430,11 @@
                 <div class="q-row" id="q23">
                     <span class="q-num">23, 24</span>
                     <div style="display:flex; flex-direction:column; gap:4px; margin-top:2px; flex:1;">
-                        <label class="mc-option"><input type="checkbox" name="q23-24" value="A"> A the stage at which she dropped out of the tournament</label>
-                        <label class="mc-option"><input type="checkbox" name="q23-24" value="B"> B symptoms of her performance stress at the tournament</label>
-                        <label class="mc-option"><input type="checkbox" name="q23-24" value="C"> C measures which she had taken to manage her stress levels</label>
-                        <label class="mc-option"><input type="checkbox" name="q23-24" value="D"> D aspects of the Wimbledon tournament which increased her stress levels</label>
-                        <label class="mc-option"><input type="checkbox" name="q23-24" value="E"> E reactions to her social media posts about her experience at Wimbledon</label>
+                        <label class="mc-option"><input type="checkbox" name="q23-24" value="A"> <span class="mc-option-text">A the stage at which she dropped out of the tournament</span></label>
+                        <label class="mc-option"><input type="checkbox" name="q23-24" value="B"> <span class="mc-option-text">B symptoms of her performance stress at the tournament</span></label>
+                        <label class="mc-option"><input type="checkbox" name="q23-24" value="C"> <span class="mc-option-text">C measures which she had taken to manage her stress levels</span></label>
+                        <label class="mc-option"><input type="checkbox" name="q23-24" value="D"> <span class="mc-option-text">D aspects of the Wimbledon tournament which increased her stress levels</span></label>
+                        <label class="mc-option"><input type="checkbox" name="q23-24" value="E"> <span class="mc-option-text">E reactions to her social media posts about her experience at Wimbledon</span></label>
                     </div>
                     <div class="ans-box-group">
                         <input type="text" class="ans-box" id="ans23" maxlength="1" placeholder="">
@@ -452,11 +453,11 @@
                 <div class="q-row" id="q25">
                     <span class="q-num">25, 26</span>
                     <div style="display:flex; flex-direction:column; gap:4px; margin-top:2px; flex:1;">
-                        <label class="mc-option"><input type="checkbox" name="q25-26" value="A"> A the factors which determine how severe it may be</label>
-                        <label class="mc-option"><input type="checkbox" name="q25-26" value="B"> B how long it takes for its effects to become apparent</label>
-                        <label class="mc-option"><input type="checkbox" name="q25-26" value="C"> C which of its symptoms is most frequently encountered</label>
-                        <label class="mc-option"><input type="checkbox" name="q25-26" value="D"> D the types of athletes who are most likely to suffer from it</label>
-                        <label class="mc-option"><input type="checkbox" name="q25-26" value="E"> E the harm that can result if athletes experience it too often</label>
+                        <label class="mc-option"><input type="checkbox" name="q25-26" value="A"> <span class="mc-option-text">A the factors which determine how severe it may be</span></label>
+                        <label class="mc-option"><input type="checkbox" name="q25-26" value="B"> <span class="mc-option-text">B how long it takes for its effects to become apparent</span></label>
+                        <label class="mc-option"><input type="checkbox" name="q25-26" value="C"> <span class="mc-option-text">C which of its symptoms is most frequently encountered</span></label>
+                        <label class="mc-option"><input type="checkbox" name="q25-26" value="D"> <span class="mc-option-text">D the types of athletes who are most likely to suffer from it</span></label>
+                        <label class="mc-option"><input type="checkbox" name="q25-26" value="E"> <span class="mc-option-text">E the harm that can result if athletes experience it too often</span></label>
                     </div>
                     <div class="ans-box-group">
                         <input type="text" class="ans-box" id="ans25" maxlength="1" placeholder="">
@@ -570,7 +571,7 @@ document.querySelectorAll('.q-indicator').forEach(btn => {
     });
 });
 
-// SELECTION VALIDATION — works in BOTH panels
+// SELECTION VALIDATION — FIXED: allow highlighting option text
 function isSelectionValid(sel) {
     if (!sel || sel.isCollapsed || !sel.toString().trim()) return false;
     try {
@@ -579,7 +580,8 @@ function isSelectionValid(sel) {
             ? r.commonAncestorContainer.parentElement : r.commonAncestorContainer;
         const inPassage = document.getElementById('passageArea').contains(p);
         const inQuestions = document.getElementById('questionsArea').contains(p);
-        const inInput = p.closest('input,textarea,button,label,.context-menu,.note-box,.ans-box,.mc-option');
+        // Only block actual inputs, NOT the option text labels
+        const inInput = p.closest('input,textarea,button,.context-menu,.note-box,.ans-box');
         return (inPassage || inQuestions) && !inInput;
     } catch { return false; }
 }
@@ -781,7 +783,7 @@ document.querySelectorAll('input[name="q25-26"]').forEach(cb => {
 });
 
 // Manual typing in boxes also saves
-['ans23','ans24','ans25','ans26'].forEach((id, idx, arr) => {
+['ans23','ans24','ans25','ans26'].forEach((id) => {
     const q = parseInt(id.replace('ans',''));
     const box = document.getElementById(id);
     box.addEventListener('input', () => {
