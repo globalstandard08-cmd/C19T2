@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IELTS Reading - Cambridge 19 Test 1 - Passage 2</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Arial', sans-serif; }
+        html, body { background-color: #ffffff; height: 100%; overflow-y: auto; }
+        
+        /* TOP BAR */
+        .top-bar { 
+            background-color: #ffffff; 
+            padding: 10px 25px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            position: sticky; 
+            top: 0; 
+            z-index: 100; 
+            border-bottom: 1px solid #e5e5e5;
+        }
+        .logo { height: 55px; width: auto; }
+        
+        /* MAIN TWO-COLUMN LAYOUT */
+        .main-grid { display: flex; min-height: calc(100vh - 75px - 48px); gap: 2px; }
+        
+        /* LEFT: PASSAGE PANEL */
+        .passage-pane { 
+            width: 50%; 
+            background: #ffffff; 
+            overflow-y: auto; 
+            padding: 25px; 
+            border-right: 1px solid #eee; 
+            max-height: calc(100vh - 75px - 48px); 
+            position: sticky; 
+            top: 75px; 
+        }
+        .exam-title {
+            text-align: center;
+            color: #1f3a5f;
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #1f3a5f;
+        }
+        .instruction { 
+            background-color: #f9f9f9; 
+            border-left: 3px solid #1f3a5f; 
+            padding: 12px; 
+            margin-bottom: 18px; 
+            border-radius: 4px; 
+            font-weight: 500; 
+            font-size: 15px; 
+        }
+        .passage-text { font-size: 16px; line-height: 1.7; }
+        .passage-text p { margin-bottom: 14px; text-align: justify; }
+        .para-label { font-weight: bold; color: #1f3a5f; display: inline-block; min-width: 24px; }
+        
+        /* RIGHT: QUESTIONS PANEL */
+        .questions-pane { 
+            width: 50%; 
+            background: #ffffff; 
+            overflow-y: auto; 
+            padding: 25px; 
+            max-height: calc(100vh - 75px - 48px); 
+            position: sticky; 
+            top: 75px; 
+        }
+        .questions-block { margin-bottom: 35px; }
+        .questions-block h3 { color: #1f3a5f; margin-bottom: 10px; font-size: 18px; }
+        .q-row { display: flex; align-items: flex-start; gap: 10px; margin: 14px 0; font-size: 16px; flex-wrap: wrap; }
+        .q-row.current { 
+            background-color: #eaf1fa; 
+            padding: 10px 8px; 
+            border-radius: 4px;
+            margin-left: -8px;
+            margin-right: -8px;
+        }
+        .q-num { font-weight: bold; min-width: 28px; color: #1f3a5f; flex-shrink: 0; }
+        .letter-boxes { display: flex; gap: 8px; margin: 4px 0; flex-wrap: wrap; }
+        .letter-option { 
+            width: 36px; 
+            height: 36px; 
+            border: 1px solid #ddd; 
+            border-radius: 4px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            cursor: pointer; 
+            font-weight: bold; 
+            background: #fff;
+            transition: all 0.2s;
+        }
+        .letter-option.selected { background: #1f3a5f; color: white; border-color: #1f3a5f; }
+        .input-answer { 
+            width: 220px; 
+            padding: 7px 10px; 
+            border: 1px solid #ddd; 
+            border-radius: 4px; 
+            font-size: 16px; 
+            background: #ffffff; 
+        }
+        .input-answer:focus { outline: none; border-color: #1f3a5f; }
+        .input-answer.filled { background-color: #f5f8ff; border-color: #1f3a5f; }
+        
+        /* HIGHLIGHT + NOTE */
+        .highlight { 
+            background-color: #ffd700; 
+            padding: 2px 4px; 
+            border-radius: 2px; 
+            cursor: pointer; 
+            display: inline; 
+            color: #000; 
+            position: relative; 
+        }
+        .note-marker { 
+            position: absolute; 
+            top: -8px; 
+            right: -8px; 
+            width: 18px; 
+            height: 18px; 
+            background: #1f3a5f; 
+            color: white; 
+            border-radius: 50%; 
+            font-size: 11px; 
+            font-weight: bold; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            cursor: pointer; 
+            z-index: 10; 
+        }
+        .context-menu { 
+            position: absolute; 
+            background: #ffffff; 
+            border: 1px solid #ddd; 
+            border-radius: 4px; 
+            box-shadow: 0 2px 12px rgba(0,0,0,0.1); 
+            z-index: 9999; 
+            display: none; 
+            min-width: 180px; 
+        }
+        .context-menu div { 
+            padding: 10px 14px; 
+            cursor: pointer; 
+            font-size: 14px; 
+            border-bottom: 1px solid #f5f5f5; 
+        }
+        .context-menu div:last-child { border-bottom: none; }
+        .context-menu div:hover { background: #f5f5f5; }
+        
+        /* DRAGGABLE NOTE BOX */
+        .note-box { 
+            position: absolute; 
+            width: 260px; 
+            min-height: 80px; 
+            background: #fffde7; 
+            border: 1px solid #f9d423; 
+            border-radius: 6px; 
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1); 
+            z-index: 9990; 
+            display: none; 
+        }
+        .note-header { 
+            background: #f9d423; 
+            padding: 6px 10px; 
+            font-size: 13px; 
+            font-weight: bold; 
+            cursor: move; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            color: #333; 
+        }
+        .note-close { cursor: pointer; font-weight: bold; font-size: 16px; line-height: 1; }
+        .note-textarea { 
+            width: 100%; 
+            min-height: 60px; 
+            border: none; 
+            padding: 10px; 
+            font-size: 14px; 
+            resize: vertical; 
+            background: transparent; 
+            outline: none; 
+        }
+        
+        /* BOTTOM NAVIGATION */
+        .bottom-nav { 
+            min-height: 48px; 
+            background: #ffffff; 
+            border-top: 1px solid #eee; 
+            display: flex; 
+            align-items: center; 
+            justify-content: space-between;
+            padding: 8px 15px; 
+            gap: 8px; 
+            overflow-x: auto;
+            overflow-y: hidden;
+            flex-wrap: nowrap;
+            position: sticky; 
+            bottom: 0; 
+            z-index: 90; 
+        }
+        .nav-group {
+            display: flex;
+            align-items: center;
+            gap: 2px;
+            flex-wrap: nowrap;
+        }
+        .part-label { 
+            font-size: 9px; 
+            font-weight: 600; 
+            color: #1f3a5f; 
+            margin: 0 4px; 
+            white-space: nowrap; 
+        }
+        .q-indicator { 
+            width: 24px; 
+            height: 24px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            border-radius: 3px; 
+            border: 1px solid #ddd; 
+            background: #fff; 
+            color: #333; 
+            font-size: 11px; 
+            cursor: pointer; 
+            transition: all 0.2s; 
+            flex-shrink: 0; 
+        }
+        .q-indicator:hover { border-color: #1f3a5f; }
+        .q-indicator.answered { 
+            background: #10b981 !important; 
+            color: white !important; 
+            border-color: #10b981 !important; 
+        }
+        .q-indicator.current { 
+            background-color: #eaf1fa; 
+            border-color: #1f3a5f;
+            border-width: 2px;
+            font-weight: bold;
+        }
+        
+        .back-btn {
+            padding: 6px 14px;
+            background-color: #6b7280;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 13px;
+            cursor: pointer;
+            font-weight: bold;
+            flex-shrink: 0;
+            text-decoration: none;
+        }
+        .back-btn:hover { background-color: #4b5563; }
+        .next-passage-btn {
+            padding: 6px 14px;
+            background-color: #10b981;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 13px;
+            cursor: pointer;
+            font-weight: bold;
+            flex-shrink: 0;
+            text-decoration: none;
+        }
+        .next-passage-btn:hover { background-color: #059669; }
+        .clear-btn { 
+            background-color: #dc2626; 
+            color: white; 
+            border: none; 
+            padding: 6px 12px; 
+            border-radius: 4px; 
+            cursor: pointer; 
+            font-size: 12px; 
+            font-weight: bold; 
+            white-space: nowrap; 
+            flex-shrink: 0;
+        }
+        .clear-btn:hover { background-color: #b91c1c; }
+    </style>
+</head>
+<body>
+    <!-- Right-click Menu -->
+    <div class="context-menu" id="contextMenu">
+        <div id="menuHighlight">🖍️ Highlight</div>
+        <div id="menuAddNote">📝 Add Note</div>
+        <div id="menuRemove">❌ Remove Highlight & Note</div>
+    </div>
+    
+    <!-- Draggable Note Box -->
+    <div class="note-box" id="noteBox">
+        <div class="note-header" id="noteDragHandle">
+            <span>📝 Note</span>
+            <span class="note-close" id="noteClose">×</span>
+        </div>
+        <textarea class="note-textarea" id="noteText" placeholder="Type your note here…"></textarea>
+    </div>
+    
+    <!-- TOP BAR -->
+    <div class="top-bar">
+        <img src="ielts-logo.png" alt="IELTS Logo" class="logo">
+    </div>
+    
+    <!-- MAIN CONTENT -->
+    <div class="main-grid">
+        <!-- LEFT PANEL: PASSAGE -->
+        <div class="passage-pane" id="passageArea">
+            <div class="exam-title">READING — CAMBRIDGE 19 TEST 1</div>
+            
+            <h2>READING PASSAGE 2</h2>
+            <div class="instruction">You should spend about 20 minutes on Questions 14–26, which are based on Reading Passage 2 below.</div>
+            <h3 style="color:#1f3a5f; margin:15px 0; font-size:22px; text-align:center;">Athletes and stress</h3>
+            
+            <div class="passage-text">
+<p><span class="para-label">A</span> It isn't easy being a professional athlete. Not only are the physical demands greater than most people could handle, athletes also face intense psychological pressure during competition. This is something that British tennis player Emma Raducanu wrote about on social media following her withdrawal from the 2021 Wimbledon tournament. Though the young player had been doing well in the tournament, she began having difficulty regulating her breathing and heart rate during a match, which she later attributed to 'the accumulation of the excitement and the buzz'.</p>
+
+<p><span class="para-label">B</span> For athletes, some level of performance stress is almost unavoidable. But there are many different factors that dictate just how people respond to stressful events. Typically, stress is the result of an exchange between two factors: demands and resources. An athlete may feel stressed about an event if they feel the demands on them are greater than they can handle. These demands include the high level of physical and mental effort required to succeed, and also the athlete's concerns about the difficulty of the event, their chance of succeeding, and any potential dangers such as injury. Resources, on the other hand, are a person's ability to cope with these demands. These include factors such as the competitor's degree of confidence, how much they believe they can control the situation's outcome, and whether they are looking forward to the event or not.</p>
+
+<p><span class="para-label">C</span> Each new demand or change in circumstances affects whether a person responds positively or negatively to stress. Typically, the more resources a person feels they have in handling the situation, the more positive their response. This positive stress response is called a challenge state. But should the person there are too many demands placed on them, the more likely they are to experience a negative stress response — known as a threat state. Research shows that challenge states lead to good performance, while threat states lead to poorer performance. So, in Emma Raducanu's case, a much larger audience, higher expectations and facing a more skilful opponent, may all have led her to feel there were greater demands being placed on her at Wimbledon — but she didn't have the resources to tackle them. This led to her experiencing a threat response.</p>
+
+<p><span class="para-label">D</span> Our challenge and threat responses essentially influence how our body responds to stressful situations, as both affect the production of adrenaline and cortisol — also known as 'stress hormones'. During a challenge state, adrenaline increases the amount of blood pumped from the heart and expands the blood vessels, which allows more energy to be delivered to the muscles and brain. This increase of blood and decrease of pressure in the blood vessels has been consistently related to superior sport performance in everything from cricket batting, to golf putting and football penalty taking. But during a threat state, cortisol inhibits the positive effect of adrenaline, resulting in narrower blood vessels, higher blood pressure, slower psychological responses, and a faster heart rate. In short, a threat state makes people more anxious — they make worse decisions and perform more poorly. In tennis players, cortisol has also been associated with more unsuccessful serves and greater anxiety.</p>
+
+<p><span class="para-label">E</span> That said, anxiety is also a common experience for athletes when they're under pressure. Anxiety can increase heart rate and perspiration, cause heart palpitations, muscle tremors and shortness of breath, as well as headaches, nausea, stomach pain, weakness and a desire to escape in more extreme cases. Anxiety can also reduce concentration and self-control and cause overthinking. The intensity with which a person experiences anxiety depends on the demands and resources they have. Anxiety may also manifest itself in the form of excitement or nervousness depending on the stress response. Negative stress responses — such as damaging to both physical and mental health — and repeated episodes of anxiety can be damaging to physical and mental health. Repeated episodes of anxiety coupled with negative responses can increase risk of heart disease and depression.</p>
+
+<p><span class="para-label">F</span> But there are many ways athletes can ensure they respond positively under pressure. Positive stress responses can be promoted through the language that they and others — such as coaches or parents — use. Psychologists can also help athletes change how they see their physiological responses — such as helping them see a higher heart rate as excitement, rather than nerves. Developing psychological skills, such as visualisation, can also help decrease physiological responses to stress. Visualisation may involve the athlete recreating a mental picture of a time when they performed well, or picturing themselves doing well in the future. This can help create a feeling of control over the stressful event. Repeating competitive pressure during training can also help athletes learn how to deal with stress. An example of this might be scoring athletes against their peers to create a sense of competition. This would increase the demands which players experience compared to a normal training session, while still allowing them to practise coping with stress.</p>
+            </div>
+        </div>
+        
+        <!-- RIGHT PANEL: QUESTIONS -->
+        <div class="questions-pane" id="questionsArea">
+            <!-- Questions 14–18 -->
+            <div class="questions-block">
+                <h3>Questions 14–18</h3>
+                <div class="instruction">Reading Passage 2 has six paragraphs, A–F.<br>Which paragraph contains the following information?<br><br>Write the correct letter, A–F, in boxes 14–18 on your answer sheet.<br><strong>NB</strong> You may use any letter more than once.</div>
+                
+                <div class="q-row" id="q14">
+                    <span class="q-num">14</span>
+                    <span>reference to two chemical compounds which impact on performance</span>
+                    <div class="letter-boxes">
+                        <div class="letter-option" data-q="14" data-val="A">A</div>
+                        <div class="letter-option" data-q="14" data-val="B">B</div>
+                        <div class="letter-option" data-q="14" data-val="C">C</div>
+                        <div class="letter-option" data-q="14" data-val="D">D</div>
+                        <div class="letter-option" data-q="14" data-val="E">E</div>
+                        <div class="letter-option" data-q="14" data-val="F">F</div>
+                    </div>
+                </div>
+                
+                <div class="q-row" id="q15">
+                    <span class="q-num">15</span>
+                    <span>examples of strategies for minimising the effects of stress</span>
+                    <div class="letter-boxes">
+                        <div class="letter-option" data-q="15" data-val="A">A</div>
+                        <div class="letter-option" data-q="15" data-val="B">B</div>
+                        <div class="letter-option" data-q="15" data-val="C">C</div>
+                        <div class="letter-option" data-q="15" data-val="D">D</div>
+                        <div class="letter-option" data-q="15" data-val="E">E</div>
+                        <div class="letter-option" data-q="15" data-val="F">F</div>
+                    </div>
+                </div>
+                
+                <div class="q-row" id="q16">
+                    <span class="q-num">16</span>
+                    <span>how a sportsperson accounted for their own experience of stress</span>
+                    <div class="letter-boxes">
+                        <div class="letter-option" data-q="16" data-val="A">A</div>
+                        <div class="letter-option" data-q="16" data-val="B">B</div>
+                        <div class="letter-option" data-q="16" data-val="C">C</div>
+                        <div class="letter-option" data-q="16" data-val="D">D</div>
+                        <div class="letter-option" data-q="16" data-val="E">E</div>
+                        <div class="letter-option" data-q="16" data-val="F">F</div>
+                    </div>
+                </div>
+                
+                <div class="q-row" id="q17">
+                    <span class="q-num">17</span>
+                    <span>study results indicating links between stress responses and performance</span>
+                    <div class="letter-boxes">
+                        <div class="letter-option" data-q="17" data-val="A">A</div>
+                        <div class="letter-option" data-q="17" data-val="B">B</div>
+                        <div class="letter-option" data-q="17" data-val="C">C</div>
+                        <div class="letter-option" data-q="17" data-val="D">D</div>
+                        <div class="letter-option" data-q="17" data-val="E">E</div>
+                        <div class="letter-option" data-q="17" data-val="F">F</div>
+                    </div>
+                </div>
+                
+                <div class="q-row" id="q18">
+                    <span class="q-num">18</span>
+                    <span>mention of people who can influence how athletes perceive their stress responses</span>
+                    <div class="letter-boxes">
+                        <div class="letter-option" data-q="18" data-val="A">A</div>
+                        <div class="letter-option" data-q="18" data-val="B">B</div>
+                        <div class="letter-option" data-q="18" data-val="C">C</div>
+                        <div class="letter-option" data-q="18" data-val="D">D</div>
+                        <div class="letter-option" data-q="18" data-val="E">E</div>
+                        <div class="letter-option" data-q="18" data-val="F">F</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Questions 19–22 -->
+            <div class="questions-block">
+                <h3>Questions 19–22</h3>
+                <div class="instruction">Complete the sentences below.<br>Choose <strong>ONE WORD ONLY</strong> from the passage for each answer.<br>Write your answers in boxes 19–22 on your answer sheet.</div>
+                
+                <div class="q-row" id="q19">
+                    <span class="q-num">19</span>
+                    <span>Performance stress involves many demands on the athlete, for example, coping with the possible risk of</span>
+                    <input type="text" class="input-answer" id="ans19" placeholder="Answer">
+                    <span>.</span>
+                </div>
+                
+                <div class="q-row" id="q20">
+                    <span class="q-num">20</span>
+                    <span>Cortisol can cause tennis players to produce fewer good</span>
+                    <input type="text" class="input-answer" id="ans20" placeholder="Answer">
+                    <span>.</span>
+                </div>
+                
+                <div class="q-row" id="q21">
+                    <span class="q-num">21</span>
+                    <span>Psychologists can help athletes to view their physiological responses as the effect of a positive feeling such as</span>
+                    <input type="text" class="input-answer" id="ans21" placeholder="Answer">
+                    <span>.</span>
+                </div>
+                
+                <div class="q-row" id="q22">
+                    <span class="q-num">22</span>
+                    <input type="text" class="input-answer" id="ans22" placeholder="Answer">
+                    <span>is an example of a psychological technique which can reduce an athlete's stress responses.</span>
+                </div>
+            </div>
+            
+            <!-- Questions 23–24 -->
+            <div class="questions-block">
+                <h3>Questions 23 and 24</h3>
+                <div class="instruction">Choose <strong>TWO</strong> letters: A–E.<br>Write the correct letters in boxes 23 and 24 on your answer sheet.</div>
+                
+                <p style="margin: 10px 0; font-weight:500;">Which <strong>TWO</strong> facts about Emma Raducanu's withdrawal from the Wimbledon tournament are mentioned in the text?</p>
+                
+                <div class="q-row" id="q23">
+                    <span class="q-num">23</span>
+                    <div style="display:flex; flex-direction:column; gap:6px; margin-top:4px;">
+                        <label style="display:flex; align-items:flex-start; gap:6px; cursor:pointer;"><input type="checkbox" name="q23" value="A"> A the stage at which she dropped out of the tournament</label>
+                        <label style="display:flex; align-items:flex-start; gap:6px; cursor:pointer;"><input type="checkbox" name="q23" value="B"> B symptoms of her performance stress at the tournament</label>
+                        <label style="display:flex; align-items:flex-start; gap:6px; cursor:pointer;"><input type="checkbox" name="q23" value="C"> C measures which she had taken to manage her stress levels</label>
+                        <label style="display:flex; align-items:flex-start; gap:6px; cursor:pointer;"><input type="checkbox" name="q23" value="D"> D aspects of the Wimbledon tournament which increased her stress levels</label>
+                        <label style="display:flex; align-items:flex-start; gap:6px; cursor:pointer;"><input type="checkbox" name="q23" value="E"> E reactions to her social media posts about her experience at Wimbledon</label>
+                    </div>
+                </div>
+                
+                <div class="q-row" id="q24">
+                    <span class="q-num">24</span>
+                    <div style="display:flex; flex-direction:column; gap:6px; margin-top:4px;">
+                        <label style="display:flex; align-items:flex-start; gap:6px; cursor:pointer;"><input type="checkbox" name="q24" value="A"> A the stage at which she dropped out of the tournament</label>
+                        <label style="display:flex; align-items:flex-start; gap:6px; cursor:pointer;"><input type="checkbox" name="q24" value="B"> B symptoms of her performance stress at the tournament</label>
+                        <label style="display:flex; align-items:flex-start; gap:6px; cursor:pointer;"><input type="checkbox" name="q24" value="C"> C measures which she had taken to manage her stress levels</label>
+                        <label style="display:flex; align-items:flex-start; gap:6px; cursor:pointer;"><input type="checkbox" name="q24" value="D"> D aspects of the Wimbledon tournament which increased her stress levels</label>
+                        <label style="display:flex; align-items:flex-start; gap:6px; cursor:pointer;"><input type="checkbox" name="q24" value="E"> E reactions to her social media posts about her experience at Wimbledon</label>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Questions 25–26 -->
+            <div class="questions-block">
+                <h3>Questions 25 and 26</h3>
+                <div class="instruction">Choose <strong>TWO</strong> letters: A–E.<br>Write the correct letters in boxes 25 and 26 on your answer sheet.</div>
+                
+                <p style="margin: 10px 0; font-weight:500;">Which <strong>TWO</strong> facts about anxiety are mentioned in Paragraph E of the text?</p>
+                
+                <div class="q-row" id="q25">
+                    <span class="q-num">25</span>
+                    <div style="display:flex; flex-direction:column; gap:6px; margin-top:4px;">
+                        <label style="display:flex; align-items:flex-start; gap:6px; cursor:pointer;"><input type="checkbox" name="q25" value="A"> A the factors which determine how severe it may be</label>
+                        <label style="display:flex; align-items:flex-start; gap:6px; cursor:pointer;"><input type="checkbox" name="q25" value="B"> B how long it takes for its effects to become apparent</label>
+                        <label style="display:flex; align-items:flex-start; gap:6px; cursor:pointer;"><input type="checkbox" name="q25" value="C"> C which of its symptoms is most frequently encountered</label>
+                        <label style="display:flex; align-items:flex-start; gap:6px; cursor:pointer;"><input type="checkbox" name="q25" value="D"> D the types of athletes who are most likely to suffer from it</label>
+                        <label style="display:flex; align-items:flex-start; gap:6px; cursor:pointer;"><input type="checkbox" name="q25" value="E"> E the harm that can result if athletes experience it too often</label>
+                    </div>
+                </div>
+                
+                <div class="q-row" id="q26">
+                    <span class="q-num">26</span>
+                    <div style="display:flex; flex-direction:column; gap:6px; margin-top:4px;">
+                        <label style="display:flex; align-items:flex-start; gap:6px; cursor:pointer;"><input type="checkbox" name="q26" value="A"> A the factors which determine how severe it may be</label>
+                        <label style="display:flex; align-items:flex-start; gap:6px; cursor:pointer;"><input type="checkbox" name="q26" value="B"> B how long it takes for its effects to become apparent</label>
+                        <label style="display:flex; align-items:flex-start; gap:6px; cursor:pointer;"><input type="checkbox" name="q26" value="C"> C which of its symptoms is most frequently encountered</label>
+                        <label style="display:flex; align-items:flex-start; gap:6px; cursor:pointer;"><input type="checkbox" name="q26" value="D"> D the types of athletes who are most likely to suffer from it</label>
+                        <label style="display:flex; align-items:flex-start; gap:6px; cursor:pointer;"><input type="checkbox" name="q26" value="E"> E the harm that can result if athletes experience it too often</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- BOTTOM NAVIGATION — FULL 1–40 INDICATORS -->
+    <div class="bottom-nav">
+        <!-- FAR LEFT: Back & Clear -->
+        <div style="display:flex; gap:8px; align-items:center; flex-shrink:0;">
+            <a href="reading-cambridge19-test1-passage1.html" class="back-btn">← Back</a>
+            <button class="clear-btn" id="clearAllBtn">🗑️ Clear</button>
+        </div>
+        
+        <!-- CENTER: ALL 40 QUESTION INDICATORS -->
+        <div class="nav-group">
+            <span class="part-label">P1:</span>
+            <div class="q-indicator" data-q="1">1</div>
+            <div class="q-indicator" data-q="2">2</div>
+            <div class="q-indicator" data-q="3">3</div>
+            <div class="q-indicator" data-q="4">4</div>
+            <div class="q-indicator" data-q="5">5</div>
+            <div class="q-indicator" data-q="6">6</div>
+            <div class="q-indicator" data-q="7">7</div>
+            <div class="q-indicator" data-q="8">8</div>
+            <div class="q-indicator" data-q="9">9</div>
+            <div class="q-indicator" data-q="10">10</div>
+            <div class="q-indicator" data-q="11">11</div>
+            <div class="q-indicator" data-q="12">12</div>
+            <div class="q-indicator" data-q="13">13</div>
+            
+            <span class="part-label">P2:</span>
+            <div class="q-indicator current" data-q="14">14</div>
+            <div class="q-indicator" data-q="15">15</div>
+            <div class="q-indicator" data-q="16">16</div>
+            <div class="q-indicator" data-q="17">17</div>
+            <div class="q-indicator" data-q="18">18</div>
+            <div class="q-indicator" data-q="19">19</div>
+            <div class="q-indicator" data-q="20">20</div>
+            <div class="q-indicator" data-q="21">21</div>
+            <div class="q-indicator" data-q="22">22</div>
+            <div class="q-indicator" data-q="23">23</div>
+            <div class="q-indicator" data-q="24">24</div>
+            <div class="q-indicator" data-q="25">25</div>
+            <div class="q-indicator" data-q="26">26</div>
+            
+            <span class="part-label">P3:</span>
+            <div class="q-indicator" data-q="27">27</div>
+            <div class="q-indicator" data-q="28">28</div>
+            <div class="q-indicator" data-q="29">29</div>
+            <div class="q-indicator" data-q="30">30</div>
+            <div class="q-indicator" data-q="31">31</div>
+            <div class="q-indicator" data-q="32">32</div>
+            <div class="q-indicator" data-q="33">33</div>
+            <div class="q-indicator" data-q="34">34</div>
+            <div class="q-indicator" data-q="35">35</div>
+            <div class="q-indicator" data-q="36">36</div>
+            <div class="q-indicator" data-q="37">37</div>
+            <div class="q-indicator" data-q="38">38</div>
+            <div class="q-indicator" data-q="39">39</div>
+            <div class="q-indicator" data-q="40">40</div>
+        </div>
+        
+        <!-- FAR RIGHT: Next -->
+        <a href="reading-cambridge19-test1-passage3.html" class="next-passage-btn">Next →</a>
+    </div>
+
+<script>
+const STORAGE_KEY = 'Cambridge19_Test1_Reading';
+const passageId = 'reading-cambridge19-test1-p2';
+let currentRange = null;
+let activeHighlight = null;
+let currentQuestionNum = 14;
+
+// Update current question highlighting
+function setCurrentQuestion(qNum) {
+    document.querySelectorAll('.q-row.current').forEach(r => r.classList.remove('current'));
+    document.querySelectorAll('.q-indicator.current').forEach(b => b.classList.remove('current'));
+    
+    currentQuestionNum = qNum;
+    const row = document.getElementById(`q${qNum}`);
+    const indicator = document.querySelector(`.q-indicator[data-q="${qNum}"]`);
+    
+    if (row) row.classList.add('current');
+    if (indicator) indicator.classList.add('current');
+}
+
+// STATUS UPDATE — Shade answered boxes green
+function updateStatus() {
+    for (let q = 1; q <= 40; q++) {
+        const btn = document.querySelector(`.q-indicator[data-q="${q}"]`);
+        if (!btn) continue;
+        let val = localStorage.getItem(`${STORAGE_KEY}_q${q}`) || '';
+        btn.classList.toggle('answered', val.trim().length > 0);
+    }
+}
+
+// CLICK QUESTION INDICATOR → Highlight row
+document.querySelectorAll('.q-indicator').forEach(btn => {
+    btn.addEventListener('click', () => {
+        const qNum = parseInt(btn.dataset.q);
+        setCurrentQuestion(qNum);
+        const target = document.getElementById(`q${qNum}`);
+        if (target) {
+            target.scrollIntoView({behavior:'smooth', block:'center'});
+        }
+    });
+});
+
+// LETTER OPTION CLICK HANDLER (Q14–18)
+document.querySelectorAll('.letter-option').forEach(box => {
+    box.addEventListener('click', () => {
+        const q = box.dataset.q;
+        const val = box.dataset.val;
+        // Deselect others in same group
+        document.querySelectorAll(`.letter-option[data-q="${q}"]`).forEach(b => b.classList.remove('selected'));
+        box.classList.add('selected');
+        saveAnswer(q, val);
+    });
+});
+
+// CHECKBOX HANDLER (Q23–26)
+document.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+    cb.addEventListener('change', () => {
+        const q = cb.name.replace('q', '');
+        const allChecked = document.querySelectorAll(`input[name="${cb.name}"]:checked`);
+        let vals = [];
+        allChecked.forEach(c => vals.push(c.value));
+        saveAnswer(q, vals.join(','));
+    });
+});
+
+// SELECTION VALIDATION — works in BOTH panels
+function isSelectionValid(sel) {
+    if (!sel || sel.isCollapsed || !sel.toString().trim()) return false;
+    try {
+        const r = sel.getRangeAt(0);
+        const p = r.commonAncestorContainer.nodeType === Node.TEXT_NODE
+            ? r.commonAncestorContainer.parentElement : r.commonAncestorContainer;
+        const inPassage = document.getElementById('passageArea').contains(p);
+        const inQuestions = document.getElementById('questionsArea').contains(p);
+        const inInput = p.closest('input,textarea,button,label,.context-menu,.note-box,.letter-boxes,.letter-option');
+        return (inPassage || inQuestions) && !inInput;
+    } catch { return false; }
+}
+
+// HIGHLIGHT STORAGE
+function saveHighlightsData() {
+    const highlights = [];
+    document.querySelectorAll('.highlight').forEach((hl, idx) => {
+        highlights.push({
+            id: idx,
+            text: hl.textContent,
+            note: hl.getAttribute('data-note') || ''
+        });
+    });
+    localStorage.setItem(`${passageId}_highlights`, JSON.stringify(highlights));
+}
+
+// Restore note markers
+function restoreNoteMarkers() {
+    document.querySelectorAll('.highlight').forEach(hl => {
+        if (hl.getAttribute('data-note')) {
+            if (!hl.querySelector('.note-marker')) {
+                const marker = document.createElement('span');
+                marker.className = 'note-marker';
+                marker.textContent = '!';
+                hl.appendChild(marker);
+            }
+        }
+    });
+}
+
+// DRAGGABLE NOTE BOX
+const noteBox = document.getElementById('noteBox');
+const noteText = document.getElementById('noteText');
+const noteClose = document.getElementById('noteClose');
+
+noteClose.addEventListener('click', () => { 
+    noteBox.style.display = 'none'; 
+    activeHighlight = null; 
+});
+noteText.addEventListener('input', () => {
+    if (activeHighlight) {
+        activeHighlight.setAttribute('data-note', noteText.value);
+        if (noteText.value && !activeHighlight.querySelector('.note-marker')) {
+            const marker = document.createElement('span');
+            marker.className = 'note-marker';
+            marker.textContent = '!';
+            activeHighlight.appendChild(marker);
+        }
+        if (!noteText.value) {
+            const m = activeHighlight.querySelector('.note-marker');
+            if (m) m.remove();
+        }
+        saveHighlightsData();
+    }
+});
+
+let isDraggingNote = false, dragOffsetX = 0, dragOffsetY = 0;
+document.addEventListener('mousedown', e => {
+    if (!e.target.closest('.note-header')) return;
+    isDraggingNote = true;
+    const rc = noteBox.getBoundingClientRect();
+    dragOffsetX = e.clientX - rc.left;
+    dragOffsetY = e.clientY - rc.top;
+});
+document.addEventListener('mousemove', e => {
+    if (!isDraggingNote) return;
+    noteBox.style.left = (e.clientX - dragOffsetX) + 'px';
+    noteBox.style.top = (e.clientY - dragOffsetY) + 'px';
+});
+document.addEventListener('mouseup', () => isDraggingNote = false);
+
+// RIGHT-CLICK MENU
+const contextMenu = document.getElementById('contextMenu');
+document.addEventListener('contextmenu', e => {
+    const sel = window.getSelection();
+    const targetHl = e.target.closest('.highlight');
+    if (targetHl) {
+        e.preventDefault();
+        activeHighlight = targetHl;
+        const rc = targetHl.getBoundingClientRect();
+        contextMenu.style.left = (rc.left + window.scrollX) + 'px';
+        contextMenu.style.top = (rc.bottom + window.scrollY + 5) + 'px';
+        contextMenu.style.display = 'block';
+    } else if (isSelectionValid(sel)) {
+        e.preventDefault();
+        currentRange = sel.getRangeAt(0).cloneRange();
+        const rc = currentRange.getBoundingClientRect();
+        contextMenu.style.left = (rc.left + window.scrollX) + 'px';
+        contextMenu.style.top = (rc.bottom + window.scrollY + 5) + 'px';
+        contextMenu.style.display = 'block';
+        activeHighlight = null;
+    } else {
+        contextMenu.style.display = 'none';
+    }
+});
+document.addEventListener('click', e => { if (!contextMenu.contains(e.target)) contextMenu.style.display = 'none'; });
+
+// MENU ACTIONS
+document.getElementById('menuHighlight').addEventListener('click', () => {
+    if (!currentRange) return;
+    try {
+        const sp = document.createElement('span');
+        sp.className = 'highlight';
+        sp.textContent = currentRange.toString();
+        currentRange.deleteContents();
+        currentRange.insertNode(sp);
+        window.getSelection().removeAllRanges();
+        saveHighlightsData();
+    } catch { alert('⚠️ Select smaller text.'); }
+    contextMenu.style.display = 'none';
+});
+
+document.getElementById('menuAddNote').addEventListener('click', () => {
+    contextMenu.style.display = 'none';
+    if (!activeHighlight) {
+        if (!currentRange) return;
+        try {
+            const sp = document.createElement('span');
+            sp.className = 'highlight';
+            sp.textContent = currentRange.toString();
+            currentRange.deleteContents();
+            currentRange.insertNode(sp);
+            window.getSelection().removeAllRanges();
+            activeHighlight = sp;
+            saveHighlightsData();
+        } catch { alert('⚠️ Select smaller text.'); return; }
+    }
+    const rc = activeHighlight.getBoundingClientRect();
+    noteBox.style.left = (rc.right + window.scrollX + 10) + 'px';
+    noteBox.style.top = (rc.top + window.scrollY) + 'px';
+    noteBox.style.display = 'block';
+    noteText.value = activeHighlight.getAttribute('data-note') || '';
+    noteText.focus();
+});
+
+document.getElementById('menuRemove').addEventListener('click', () => {
+    contextMenu.style.display = 'none';
+    noteBox.style.display = 'none';
+    if (!activeHighlight) return;
+    const parent = activeHighlight.parentNode;
+    parent.replaceChild(document.createTextNode(activeHighlight.textContent), activeHighlight);
+    parent.normalize();
+    activeHighlight = null;
+    saveHighlightsData();
+});
+
+// SAVE ANSWERS
+function saveAnswer(q, val) {
+    localStorage.setItem(`${STORAGE_KEY}_q${q}`, val);
+    updateStatus();
+}
+
+// CLEAR ALL
+function clearAllData() {
+    if (!confirm('⚠️ Are you sure you want to clear ALL answers, highlights, and notes? This cannot be undone.')) return;
+    for (let q = 1; q <= 40; q++) {
+        localStorage.removeItem(`${STORAGE_KEY}_q${q}`);
+    }
+    localStorage.removeItem(`${passageId}_highlights`);
+    document.querySelectorAll('input[type=checkbox]').forEach(i => i.checked = false);
+    document.querySelectorAll('.input-answer').forEach(i => {
+        i.value = '';
+        i.classList.remove('filled');
+    });
+    document.querySelectorAll('.letter-option').forEach(b => b.classList.remove('selected'));
+    document.querySelectorAll('.highlight').forEach(hl => {
+        const parent = hl.parentNode;
+        parent.replaceChild(document.createTextNode(hl.textContent), hl);
+        parent.normalize();
+    });
+    noteBox.style.display = 'none';
+    location.reload();
+}
+document.getElementById('clearAllBtn').addEventListener('click', clearAllData);
+
+// INITIALIZE
+document.addEventListener('DOMContentLoaded', () => {
+    restoreNoteMarkers();
+    
+    // Restore answers Q14–18 (letter selection)
+    for (let q = 14; q <= 18; q++) {
+        const saved = localStorage.getItem(`${STORAGE_KEY}_q${q}`);
+        if (saved) {
+            const box = document.querySelector(`.letter-option[data-q="${q}"][data-val="${saved}"]`);
+            if (box) box.classList.add('selected');
+        }
+    }
+    
+    // Restore answers Q19–22 (text input)
+    for (let q = 19; q <= 22; q++) {
+        const inp = document.getElementById(`ans${q}`);
+        if (!inp) continue;
+        const saved = localStorage.getItem(`${STORAGE_KEY}_q${q}`);
+        if (saved) {
+            inp.value = saved;
+            inp.classList.add('filled');
+        }
+        inp.addEventListener('input', () => {
+            const val = inp.value.trim();
+            val ? inp.classList.add('filled') : inp.classList.remove('filled');
+            saveAnswer(q, val);
+        });
+    }
+    
+    // Restore answers Q23–26 (multiple choice checkboxes)
+    for (let q = 23; q <= 26; q++) {
+        const saved = localStorage.getItem(`${STORAGE_KEY}_q${q}`);
+        if (saved) {
+            const vals = saved.split(',');
+            document.querySelectorAll(`input[name="q${q}"]`).forEach(cb => {
+                cb.checked = vals.includes(cb.value);
+            });
+        }
+    }
+    
+    setCurrentQuestion(14);
+    updateStatus();
+});
+</script>
+</body>
+</html>
