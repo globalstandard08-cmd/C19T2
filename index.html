@@ -14,11 +14,6 @@
         h1 { color: #dc2626; font-size: 34px; margin-bottom: 10px; }
         h2 { color: #991b1b; font-size: 22px; margin-bottom: 15px; }
         .subtitle { font-size: 17px; color: #444; max-width: 750px; margin: 0 auto 20px; }
-        .select-test { margin: 15px 0; }
-        .select-test label { display: block; font-size: 16px; color: #333; margin-bottom: 10px; font-weight: 500; }
-        .test-buttons { display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; margin-bottom: 20px; }
-        .test-btn { padding: 10px 24px; border: 2px solid #dc2626; background: white; color: #dc2626; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
-        .test-btn.active, .test-btn:hover { background: #dc2626; color: white; }
         .select-type { margin: 20px 0; }
         .select-type label { display: block; font-size: 16px; color: #333; margin-bottom: 10px; font-weight: 500; }
         .type-buttons { display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; }
@@ -43,65 +38,34 @@
     </div>
     <div class="cover-container">
         <h1>CAMBRIDGE IELTS PRACTICE MATERIALS</h1>
-        <h2>Select Your Test</h2>
+        <h2>Select Your Test — Cambridge 19 Test 2</h2>
         <p class="subtitle">Prepare effectively with authentic practice tests based on the official Cambridge IELTS format.</p>
-        
-        <div class="select-test">
-            <label>Choose the test you want to practice:</label>
-            <div class="test-buttons">
-                <button class="test-btn" data-filename="listening-cambridge19-test1.html">📖 Cambridge 19 — Test 1</button>
-                <button class="test-btn" data-filename="cambridge19-test2.html">📖 Cambridge 19 — Test 2</button>
-            </div>
-        </div>
-
         <div class="select-type">
             <label>Choose which version you want to practice:</label>
             <div class="type-buttons">
-                <button class="type-btn" data-suffix="">📚 ACADEMIC</button>
-                <button class="type-btn" data-suffix="">👥 GENERAL TRAINING</button>
+                <button class="type-btn" data-link="cambridge19-test2.html">📚 ACADEMIC</button>
+                <button class="type-btn" data-link="cambridge19-test2.html">👥 GENERAL TRAINING</button>
             </div>
         </div>
         <a id="startBtn" href="#" class="enter-btn">📝 START IELTS MOCK TEST</a>
-        <p class="test-note">You are about to start: <strong id="selectedTest">—</strong><br>Complete flow: Listening → Reading → Writing → All Answers Review</p>
+        <p class="test-note">You are about to start: <strong>Cambridge 19 — Test 2</strong><br>Complete flow: Listening → Reading → Writing → All Answers Review</p>
     </div>
     <div class="disclaimer">
         <h3>Disclaimer</h3>
         <p>No copyright infringement intended. All materials are for personal educational and self‑study purposes only. Original rights belong to Cambridge University Press & Assessment English. This is not an official product.</p>
     </div>
     <script>
-        const testBtns = document.querySelectorAll('.test-btn');
         const typeBtns = document.querySelectorAll('.type-btn');
         const startBtn = document.getElementById('startBtn');
-        const selectedTestText = document.getElementById('selectedTest');
         
-        let selectedFile = null;
-        let selectedName = null;
-
-        testBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                testBtns.forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                selectedFile = btn.getAttribute('data-filename');
-                selectedName = btn.textContent.trim();
-                selectedTestText.textContent = selectedName;
-                updateStartLink();
-            });
-        });
-
         typeBtns.forEach(btn => {
             btn.addEventListener('click', () => {
                 typeBtns.forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
-                updateStartLink();
+                startBtn.href = btn.getAttribute('data-link');
+                startBtn.classList.add('enabled');
             });
         });
-
-        function updateStartLink() {
-            if (selectedFile) {
-                startBtn.href = selectedFile;
-                startBtn.classList.add('enabled');
-            }
-        }
     </script>
 </body>
 </html>
