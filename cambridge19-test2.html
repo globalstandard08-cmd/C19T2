@@ -328,21 +328,10 @@ function saveHighlights() {
 }
 
 function loadHighlights() {
-    const saved = localStorage.getItem(`${passageId}_highlights`);
-    if (!saved) return;
-    try {
-        const items = JSON.parse(saved);
-        items.forEach(item => {
-            if (!item.text) return;
-            // Find and re-apply highlights safely
-            const passage = document.getElementById('passageArea');
-            const html = passage.innerHTML;
-            if (!html.includes(item.text)) return;
-        });
-    } catch (e) { console.log('Could not restore highlights'); }
+    // Preserve structure — no full HTML restore
 }
 
-// DRAGGABLE NOTE BOX
+// DRAGGABLE NOTE LOGIC
 const noteBox = document.getElementById('noteBox');
 const noteText = document.getElementById('noteText');
 const noteClose = document.getElementById('noteClose');
@@ -379,7 +368,7 @@ document.addEventListener('mousemove', e => {
 
 document.addEventListener('mouseup', () => { isDraggingNote = false; });
 
-// RIGHT-CLICK CONTEXT MENU
+// CONTEXT MENU
 const contextMenu = document.getElementById('contextMenu');
 document.addEventListener('contextmenu', e => {
     const sel = window.getSelection();
@@ -411,7 +400,7 @@ document.addEventListener('click', e => {
     if (!contextMenu.contains(e.target)) contextMenu.style.display = 'none';
 });
 
-// HIGHLIGHT — right-click → Highlight
+// HIGHLIGHT
 document.getElementById('menuHighlight').addEventListener('click', () => {
     if (!currentRange) return;
     try {
@@ -426,7 +415,7 @@ document.getElementById('menuHighlight').addEventListener('click', () => {
     contextMenu.style.display = 'none';
 });
 
-// ADD NOTE — right-click → Add Note
+// ADD NOTE
 document.getElementById('menuAddNote').addEventListener('click', () => {
     contextMenu.style.display = 'none';
     if (!activeHighlight) {
@@ -450,7 +439,7 @@ document.getElementById('menuAddNote').addEventListener('click', () => {
     noteText.focus();
 });
 
-// REMOVE — right-click → Remove Highlight & Note
+// REMOVE
 document.getElementById('menuRemove').addEventListener('click', () => {
     contextMenu.style.display = 'none';
     noteBox.style.display = 'none';
@@ -474,7 +463,6 @@ function clearAll() {
     document.querySelectorAll('input[type=radio], input[type=checkbox]').forEach(i => i.checked = false);
     document.querySelectorAll('.mcq-option').forEach(o => o.classList.remove('checked'));
     document.querySelectorAll('.matching-select').forEach(s => s.selectedIndex = 0);
-    // Remove all highlights
     document.querySelectorAll('.highlight').forEach(h => {
         h.parentNode.replaceChild(document.createTextNode(h.textContent), h);
         h.parentNode.normalize();
@@ -484,10 +472,15 @@ function clearAll() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Audio error handling
     document.getElementById('audioPlayer').addEventListener('error', () => {
         document.getElementById('audioStatus').style.display = 'block';
     });
+    
+    // Clear old incompatible saved state
+    const oldSaved = localStorage.getItem(`${passageId}_highlights`);
+    if (oldSaved && oldSaved.includes('<img') === false) {
+        localStorage.removeItem(`${passageId}_highlights`);
+    }
     
     loadHighlights();
     
@@ -517,4 +510,4 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
     
-    // RADIO Q11–16, 
+    // RADIO Q11–16, 21–24, 29–30
