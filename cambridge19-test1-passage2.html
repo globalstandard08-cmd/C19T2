@@ -53,6 +53,7 @@
             border-radius: 4px; 
             font-weight: 500; 
             font-size: 15px; 
+            line-height: 1.6;
         }
         .passage-text { font-size: 16px; line-height: 1.7; }
         .passage-text p { margin-bottom: 14px; text-align: justify; }
@@ -79,21 +80,21 @@
             margin-right: -8px;
         }
         .q-num { font-weight: bold; min-width: 28px; color: #1f3a5f; flex-shrink: 0; }
-        .letter-boxes { display: flex; gap: 8px; margin: 4px 0; flex-wrap: wrap; }
-        .letter-option { 
-            width: 36px; 
-            height: 36px; 
-            border: 1px solid #ddd; 
-            border-radius: 4px; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            cursor: pointer; 
-            font-weight: bold; 
+        .ans-box {
+            width: 36px;
+            height: 36px;
+            border: 1px solid #333;
+            border-radius: 2px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 16px;
+            text-transform: uppercase;
+            margin-left: 8px;
             background: #fff;
-            transition: all 0.2s;
         }
-        .letter-option.selected { background: #1f3a5f; color: white; border-color: #1f3a5f; }
+        .ans-box.filled { background: #f5f8ff; border-color: #1f3a5f; }
         .input-answer { 
             width: 220px; 
             padding: 7px 10px; 
@@ -104,6 +105,16 @@
         }
         .input-answer:focus { outline: none; border-color: #1f3a5f; }
         .input-answer.filled { background-color: #f5f8ff; border-color: #1f3a5f; }
+        
+        /* CHECKBOX STYLE FOR MULTIPLE CHOICE */
+        .mc-option {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            padding: 6px 0;
+            cursor: pointer;
+        }
+        .mc-option input { margin-top: 3px; }
         
         /* HIGHLIGHT + NOTE */
         .highlight { 
@@ -322,11 +333,11 @@
 
 <p><span class="para-label">B</span> For athletes, some level of performance stress is almost unavoidable. But there are many different factors that dictate just how people respond to stressful events. Typically, stress is the result of an exchange between two factors: demands and resources. An athlete may feel stressed about an event if they feel the demands on them are greater than they can handle. These demands include the high level of physical and mental effort required to succeed, and also the athlete's concerns about the difficulty of the event, their chance of succeeding, and any potential dangers such as injury. Resources, on the other hand, are a person's ability to cope with these demands. These include factors such as the competitor's degree of confidence, how much they believe they can control the situation's outcome, and whether they are looking forward to the event or not.</p>
 
-<p><span class="para-label">C</span> Each new demand or change in circumstances affects whether a person responds positively or negatively to stress. Typically, the more resources a person feels they have in handling the situation, the more positive their response. This positive stress response is called a challenge state. But should the person there are too many demands placed on them, the more likely they are to experience a negative stress response — known as a threat state. Research shows that challenge states lead to good performance, while threat states lead to poorer performance. So, in Emma Raducanu's case, a much larger audience, higher expectations and facing a more skilful opponent, may all have led her to feel there were greater demands being placed on her at Wimbledon — but she didn't have the resources to tackle them. This led to her experiencing a threat response.</p>
+<p><span class="para-label">C</span> Each new demand or change in circumstances affects whether a person responds positively or negatively to stress. Typically, the more resources a person feels they have in handling the situation, the more positive their response. This positive stress response is called a challenge state. But should there be too many demands placed on them, the more likely they are to experience a negative stress response — known as a threat state. Research shows that challenge states lead to good performance, while threat states lead to poorer performance. So, in Emma Raducanu's case, a much larger audience, higher expectations and facing a more skilful opponent, may all have led her to feel there were greater demands being placed on her at Wimbledon — but she didn't have the resources to tackle them. This led to her experiencing a threat response.</p>
 
 <p><span class="para-label">D</span> Our challenge and threat responses essentially influence how our body responds to stressful situations, as both affect the production of adrenaline and cortisol — also known as 'stress hormones'. During a challenge state, adrenaline increases the amount of blood pumped from the heart and expands the blood vessels, which allows more energy to be delivered to the muscles and brain. This increase of blood and decrease of pressure in the blood vessels has been consistently related to superior sport performance in everything from cricket batting, to golf putting and football penalty taking. But during a threat state, cortisol inhibits the positive effect of adrenaline, resulting in narrower blood vessels, higher blood pressure, slower psychological responses, and a faster heart rate. In short, a threat state makes people more anxious — they make worse decisions and perform more poorly. In tennis players, cortisol has also been associated with more unsuccessful serves and greater anxiety.</p>
 
-<p><span class="para-label">E</span> That said, anxiety is also a common experience for athletes when they're under pressure. Anxiety can increase heart rate and perspiration, cause heart palpitations, muscle tremors and shortness of breath, as well as headaches, nausea, stomach pain, weakness and a desire to escape in more extreme cases. Anxiety can also reduce concentration and self-control and cause overthinking. The intensity with which a person experiences anxiety depends on the demands and resources they have. Anxiety may also manifest itself in the form of excitement or nervousness depending on the stress response. Negative stress responses — such as damaging to both physical and mental health — and repeated episodes of anxiety can be damaging to physical and mental health. Repeated episodes of anxiety coupled with negative responses can increase risk of heart disease and depression.</p>
+<p><span class="para-label">E</span> That said, anxiety is also a common experience for athletes when they're under pressure. Anxiety can increase heart rate and perspiration, cause heart palpitations, muscle tremors and shortness of breath, as well as headaches, nausea, stomach pain, weakness and a desire to escape in more extreme cases. Anxiety can also reduce concentration and self-control and cause overthinking. The intensity with which a person experiences anxiety depends on the demands and resources they have. Anxiety may also manifest itself in the form of excitement or nervousness depending on the stress response. Negative stress responses — such as those damaging to both physical and mental health — and repeated episodes of anxiety can be damaging to physical and mental health. Repeated episodes of anxiety coupled with negative responses can increase risk of heart disease and depression.</p>
 
 <p><span class="para-label">F</span> But there are many ways athletes can ensure they respond positively under pressure. Positive stress responses can be promoted through the language that they and others — such as coaches or parents — use. Psychologists can also help athletes change how they see their physiological responses — such as helping them see a higher heart rate as excitement, rather than nerves. Developing psychological skills, such as visualisation, can also help decrease physiological responses to stress. Visualisation may involve the athlete recreating a mental picture of a time when they performed well, or picturing themselves doing well in the future. This can help create a feeling of control over the stressful event. Repeating competitive pressure during training can also help athletes learn how to deal with stress. An example of this might be scoring athletes against their peers to create a sense of competition. This would increase the demands which players experience compared to a normal training session, while still allowing them to practise coping with stress.</p>
             </div>
@@ -334,81 +345,46 @@
         
         <!-- RIGHT PANEL: QUESTIONS -->
         <div class="questions-pane" id="questionsArea">
-            <!-- Questions 14–18 -->
+            <!-- Questions 14–18 — Paragraph Matching (EXAM STYLE) -->
             <div class="questions-block">
                 <h3>Questions 14–18</h3>
-                <div class="instruction">Reading Passage 2 has six paragraphs, A–F.<br>Which paragraph contains the following information?<br><br>Write the correct letter, A–F, in boxes 14–18 on your answer sheet.<br><strong>NB</strong> You may use any letter more than once.</div>
+                <div class="instruction">Reading Passage 2 has six paragraphs, A–F.<br><br>Which paragraph contains the following information?<br><br>Write the correct letter, <strong>A–F</strong>, in boxes <strong>14–18</strong> on your answer sheet.<br><br><strong>NB</strong> You may use any letter more than once.</div>
                 
                 <div class="q-row" id="q14">
                     <span class="q-num">14</span>
                     <span>reference to two chemical compounds which impact on performance</span>
-                    <div class="letter-boxes">
-                        <div class="letter-option" data-q="14" data-val="A">A</div>
-                        <div class="letter-option" data-q="14" data-val="B">B</div>
-                        <div class="letter-option" data-q="14" data-val="C">C</div>
-                        <div class="letter-option" data-q="14" data-val="D">D</div>
-                        <div class="letter-option" data-q="14" data-val="E">E</div>
-                        <div class="letter-option" data-q="14" data-val="F">F</div>
-                    </div>
+                    <input type="text" class="ans-box" id="ans14" maxlength="1" placeholder="">
                 </div>
                 
                 <div class="q-row" id="q15">
                     <span class="q-num">15</span>
                     <span>examples of strategies for minimising the effects of stress</span>
-                    <div class="letter-boxes">
-                        <div class="letter-option" data-q="15" data-val="A">A</div>
-                        <div class="letter-option" data-q="15" data-val="B">B</div>
-                        <div class="letter-option" data-q="15" data-val="C">C</div>
-                        <div class="letter-option" data-q="15" data-val="D">D</div>
-                        <div class="letter-option" data-q="15" data-val="E">E</div>
-                        <div class="letter-option" data-q="15" data-val="F">F</div>
-                    </div>
+                    <input type="text" class="ans-box" id="ans15" maxlength="1" placeholder="">
                 </div>
                 
                 <div class="q-row" id="q16">
                     <span class="q-num">16</span>
                     <span>how a sportsperson accounted for their own experience of stress</span>
-                    <div class="letter-boxes">
-                        <div class="letter-option" data-q="16" data-val="A">A</div>
-                        <div class="letter-option" data-q="16" data-val="B">B</div>
-                        <div class="letter-option" data-q="16" data-val="C">C</div>
-                        <div class="letter-option" data-q="16" data-val="D">D</div>
-                        <div class="letter-option" data-q="16" data-val="E">E</div>
-                        <div class="letter-option" data-q="16" data-val="F">F</div>
-                    </div>
+                    <input type="text" class="ans-box" id="ans16" maxlength="1" placeholder="">
                 </div>
                 
                 <div class="q-row" id="q17">
                     <span class="q-num">17</span>
                     <span>study results indicating links between stress responses and performance</span>
-                    <div class="letter-boxes">
-                        <div class="letter-option" data-q="17" data-val="A">A</div>
-                        <div class="letter-option" data-q="17" data-val="B">B</div>
-                        <div class="letter-option" data-q="17" data-val="C">C</div>
-                        <div class="letter-option" data-q="17" data-val="D">D</div>
-                        <div class="letter-option" data-q="17" data-val="E">E</div>
-                        <div class="letter-option" data-q="17" data-val="F">F</div>
-                    </div>
+                    <input type="text" class="ans-box" id="ans17" maxlength="1" placeholder="">
                 </div>
                 
                 <div class="q-row" id="q18">
                     <span class="q-num">18</span>
                     <span>mention of people who can influence how athletes perceive their stress responses</span>
-                    <div class="letter-boxes">
-                        <div class="letter-option" data-q="18" data-val="A">A</div>
-                        <div class="letter-option" data-q="18" data-val="B">B</div>
-                        <div class="letter-option" data-q="18" data-val="C">C</div>
-                        <div class="letter-option" data-q="18" data-val="D">D</div>
-                        <div class="letter-option" data-q="18" data-val="E">E</div>
-                        <div class="letter-option" data-q="18" data-val="F">F</div>
-                    </div>
+                    <input type="text" class="ans-box" id="ans18" maxlength="1" placeholder="">
                 </div>
             </div>
             
             <!-- Questions 19–22 -->
             <div class="questions-block">
                 <h3>Questions 19–22</h3>
-                <div class="instruction">Complete the sentences below.<br>Choose <strong>ONE WORD ONLY</strong> from the passage for each answer.<br>Write your answers in boxes 19–22 on your answer sheet.</div>
+                <div class="instruction">Complete the sentences below.<br>Choose <strong>ONE WORD ONLY</strong> from the passage for each answer.<br>Write your answers in boxes <strong>19–22</strong> on your answer sheet.</div>
                 
                 <div class="q-row" id="q19">
                     <span class="q-num">19</span>
@@ -441,60 +417,64 @@
             <!-- Questions 23–24 -->
             <div class="questions-block">
                 <h3>Questions 23 and 24</h3>
-                <div class="instruction">Choose <strong>TWO</strong> letters: A–E.<br>Write the correct letters in boxes 23 and 24 on your answer sheet.</div>
+                <div class="instruction">Choose <strong>TWO</strong> letters: <strong>A–E</strong>.<br>Write the correct letters in boxes <strong>23 and 24</strong> on your answer sheet.</div>
                 
                 <p style="margin: 10px 0; font-weight:500;">Which <strong>TWO</strong> facts about Emma Raducanu's withdrawal from the Wimbledon tournament are mentioned in the text?</p>
                 
                 <div class="q-row" id="q23">
                     <span class="q-num">23</span>
-                    <div style="display:flex; flex-direction:column; gap:6px; margin-top:4px;">
-                        <label style="display:flex; align-items:flex-start; gap:6px; cursor:pointer;"><input type="checkbox" name="q23" value="A"> A the stage at which she dropped out of the tournament</label>
-                        <label style="display:flex; align-items:flex-start; gap:6px; cursor:pointer;"><input type="checkbox" name="q23" value="B"> B symptoms of her performance stress at the tournament</label>
-                        <label style="display:flex; align-items:flex-start; gap:6px; cursor:pointer;"><input type="checkbox" name="q23" value="C"> C measures which she had taken to manage her stress levels</label>
-                        <label style="display:flex; align-items:flex-start; gap:6px; cursor:pointer;"><input type="checkbox" name="q23" value="D"> D aspects of the Wimbledon tournament which increased her stress levels</label>
-                        <label style="display:flex; align-items:flex-start; gap:6px; cursor:pointer;"><input type="checkbox" name="q23" value="E"> E reactions to her social media posts about her experience at Wimbledon</label>
+                    <div style="display:flex; flex-direction:column; gap:4px; margin-top:2px;">
+                        <label class="mc-option"><input type="checkbox" name="q23" value="A"> A the stage at which she dropped out of the tournament</label>
+                        <label class="mc-option"><input type="checkbox" name="q23" value="B"> B symptoms of her performance stress at the tournament</label>
+                        <label class="mc-option"><input type="checkbox" name="q23" value="C"> C measures which she had taken to manage her stress levels</label>
+                        <label class="mc-option"><input type="checkbox" name="q23" value="D"> D aspects of the Wimbledon tournament which increased her stress levels</label>
+                        <label class="mc-option"><input type="checkbox" name="q23" value="E"> E reactions to her social media posts about her experience at Wimbledon</label>
                     </div>
+                    <input type="text" class="ans-box" id="ans23" maxlength="1" placeholder="">
                 </div>
                 
                 <div class="q-row" id="q24">
                     <span class="q-num">24</span>
-                    <div style="display:flex; flex-direction:column; gap:6px; margin-top:4px;">
-                        <label style="display:flex; align-items:flex-start; gap:6px; cursor:pointer;"><input type="checkbox" name="q24" value="A"> A the stage at which she dropped out of the tournament</label>
-                        <label style="display:flex; align-items:flex-start; gap:6px; cursor:pointer;"><input type="checkbox" name="q24" value="B"> B symptoms of her performance stress at the tournament</label>
-                        <label style="display:flex; align-items:flex-start; gap:6px; cursor:pointer;"><input type="checkbox" name="q24" value="C"> C measures which she had taken to manage her stress levels</label>
-                        <label style="display:flex; align-items:flex-start; gap:6px; cursor:pointer;"><input type="checkbox" name="q24" value="D"> D aspects of the Wimbledon tournament which increased her stress levels</label>
-                        <label style="display:flex; align-items:flex-start; gap:6px; cursor:pointer;"><input type="checkbox" name="q24" value="E"> E reactions to her social media posts about her experience at Wimbledon</label>
+                    <div style="display:flex; flex-direction:column; gap:4px; margin-top:2px;">
+                        <label class="mc-option"><input type="checkbox" name="q24" value="A"> A the stage at which she dropped out of the tournament</label>
+                        <label class="mc-option"><input type="checkbox" name="q24" value="B"> B symptoms of her performance stress at the tournament</label>
+                        <label class="mc-option"><input type="checkbox" name="q24" value="C"> C measures which she had taken to manage her stress levels</label>
+                        <label class="mc-option"><input type="checkbox" name="q24" value="D"> D aspects of the Wimbledon tournament which increased her stress levels</label>
+                        <label class="mc-option"><input type="checkbox" name="q24" value="E"> E reactions to her social media posts about her experience at Wimbledon</label>
                     </div>
+                    <input type="text" class="ans-box" id="ans24" maxlength="1" placeholder="">
                 </div>
             </div>
             
             <!-- Questions 25–26 -->
             <div class="questions-block">
                 <h3>Questions 25 and 26</h3>
-                <div class="instruction">Choose <strong>TWO</strong> letters: A–E.<br>Write the correct letters in boxes 25 and 26 on your answer sheet.</div>
+                <div class="instruction">Choose <strong>TWO</strong> letters: <strong>A–E</strong>.<br>Write the correct letters in boxes <strong>25 and 26</strong> on your answer sheet.</div>
                 
                 <p style="margin: 10px 0; font-weight:500;">Which <strong>TWO</strong> facts about anxiety are mentioned in Paragraph E of the text?</p>
                 
                 <div class="q-row" id="q25">
                     <span class="q-num">25</span>
-                    <div style="display:flex; flex-direction:column; gap:6px; margin-top:4px;">
-                        <label style="display:flex; align-items:flex-start; gap:6px; cursor:pointer;"><input type="checkbox" name="q25" value="A"> A the factors which determine how severe it may be</label>
-                        <label style="display:flex; align-items:flex-start; gap:6px; cursor:pointer;"><input type="checkbox" name="q25" value="B"> B how long it takes for its effects to become apparent</label>
-                        <label style="display:flex; align-items:flex-start; gap:6px; cursor:pointer;"><input type="checkbox" name="q25" value="C"> C which of its symptoms is most frequently encountered</label>
-                        <label style="display:flex; align-items:flex-start; gap:6px; cursor:pointer;"><input type="checkbox" name="q25" value="D"> D the types of athletes who are most likely to suffer from it</label>
-                        <label style="display:flex; align-items:flex-start; gap:6px; cursor:pointer;"><input type="checkbox" name="q25" value="E"> E the harm that can result if athletes experience it too often</label>
+                    <div style="display:flex; flex-direction:column; gap:4px; margin-top:2px;">
+                        <label class="mc-option"><input type="checkbox" name="q25" value="A"> A the factors which determine how severe it may be</label>
+                        <label class="mc-option"><input type="checkbox" name="q25" value="B"> B how long it takes for its effects to become apparent</label>
+                        <label class="mc-option"><input type="checkbox" name="q25" value="C"> C which of its symptoms is most frequently encountered</label>
+                        <label class="mc-option"><input type="checkbox" name="q25" value="D"> D the types of athletes who are most likely to suffer from it</label>
+                        <label class="mc-option"><input type="checkbox" name="q25" value="E"> E the harm that can result if athletes experience it too often</label>
                     </div>
+                    <input type="text" class="ans-box" id="ans25" maxlength="1" placeholder="">
                 </div>
                 
                 <div class="q-row" id="q26">
                     <span class="q-num">26</span>
-                    <div style="display:flex; flex-direction:column; gap:6px; margin-top:4px;">
-                        <label style="display:flex; align-items:flex-start; gap:6px; cursor:pointer;"><input type="checkbox" name="q26" value="A"> A the factors which determine how severe it may be</label>
-                        <label style="display:flex; align-items:flex-start; gap:6px; cursor:pointer;"><input type="checkbox" name="q26" value="B"> B how long it takes for its effects to become apparent</label>
-                        <label style="display:flex; align-items:flex-start; gap:6px; cursor:pointer;"><input type="checkbox" name="q26" value="C"> C which of its symptoms is most frequently encountered</label>
-                        <label style="display:flex; align-items:flex-start; gap:6px; cursor:pointer;"><input type="checkbox" name="q26" value="D"> D the types of athletes who are most likely to suffer from it</label>
-                        <label style="display:flex; align-items:flex-start; gap:6px; cursor:pointer;"><input type="checkbox" name="q26" value="E"> E the harm that can result if athletes experience it too often</label>
+                    <div style="display:flex; flex-direction:column; gap:4px; margin-top:2px;">
+                        <label class="mc-option"><input type="checkbox" name="q26" value="A"> A the factors which determine how severe it may be</label>
+                        <label class="mc-option"><input type="checkbox" name="q26" value="B"> B how long it takes for its effects to become apparent</label>
+                        <label class="mc-option"><input type="checkbox" name="q26" value="C"> C which of its symptoms is most frequently encountered</label>
+                        <label class="mc-option"><input type="checkbox" name="q26" value="D"> D the types of athletes who are most likely to suffer from it</label>
+                        <label class="mc-option"><input type="checkbox" name="q26" value="E"> E the harm that can result if athletes experience it too often</label>
                     </div>
+                    <input type="text" class="ans-box" id="ans26" maxlength="1" placeholder="">
                 </div>
             </div>
         </div>
@@ -603,29 +583,6 @@ document.querySelectorAll('.q-indicator').forEach(btn => {
     });
 });
 
-// LETTER OPTION CLICK HANDLER (Q14–18)
-document.querySelectorAll('.letter-option').forEach(box => {
-    box.addEventListener('click', () => {
-        const q = box.dataset.q;
-        const val = box.dataset.val;
-        // Deselect others in same group
-        document.querySelectorAll(`.letter-option[data-q="${q}"]`).forEach(b => b.classList.remove('selected'));
-        box.classList.add('selected');
-        saveAnswer(q, val);
-    });
-});
-
-// CHECKBOX HANDLER (Q23–26)
-document.querySelectorAll('input[type="checkbox"]').forEach(cb => {
-    cb.addEventListener('change', () => {
-        const q = cb.name.replace('q', '');
-        const allChecked = document.querySelectorAll(`input[name="${cb.name}"]:checked`);
-        let vals = [];
-        allChecked.forEach(c => vals.push(c.value));
-        saveAnswer(q, vals.join(','));
-    });
-});
-
 // SELECTION VALIDATION — works in BOTH panels
 function isSelectionValid(sel) {
     if (!sel || sel.isCollapsed || !sel.toString().trim()) return false;
@@ -635,7 +592,7 @@ function isSelectionValid(sel) {
             ? r.commonAncestorContainer.parentElement : r.commonAncestorContainer;
         const inPassage = document.getElementById('passageArea').contains(p);
         const inQuestions = document.getElementById('questionsArea').contains(p);
-        const inInput = p.closest('input,textarea,button,label,.context-menu,.note-box,.letter-boxes,.letter-option');
+        const inInput = p.closest('input,textarea,button,label,.context-menu,.note-box,.ans-box,.mc-option');
         return (inPassage || inQuestions) && !inInput;
     } catch { return false; }
 }
@@ -789,6 +746,51 @@ function saveAnswer(q, val) {
     updateStatus();
 }
 
+// INPUT HANDLING — Q14–18 (single letter)
+for (let q = 14; q <= 18; q++) {
+    const box = document.getElementById(`ans${q}`);
+    box.addEventListener('input', () => {
+        let val = box.value.trim().toUpperCase();
+        if (val.length > 1) val = val[0];
+        if (val && !['A','B','C','D','E','F'].includes(val)) val = '';
+        box.value = val;
+        box.classList.toggle('filled', val !== '');
+        saveAnswer(q, val);
+    });
+}
+
+// INPUT HANDLING — Q19–22 (text answers)
+for (let q = 19; q <= 22; q++) {
+    const box = document.getElementById(`ans${q}`);
+    box.addEventListener('input', () => {
+        const val = box.value.trim();
+        box.classList.toggle('filled', val !== '');
+        saveAnswer(q, val);
+    });
+}
+
+// CHECKBOX → ANSWER BOX SYNC — Q23–26
+function syncCheckboxes(q) {
+    const checked = document.querySelectorAll(`input[name="q${q}"]:checked`);
+    let vals = [];
+    checked.forEach(cb => vals.push(cb.value));
+    // For Q23/24 and Q25/26 — each box takes ONE letter
+    saveAnswer(q, vals.join(','));
+}
+
+document.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+    cb.addEventListener('change', () => {
+        const q = cb.name.replace('q', '');
+        syncCheckboxes(parseInt(q));
+        // Show selected letter in the answer box
+        const box = document.getElementById(`ans${q}`);
+        const checked = document.querySelectorAll(`input[name="q${q}"]:checked`);
+        const vals = Array.from(checked).map(c => c.value).slice(0,1);
+        box.value = vals.join('');
+        box.classList.toggle('filled', vals.length > 0);
+    });
+});
+
 // CLEAR ALL
 function clearAllData() {
     if (!confirm('⚠️ Are you sure you want to clear ALL answers, highlights, and notes? This cannot be undone.')) return;
@@ -796,12 +798,11 @@ function clearAllData() {
         localStorage.removeItem(`${STORAGE_KEY}_q${q}`);
     }
     localStorage.removeItem(`${passageId}_highlights`);
-    document.querySelectorAll('input[type=checkbox]').forEach(i => i.checked = false);
-    document.querySelectorAll('.input-answer').forEach(i => {
+    document.querySelectorAll('input[type="checkbox"]').forEach(i => i.checked = false);
+    document.querySelectorAll('.ans-box, .input-answer').forEach(i => {
         i.value = '';
         i.classList.remove('filled');
     });
-    document.querySelectorAll('.letter-option').forEach(b => b.classList.remove('selected'));
     document.querySelectorAll('.highlight').forEach(hl => {
         const parent = hl.parentNode;
         parent.replaceChild(document.createTextNode(hl.textContent), hl);
@@ -816,32 +817,27 @@ document.getElementById('clearAllBtn').addEventListener('click', clearAllData);
 document.addEventListener('DOMContentLoaded', () => {
     restoreNoteMarkers();
     
-    // Restore answers Q14–18 (letter selection)
+    // Restore answers Q14–18 (single letter)
     for (let q = 14; q <= 18; q++) {
+        const box = document.getElementById(`ans${q}`);
         const saved = localStorage.getItem(`${STORAGE_KEY}_q${q}`);
-        if (saved) {
-            const box = document.querySelector(`.letter-option[data-q="${q}"][data-val="${saved}"]`);
-            if (box) box.classList.add('selected');
+        if (saved && saved.length === 1) {
+            box.value = saved.toUpperCase();
+            box.classList.add('filled');
         }
     }
     
     // Restore answers Q19–22 (text input)
     for (let q = 19; q <= 22; q++) {
-        const inp = document.getElementById(`ans${q}`);
-        if (!inp) continue;
+        const box = document.getElementById(`ans${q}`);
         const saved = localStorage.getItem(`${STORAGE_KEY}_q${q}`);
         if (saved) {
-            inp.value = saved;
-            inp.classList.add('filled');
+            box.value = saved;
+            box.classList.add('filled');
         }
-        inp.addEventListener('input', () => {
-            const val = inp.value.trim();
-            val ? inp.classList.add('filled') : inp.classList.remove('filled');
-            saveAnswer(q, val);
-        });
     }
     
-    // Restore answers Q23–26 (multiple choice checkboxes)
+    // Restore answers Q23–26 (checkboxes)
     for (let q = 23; q <= 26; q++) {
         const saved = localStorage.getItem(`${STORAGE_KEY}_q${q}`);
         if (saved) {
@@ -849,6 +845,12 @@ document.addEventListener('DOMContentLoaded', () => {
             document.querySelectorAll(`input[name="q${q}"]`).forEach(cb => {
                 cb.checked = vals.includes(cb.value);
             });
+            // Show first selected letter in box
+            const box = document.getElementById(`ans${q}`);
+            if (vals.length > 0) {
+                box.value = vals[0];
+                box.classList.add('filled');
+            }
         }
     }
     
