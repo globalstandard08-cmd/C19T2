@@ -3,574 +3,484 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IELTS Listening - Cambridge 19 Test 2</title>
+    <title>IELTS Listening — Cambridge 19 Test 2</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Arial', sans-serif; }
-        body { background-color: #f4f6f9; padding: 20px; line-height: 1.7; position: relative; user-select: text; }
-        .container { max-width: 900px; margin: 0 auto; background: white; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); overflow: visible; position: relative; }
-        .logo-section { text-align: center; padding: 20px; border-bottom: 1px solid #eee; min-height: 100px; display: flex; align-items: center; justify-content: center; }
-        .logo-section img { height: 120px; width: auto; object-fit: contain; }
-        .header-bar { background-color: #1f3a5f; color: white; padding: 15px 25px; font-size: 18px; font-weight: bold; display: flex; justify-content: space-between; align-items: center; }
-        .audio-player { background: #eef2f7; padding: 18px 25px; margin: 20px; border-radius: 6px; text-align: center; }
-        .audio-player h3 { color: #1f3a5f; margin-bottom: 12px; font-size: 17px; }
-        audio { width: 100%; max-width: 500px; }
-        #audioStatus { display: none; margin-top: 8px; font-size: 14px; color: #b91c1c; }
-        .content { padding: 0 30px 30px; position: relative; }
-        h2 { color: #1f3a5f; margin: 30px 0 15px; font-size: 22px; padding-bottom: 8px; border-bottom: 1px solid #eee; }
-        .instruction { background-color: #f8fbfe; border-left: 4px solid #1f3a5f; padding: 15px; margin-bottom: 25px; border-radius: 4px; font-weight: 500; }
-        .notes-block, .mcq-block, .map-block, .matching-block { border: 1px solid #ccc; border-radius: 6px; padding: 25px; margin-bottom: 30px; background-color: #fdfdfd; }
-        .notes-title { font-weight: bold; font-size: 20px; margin-bottom: 25px; text-align: center; color: #1f3a5f; }
-        .question-line { margin-bottom: 18px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; font-size: 16px; }
-        .q-number { font-weight: bold; min-width: 35px; color: #1f3a5f; }
-        .input-field { width: 220px; padding: 6px 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 16px; background: white; transition: all 0.2s; }
-        .input-field:focus { outline: none; border-color: #1f3a5f; box-shadow: 0 0 3px rgba(31,58,95,0.3); }
-        .input-field.filled { background-color: #e6f0ff; border-color: #1f3a5f; }
-        .mcq-option { display: flex; align-items: flex-start; gap: 10px; margin: 10px 0; padding: 6px 0; font-size: 16px; }
-        .mcq-option input { margin-top: 3px; cursor: pointer; }
-        .mcq-option.checked label { font-weight: 500; }
-        .matching-table { width: 100%; margin: 15px 0; }
-        .matching-table td { padding: 8px 0; font-size: 16px; border-bottom: 1px solid #eee; }
-        .matching-select { padding: 4px 8px; border: 1px solid #ccc; border-radius: 4px; font-size: 15px; }
-        
-        /* === HIGHLIGHT & NOTE — FULLY FIXED === */
-        .highlight { 
-            background-color: #ffd700; 
-            padding: 2px 4px; 
-            border-radius: 2px; 
-            cursor: pointer; 
-            display: inline; 
-            color: #000; 
-            position: relative; 
-            transition: background-color 0.2s;
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }
+        body { background: #fff; padding: 25px; line-height: 1.7; }
+        .container { max-width: 850px; margin: 0 auto; }
+        .section-label { background: #4a6a5e; color: #fff; display: inline-block; padding: 6px 24px; font-size: 18px; font-weight: bold; margin: 10px 0; }
+        h2 { font-size: 20px; margin: 20px 0 8px; }
+        .instruction { margin-bottom: 18px; }
+        table { width: 100%; border-collapse: collapse; margin: 15px 0 25px; }
+        table, th, td { border: 1px solid #333; }
+        th, td { padding: 10px 14px; vertical-align: top; }
+        th { background: #f5f5f5; font-weight: bold; text-align: center; }
+        .q-row { margin: 10px 0; }
+        .q-num { display: inline-block; min-width: 30px; }
+        .input-field { width: 180px; padding: 4px 6px; border: 1px solid #bbb; font-size: 16px; }
+        .input-field.filled { background: #eef6f2; border-color: #4a6a5e; }
+        .mcq-option { margin: 8px 0; }
+        .matching-box { border: 1px solid #333; padding: 15px; margin: 15px 0; display: inline-block; min-width: 260px; }
+        .matching-select { padding: 3px 6px; margin-left: 8px; }
+        .notes-block { border: 1px solid #333; padding: 20px; margin: 15px 0; }
+        .notes-block p { margin: 8px 0; }
+
+        /* === NAVIGATION BAR WITH SHADING === */
+        .nav-bar {
+            display: flex; flex-wrap: wrap; gap: 4px; margin: 30px 0; padding: 12px;
+            background: #f0f0f0; border-radius: 4px; border: 1px solid #ddd;
         }
-        .highlight:hover { background-color: #ffeb3b; }
-        .note-marker { 
-            position: absolute; 
-            top: -8px; 
-            right: -8px; 
-            width: 18px; 
-            height: 18px; 
-            background: #1f3a5f; 
-            color: white; 
-            border-radius: 50%; 
-            font-size: 11px; 
-            font-weight: bold; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            cursor: pointer; 
-            z-index: 10; 
+        .nav-part { margin-right: 12px; }
+        .part-title { font-size: 12px; font-weight: bold; color: #444; margin-bottom: 4px; }
+        .q-btn {
+            width: 28px; height: 28px; border: 1px solid #bbb; background: #fff;
+            text-align: center; line-height: 26px; cursor: pointer; border-radius: 3px;
+            transition: all 0.2s; margin: 2px;
         }
-        .context-menu { 
-            position: absolute; 
-            background: #fff; 
-            border: 1px solid #ccc; 
-            border-radius: 4px; 
-            box-shadow: 0 2px 12px rgba(0,0,0,0.15); 
-            z-index: 9999; 
-            display: none; 
-            min-width: 180px; 
+        .q-btn.current { border-color: #4a6a5e; border-width: 2px; font-weight: bold; }
+        .q-btn.answered { background: #4a6a5e; color: #fff; border-color: #4a6a5e; }
+
+        /* === HIGHLIGHT FEATURES === */
+        .highlight {
+            background: #ffeb3b; padding: 2px 4px; border-radius: 2px; cursor: pointer;
+            display: inline; position: relative; transition: background 0.15s;
         }
-        .context-menu div { padding: 10px 14px; cursor: pointer; font-size: 14px; border-bottom: 1px solid #f0f0f0; }
+        .highlight:hover { background: #ffd600; }
+        .note-marker {
+            position: absolute; top: -8px; right: -8px; width: 18px; height: 18px;
+            background: #2c5aa0; color: #fff; border-radius: 50%; font-size: 11px;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .context-menu {
+            position: absolute; background: #fff; border: 1px solid #ccc;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.15); z-index: 9999; display: none;
+            min-width: 160px; border-radius: 4px;
+        }
+        .context-menu div { padding: 10px 14px; cursor: pointer; border-bottom: 1px solid #eee; }
         .context-menu div:last-child { border-bottom: none; }
-        .context-menu div:hover { background: #f0f0f0; }
-        
-        /* DRAGGABLE NOTE BOX */
-        .note-box { 
-            position: absolute; 
-            width: 260px; 
-            min-height: 80px; 
-            background: #fffde7; 
-            border: 1px solid #f9d423; 
-            border-radius: 6px; 
-            box-shadow: 0 3px 10px rgba(0,0,0,0.15); 
-            z-index: 9990; 
-            display: none; 
+        .context-menu div:hover { background: #f5f5f5; }
+        .note-box {
+            position: absolute; width: 260px; min-height: 80px; background: #fffde7;
+            border: 1px solid #f9d423; border-radius: 4px; box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+            z-index: 9990; display: none;
         }
-        .note-header { 
-            background: #f9d423; 
-            padding: 6px 10px; 
-            font-size: 13px; 
-            font-weight: bold; 
-            cursor: move; 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            color: #333; 
-        }
-        .note-close { cursor: pointer; font-weight: bold; font-size: 16px; line-height: 1; }
-        .note-textarea { 
-            width: 100%; 
-            min-height: 60px; 
-            border: none; 
-            padding: 10px; 
-            font-size: 14px; 
-            resize: vertical; 
-            background: transparent; 
-            outline: none; 
-        }
-        
-        /* NAVIGATION */
-        .question-status { display: flex; flex-wrap: wrap; align-items: center; gap: 5px; margin: 30px 0; padding: 12px 15px; background: #f0f2f5; border-radius: 4px; border: 1px solid #d0d5dd; }
-        .part-label { font-size: 11px; font-weight: 600; color: #1f3a5f; margin-right: 4px; margin-left: 8px; }
-        .part-separator { width: 12px; height: 24px; flex-shrink: 0; }
-        .q-indicator { width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; border-radius: 3px; border: 1px solid #ddd; background: #e5e7eb; color: #333; font-size: 11px; cursor: pointer; transition: all 0.2s; }
-        .q-indicator.answered { background: #10b981 !important; color: white !important; border-color: #10b981 !important; }
-        .q-indicator.current { border: 2px solid #1f3a5f; }
-        
-        .clear-btn { background-color: #dc2626; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer; font-size: 14px; margin-top: 10px; }
-        .clear-btn:hover { background-color: #b91c1c; }
-        .nav-container { display: flex; justify-content: space-between; align-items: center; margin-top: 25px; padding-top: 15px; border-top: 1px solid #eee; }
-        .back-main-btn { background-color: #6b7280; color: white; border: none; padding: 10px 18px; border-radius: 4px; font-size: 15px; text-decoration: none; }
-        .back-main-btn:hover { background-color: #4b5563; }
-        .next-btn { background-color: #10b981; color: white; border: none; padding: 10px 18px; border-radius: 4px; font-size: 15px; text-decoration: none; }
-        .next-btn:hover { background-color: #059669; }
+        .note-head { background: #f9d423; padding: 6px 10px; font-weight: bold; display: flex; justify-content: space-between; }
+        .note-close { cursor: pointer; font-weight: bold; }
+        .note-text { width: 100%; min-height: 60px; border: none; padding: 10px; background: transparent; outline: none; resize: vertical; }
+        .clear-btn { margin-top: 15px; padding: 8px 16px; background: #d32f2f; color: #fff; border: none; border-radius: 4px; cursor: pointer; }
+        .clear-btn:hover { background: #b71c1c; }
     </style>
 </head>
 <body>
-    <!-- Right-click Menu -->
-    <div class="context-menu" id="contextMenu">
-        <div id="menuHighlight">🖍️ Highlight</div>
-        <div id="menuAddNote">📝 Add Note</div>
-        <div id="menuRemove">❌ Remove Highlight & Note</div>
+    <!-- Right-Click Menu -->
+    <div class="context-menu" id="ctxMenu">
+        <div id="doHighlight">🖍️ Highlight</div>
+        <div id="doNote">📝 Add Note</div>
+        <div id="doRemove">❌ Remove</div>
     </div>
-    
-    <!-- Draggable Note Box -->
+
+    <!-- Note Box -->
     <div class="note-box" id="noteBox">
-        <div class="note-header" id="noteDragHandle">
-            <span>📝 Note</span>
+        <div class="note-head">
+            <span>Note</span>
             <span class="note-close" id="noteClose">×</span>
         </div>
-        <textarea class="note-textarea" id="noteText" placeholder="Type your note here…"></textarea>
+        <textarea class="note-text" id="noteText" placeholder="Your note…"></textarea>
     </div>
 
-    <div class="container">
-        <div class="logo-section"><img src="ielts-logo.png" alt="IELTS Logo"></div>
-        <div class="header-bar">
-            <span>LISTENING — CAMBRIDGE 19 TEST 2</span>
-            <span style="font-size:15px; opacity:0.9;">Exam Mode</span>
+    <div class="container" id="mainArea">
+        <h1>Test 2</h1>
+        <div class="section-label">LISTENING</div>
+
+        <!-- NAVIGATION BAR WITH SHADING -->
+        <div class="nav-bar">
+            <div class="nav-part">
+                <div class="part-title">Part 1</div>
+                <span class="q-btn" data-q="1">1</span>
+                <span class="q-btn" data-q="2">2</span>
+                <span class="q-btn" data-q="3">3</span>
+                <span class="q-btn" data-q="4">4</span>
+                <span class="q-btn" data-q="5">5</span>
+                <span class="q-btn" data-q="6">6</span>
+                <span class="q-btn" data-q="7">7</span>
+                <span class="q-btn" data-q="8">8</span>
+                <span class="q-btn" data-q="9">9</span>
+                <span class="q-btn" data-q="10">10</span>
+            </div>
+            <div class="nav-part">
+                <div class="part-title">Part 2</div>
+                <span class="q-btn" data-q="11">11</span>
+                <span class="q-btn" data-q="12">12</span>
+                <span class="q-btn" data-q="13">13</span>
+                <span class="q-btn" data-q="14">14</span>
+                <span class="q-btn" data-q="15">15</span>
+                <span class="q-btn" data-q="16">16</span>
+                <span class="q-btn" data-q="17">17</span>
+                <span class="q-btn" data-q="18">18</span>
+                <span class="q-btn" data-q="19">19</span>
+                <span class="q-btn" data-q="20">20</span>
+            </div>
+            <div class="nav-part">
+                <div class="part-title">Part 3</div>
+                <span class="q-btn" data-q="21">21</span>
+                <span class="q-btn" data-q="22">22</span>
+                <span class="q-btn" data-q="23">23</span>
+                <span class="q-btn" data-q="24">24</span>
+                <span class="q-btn" data-q="25">25</span>
+                <span class="q-btn" data-q="26">26</span>
+                <span class="q-btn" data-q="27">27</span>
+                <span class="q-btn" data-q="28">28</span>
+                <span class="q-btn" data-q="29">29</span>
+                <span class="q-btn" data-q="30">30</span>
+            </div>
+            <div class="nav-part">
+                <div class="part-title">Part 4</div>
+                <span class="q-btn" data-q="31">31</span>
+                <span class="q-btn" data-q="32">32</span>
+                <span class="q-btn" data-q="33">33</span>
+                <span class="q-btn" data-q="34">34</span>
+                <span class="q-btn" data-q="35">35</span>
+                <span class="q-btn" data-q="36">36</span>
+                <span class="q-btn" data-q="37">37</span>
+                <span class="q-btn" data-q="38">38</span>
+                <span class="q-btn" data-q="39">39</span>
+                <span class="q-btn" data-q="40">40</span>
+            </div>
         </div>
-        <div class="audio-player">
-            <h3>Play Full Recording</h3>
-            <audio controls preload="auto" id="audioPlayer">
-                <source src="cambridge19-test2.mp3" type="audio/mpeg">
-                <source src="https://raw.githubusercontent.com/globalstandard08-cmd/ielts-complete-practice/main/listening/cambridge19-test2.mp3" type="audio/mpeg">
-                Your browser does not support audio playback.
-            
-            <p id="audioStatus">⚠️ Audio file unavailable — check file or link.</p>
+
+        <!-- PART 1 -->
+        <h2>PART 1 &nbsp; Questions 1–10</h2>
+        <p class="instruction"><strong>Questions 1–6</strong><br>Complete the form below.<br>Write <strong>ONE WORD AND/OR A NUMBER</strong> for each answer.</p>
+        <table>
+            <tr><th colspan="2">Guitar Group</th></tr>
+            <tr><td>Coordinator: Gary</td><td><span class="q-num">1</span> <input type="text" class="input-field" data-q="1"></td></tr>
+            <tr><td>Level:</td><td><span class="q-num">2</span> <input type="text" class="input-field" data-q="2"></td></tr>
+            <tr><td>Place:</td><td>the <span class="q-num">3</span> <input type="text" class="input-field" data-q="3"></td></tr>
+            <tr><td></td><td><span class="q-num">4</span> <input type="text" class="input-field" data-q="4"> Street<br>First floor, Room T347</td></tr>
+            <tr><td>Time:</td><td>Thursday morning at <span class="q-num">5</span> <input type="text" class="input-field" data-q="5"></td></tr>
+            <tr><td>Recommended website:</td><td>'The perfect <span class="q-num">6</span> <input type="text" class="input-field" data-q="6">' </td></tr>
+        </table>
+
+        <p class="instruction"><strong>Questions 7–10</strong><br>Complete the table below.<br>Write <strong>ONE WORD ONLY</strong> for each answer.</p>
+        <table>
+            <tr><th>Time</th><th>Activity</th><th>Notes</th></tr>
+            <tr><td>5 minutes</td><td>tuning guitars</td><td>using an app or by <span class="q-num">7</span> <input type="text" class="input-field" data-q="7"></td></tr>
+            <tr><td>10 minutes</td><td>strumming chords using our thumbs</td><td>keeping time while the teacher is <span class="q-num">8</span> <input type="text" class="input-field" data-q="8"></td></tr>
+            <tr><td>15 minutes</td><td>playing songs</td><td>often listening to a <span class="q-num">9</span> <input type="text" class="input-field" data-q="9"> of a song</td></tr>
+            <tr><td>10 minutes</td><td>playing single notes and simple tunes</td><td>playing together, then <span class="q-num">10</span> <input type="text" class="input-field" data-q="10"></td></tr>
+            <tr><td>5 minutes</td><td colspan="2">noting things to practise at home</td></tr>
+        </table>
+
+        <!-- PART 2 -->
+        <h2>PART 2 &nbsp; Questions 11–20</h2>
+        <p class="instruction"><strong>Working as a lifeboat volunteer</strong></p>
+        <p><strong>11</strong> What made David leave London and move to Northsea?</p>
+        <div class="mcq-option"><input type="radio" name="q11" data-q="11" value="A"> A He was eager to develop a hobby.</div>
+        <div class="mcq-option"><input type="radio" name="q11" data-q="11" value="B"> B He wanted to work shorter hours.</div>
+        <div class="mcq-option"><input type="radio" name="q11" data-q="11" value="C"> C He found his job in website design unsatisfying.</div>
+
+        <p style="margin-top:15px;"><strong>12</strong> The Lifeboat Institution in Northsea was built with money provided by</p>
+        <div class="mcq-option"><input type="radio" name="q12" data-q="12" value="A"> A a local organisation.</div>
+        <div class="mcq-option"><input type="radio" name="q12" data-q="12" value="B"> B a local resident.</div>
+        <div class="mcq-option"><input type="radio" name="q12" data-q="12" value="C"> C the local council.</div>
+
+        <p style="margin-top:15px;"><strong>13</strong> In his health assessment, the doctor was concerned about the fact that David</p>
+        <div class="mcq-option"><input type="radio" name="q13" data-q="13" value="A"> A might be colour blind.</div>
+        <div class="mcq-option"><input type="radio" name="q13" data-q="13" value="B"> B was rather short‑sighted.</div>
+        <div class="mcq-option"><input type="radio" name="q13" data-q="13" value="C"> C had undergone eye surgery.</div>
+
+        <p style="margin-top:15px;"><strong>14</strong> After arriving at the lifeboat station, they aim to launch the boat within</p>
+        <div class="mcq-option"><input type="radio" name="q14" data-q="14" value="A"> A five minutes.</div>
+        <div class="mcq-option"><input type="radio" name="q14" data-q="14" value="B"> B six to eight minutes.</div>
+        <div class="mcq-option"><input type="radio" name="q14" data-q="14" value="C"> C eight and a half minutes.</div>
+
+        <p style="margin-top:15px;"><strong>15</strong> As a 'helmsman', David has the responsibility of deciding</p>
+        <div class="mcq-option"><input type="radio" name="q15" data-q="15" value="A"> A who will be the members of his crew.</div>
+        <div class="mcq-option"><input type="radio" name="q15" data-q="15" value="B"> B what equipment it will be necessary to take.</div>
+        <div class="mcq-option"><input type="radio" name="q15" data-q="15" value="C"> C if the lifeboat should be launched.</div>
+
+        <p style="margin-top:15px;"><strong>16</strong> As well as going out on the lifeboat, David</p>
+        <div class="mcq-option"><input type="radio" name="q16" data-q="16" value="A"> A gives talks on safety at sea.</div>
+        <div class="mcq-option"><input type="radio" name="q16" data-q="16" value="B"> B helps with fundraising.</div>
+        <div class="mcq-option"><input type="radio" name="q16" data-q="16" value="C"> C recruits new volunteers.</div>
+
+        <p class="instruction" style="margin-top:20px;"><strong>Questions 17 and 18</strong><br>Choose <strong>TWO</strong> letters, A–E.</p>
+        <p>Which <strong>TWO</strong> things does David say about the lifeboat volunteer training?</p>
+        <div class="mcq-option"><input type="checkbox" data-q="17" value="A"> A The residential course developed his leadership skills.</div>
+        <div class="mcq-option"><input type="checkbox" data-q="17" value="B"> B The training in use of ropes and knots was quite brief.</div>
+        <div class="mcq-option"><input type="checkbox" data-q="17" value="C"> C The training exercises have built up his mental strength.</div>
+        <div class="mcq-option"><input type="checkbox" data-q="17" value="D"> D The casualty care activities were particularly challenging for him.</div>
+        <div class="mcq-option"><input type="checkbox" data-q="17" value="E"> E The wave tank activities provided practice in survival techniques.</div>
+
+        <p class="instruction" style="margin-top:20px;"><strong>Questions 19 and 20</strong><br>Choose <strong>TWO</strong> letters, A–E.</p>
+        <p>Which <strong>TWO</strong> things does David find most motivating about the work he does?</p>
+        <div class="mcq-option"><input type="checkbox" data-q="19" value="A"> A working as part of a team</div>
+        <div class="mcq-option"><input type="checkbox" data-q="19" value="B"> B experiences when working in winter</div>
+        <div class="mcq-option"><input type="checkbox" data-q="19" value="C"> C being thanked by those he has helped</div>
+        <div class="mcq-option"><input type="checkbox" data-q="19" value="D"> D the fact that it keeps him fit</div>
+        <div class="mcq-option"><input type="checkbox" data-q="19" value="E"> E the chance to develop new equipment</div>
+
+        <!-- PART 3 -->
+        <h2>PART 3 &nbsp; Questions 21–30</h2>
+        <p class="instruction"><strong>Questions 21–24</strong><br>Choose the correct letter, A, B or C.</p>
+
+        <p><strong>21</strong> At first, Don thought the topic of recycling footwear might be too</p>
+        <div class="mcq-option"><input type="radio" name="q21" data-q="21" value="A"> A limited in scope.</div>
+        <div class="mcq-option"><input type="radio" name="q21" data-q="21" value="B"> B hard to research.</div>
+        <div class="mcq-option"><input type="radio" name="q21" data-q="21" value="C"> C boring for listeners.</div>
+
+        <p style="margin-top:15px;"><strong>22</strong> When discussing trainers, Bella and Don disagree about</p>
+        <div class="mcq-option"><input type="radio" name="q22" data-q="22" value="A"> A how popular they are among young people.</div>
+        <div class="mcq-option"><input type="radio" name="q22" data-q="22" value="B"> B how suitable they are for school.</div>
+        <div class="mcq-option"><input type="radio" name="q22" data-q="22" value="C"> C how quickly they wear out.</div>
+
+        <p style="margin-top:15px;"><strong>23</strong> Bella says that she sometimes recycles shoes because</p>
+        <div class="mcq-option"><input type="radio" name="q23" data-q="23" value="A"> A they no longer fit.</div>
+        <div class="mcq-option"><input type="radio" name="q23" data-q="23" value="B"> B she no longer likes them.</div>
+        <div class="mcq-option"><input type="radio" name="q23" data-q="23" value="C"> C they are no longer in fashion.</div>
+
+        <p style="margin-top:15px;"><strong>24</strong> What did the article say that confused Don?</p>
+        <div class="mcq-option"><input type="radio" name="q24" data-q="24" value="A"> A Public consumption of footwear has risen.</div>
+        <div class="mcq-option"><input type="radio" name="q24" data-q="24" value="B"> B Less footwear is recycled now than in the past.</div>
+        <div class="mcq-option"><input type="radio" name="q24" data-q="24" value="C"> C People dispose of more footwear than they used to.</div>
+
+        <p class="instruction" style="margin-top:20px;"><strong>Questions 25–28</strong><br>What reasons did the recycling manager give for rejecting footwear?<br>Choose <strong>FOUR</strong> answers from the box and write the correct letter A–F next to 25–28.</p>
+        <div class="matching-box">
+            <strong>Reasons</strong><br>
+            A &nbsp; one shoe was missing<br>
+            B &nbsp; the colour of one shoe had faded<br>
+            C &nbsp; one shoe had a hole in it<br>
+            D &nbsp; the shoes were brand new<br>
+            E &nbsp; the shoes were too dirty<br>
+            F &nbsp; the stitching on the shoes was broken
         </div>
-        <div class="content" id="passageArea">
+        <table>
+            <tr><td>25</td><td>the high‑heeled shoes</td><td><select class="matching-select" data-q="25"><option value="">—</option><option>A</option><option>B</option><option>C</option><option>D</option><option>E</option><option>F</option></select></td></tr>
+            <tr><td>26</td><td>the ankle boots</td><td><select class="matching-select" data-q="26"><option value="">—</option><option>A</option><option>B</option><option>C</option><option>D</option><option>E</option><option>F</option></select></td></tr>
+            <tr><td>27</td><td>the baby shoes</td><td><select class="matching-select" data-q="27"><option value="">—</option><option>A</option><option>B</option><option>C</option><option>D</option><option>E</option><option>F</option></select></td></tr>
+            <tr><td>28</td><td>the trainers</td><td><select class="matching-select" data-q="28"><option value="">—</option><option>A</option><option>B</option><option>C</option><option>D</option><option>E</option><option>F</option></select></td></tr>
+        </table>
 
-<!-- ========== PART 1 ========== -->
-<h2>PART 1 — Questions 1–10</h2>
-<div class="instruction"><strong>Questions 1–6</strong><br>Complete the form below.<br>Write <strong>ONE WORD AND/OR A NUMBER</strong> for each answer.</div>
-<div class="notes-block">
-    <div class="notes-title">Guitar Group</div>
-    <div class="question-line"><span>Coordinator: Gary</span><span class="q-number">1.</span><input type="text" class="input-field" id="q1" placeholder="Answer"></div>
-    <div class="question-line"><span>Level:</span><span class="q-number">2.</span><input type="text" class="input-field" id="q2" placeholder="Answer"></div>
-    <div class="question-line"><span>Place: the</span><span class="q-number">3.</span><input type="text" class="input-field" id="q3" placeholder="Answer"></div>
-    <div class="question-line"><span></span><span class="q-number">4.</span><input type="text" class="input-field" id="q4" placeholder="Answer"><span>Street, First floor, Room T347</span></div>
-    <div class="question-line"><span>Time: Thursday morning at</span><span class="q-number">5.</span><input type="text" class="input-field" id="q5" placeholder="Answer"></div>
-    <div class="question-line"><span>Recommended website: 'The perfect</span><span class="q-number">6.</span><input type="text" class="input-field" id="q6" placeholder="Answer"><span>'</span></div>
-</div>
+        <p class="instruction"><strong>Questions 29–30</strong><br>Choose the correct letter, A, B or C.</p>
+        <p><strong>29</strong> Why did the project to make 'new' shoes out of old shoes fail?</p>
+        <div class="mcq-option"><input type="radio" name="q29" data-q="29" value="A"> A People believed the 'new' pairs of shoes were unhygienic.</div>
+        <div class="mcq-option"><input type="radio" name="q29" data-q="29" value="B"> B There were not enough good parts to use in the old shoes.</div>
+        <div class="mcq-option"><input type="radio" name="q29" data-q="29" value="C"> C The shoes in the 'new' pairs were not completely alike.</div>
 
-<div class="instruction"><strong>Questions 7–10</strong><br>Complete the table below.<br>Write <strong>ONE WORD ONLY</strong> for each answer.</div>
-<div class="notes-block">
-    <div class="notes-title">A typical 45‑minute guitar lesson</div>
-    <div class="question-line"><span>5 minutes &nbsp; tuning guitars &nbsp; — &nbsp; using an app or by</span><span class="q-number">7.</span><input type="text" class="input-field" id="q7" placeholder="Answer"></div>
-    <div class="question-line"><span>10 minutes &nbsp; strumming chords using our thumbs &nbsp; — &nbsp; keeping time while the teacher is</span><span class="q-number">8.</span><input type="text" class="input-field" id="q8" placeholder="Answer"></div>
-    <div class="question-line"><span>15 minutes &nbsp; playing songs &nbsp; — &nbsp; often listening to a</span><span class="q-number">9.</span><input type="text" class="input-field" id="q9" placeholder="Answer"><span>of a song</span></div>
-    <div class="question-line"><span>10 minutes &nbsp; playing single notes and simple tunes &nbsp; — &nbsp; playing together, then</span><span class="q-number">10.</span><input type="text" class="input-field" id="q10" placeholder="Answer"></div>
-    <div class="question-line"><span>5 minutes &nbsp; noting things to practise at home</span></div>
-</div>
+        <p style="margin-top:15px;"><strong>30</strong> Bella and Don agree that they can present their topic</p>
+        <div class="mcq-option"><input type="radio" name="q30" data-q="30" value="A"> A from a new angle.</div>
+        <div class="mcq-option"><input type="radio" name="q30" data-q="30" value="B"> B with relevant images.</div>
+        <div class="mcq-option"><input type="radio" name="q30" data-q="30" value="C"> C in a straightforward way.</div>
 
-<!-- ========== PART 2 ========== -->
-<h2>PART 2 — Questions 11–20</h2>
-<div class="instruction"><strong>Working as a lifeboat volunteer</strong></div>
-<div class="mcq-block">
-    <p style="font-weight:bold; margin-bottom:8px;">11 What made David leave London and move to Northsea?</p>
-    <div class="mcq-option" data-q="11" data-val="A"><input type="radio" name="q11" id="q11a" value="A"><label for="q11a">A He was eager to develop a hobby.</label></div>
-    <div class="mcq-option" data-q="11" data-val="B"><input type="radio" name="q11" id="q11b" value="B"><label for="q11b">B He wanted to work shorter hours.</label></div>
-    <div class="mcq-option" data-q="11" data-val="C"><input type="radio" name="q11" id="q11c" value="C"><label for="q11c">C He found his job in website design unsatisfying.</label></div>
+        <!-- PART 4 -->
+        <h2>PART 4 &nbsp; Questions 31–40</h2>
+        <p class="instruction"><strong>Complete the notes below.</strong><br>Write <strong>ONE WORD ONLY</strong> for each answer.</p>
+        <div class="notes-block">
+            <h3>Tardigrades</h3>
+            <p>• more than 1,000 species, 0.05–1.2 millimetres long</p>
+            <p>• also known as water 'bears' (due to how they <span class="q-num">31</span> <input type="text" class="input-field" data-q="31">)</span> and 'moss piglets')</p>
+            <p style="margin-top:15px;"><strong>Physical appearance</strong></p>
+            <p>• a <span class="q-num">32</span> <input type="text" class="input-field" data-q="32"> round body and four pairs of legs</p>
+            <p>• claws or <span class="q-num">33</span> <input type="text" class="input-field" data-q="33"> for gripping</p>
+            <p>• absence of respiratory organs</p>
+            <p>• body filled with a liquid that carries both <span class="q-num">34</span> <input type="text" class="input-field" data-q="34"> and blood</p>
+            <p>• mouth shaped like a <span class="q-num">35</span> <input type="text" class="input-field" data-q="35"> with teeth called stylets</p>
+            <p style="margin-top:15px;"><strong>Habitat</strong></p>
+            <p>• often found at the bottom of a lake or on plants</p>
+            <p>• very resilient and can exist in very low or high <span class="q-num">36</span> <input type="text" class="input-field" data-q="36"></p>
+            <p style="margin-top:15px;"><strong>Cryptobiosis</strong></p>
+            <p>• In dry conditions, they roll into a ball called a 'tun'.</p>
+            <p>• They stay alive with a much lower metabolism than usual.</p>
+            <p>• A type of <span class="q-num">37</span> <input type="text" class="input-field" data-q="37"> ensures their DNA is not damaged.</p>
+            <p>• Research is underway to find out how many days they can stay alive in <span class="q-num">38</span> <input type="text" class="input-field" data-q="38"></p>
+            <p style="margin-top:15px;"><strong>Feeding</strong></p>
+            <p>• consume liquids, e.g., those found in moss or <span class="q-num">39</span> <input type="text" class="input-field" data-q="39"></p>
+            <p>• may eat other tardigrades</p>
+            <p style="margin-top:15px;"><strong>Conservation status</strong></p>
+            <p>• They are not considered to be <span class="q-num">40</span> <input type="text" class="input-field" data-q="40"></p>
+        </div>
 
-    <p style="font-weight:bold; margin:20px 0 8px;">12 The Lifeboat Institution in Northsea was built with money provided by</p>
-    <div class="mcq-option" data-q="12" data-val="A"><input type="radio" name="q12" id="q12a" value="A"><label for="q12a">A a local organisation.</label></div>
-    <div class="mcq-option" data-q="12" data-val="B"><input type="radio" name="q12" id="q12b" value="B"><label for="q12b">B a local resident.</label></div>
-    <div class="mcq-option" data-q="12" data-val="C"><input type="radio" name="q12" id="q12c" value="C"><label for="q12c">C the local council.</label></div>
-
-    <p style="font-weight:bold; margin:20px 0 8px;">13 In his health assessment, the doctor was concerned about the fact that David</p>
-    <div class="mcq-option" data-q="13" data-val="A"><input type="radio" name="q13" id="q13a" value="A"><label for="q13a">A might be colour blind.</label></div>
-    <div class="mcq-option" data-q="13" data-val="B"><input type="radio" name="q13" id="q13b" value="B"><label for="q13b">B was rather short‑sighted.</label></div>
-    <div class="mcq-option" data-q="13" data-val="C"><input type="radio" name="q13" id="q13c" value="C"><label for="q13c">C had undergone eye surgery.</label></div>
-
-    <p style="font-weight:bold; margin:20px 0 8px;">14 After arriving at the lifeboat station, they aim to launch the boat within</p>
-    <div class="mcq-option" data-q="14" data-val="A"><input type="radio" name="q14" id="q14a" value="A"><label for="q14a">A five minutes.</label></div>
-    <div class="mcq-option" data-q="14" data-val="B"><input type="radio" name="q14" id="q14b" value="B"><label for="q14b">B six to eight minutes.</label></div>
-    <div class="mcq-option" data-q="14" data-val="C"><input type="radio" name="q14" id="q14c" value="C"><label for="q14c">C eight and a half minutes.</label></div>
-
-    <p style="font-weight:bold; margin:20px 0 8px;">15 As a 'helmsman', David has the responsibility of deciding</p>
-    <div class="mcq-option" data-q="15" data-val="A"><input type="radio" name="q15" id="q15a" value="A"><label for="q15a">A who will be the members of his crew.</label></div>
-    <div class="mcq-option" data-q="15" data-val="B"><input type="radio" name="q15" id="q15b" value="B"><label for="q15b">B what equipment it will be necessary to take.</label></div>
-    <div class="mcq-option" data-q="15" data-val="C"><input type="radio" name="q15" id="q15c" value="C"><label for="q15c">C if the lifeboat should be launched.</label></div>
-
-    <p style="font-weight:bold; margin:20px 0 8px;">16 As well as going out on the lifeboat, David</p>
-    <div class="mcq-option" data-q="16" data-val="A"><input type="radio" name="q16" id="q16a" value="A"><label for="q16a">A gives talks on safety at sea.</label></div>
-    <div class="mcq-option" data-q="16" data-val="B"><input type="radio" name="q16" id="q16b" value="B"><label for="q16b">B helps with fundraising.</label></div>
-    <div class="mcq-option" data-q="16" data-val="C"><input type="radio" name="q16" id="q16c" value="C"><label for="q16c">C recruits new volunteers.</label></div>
-</div>
-
-<div class="instruction"><strong>Questions 17 and 18</strong><br>Choose <strong>TWO</strong> letters, A–E.</div>
-<div class="mcq-block">
-    <p>Which <strong>TWO</strong> things does David say about the lifeboat volunteer training?</p>
-    <div class="mcq-option" data-q="17"><input type="checkbox" name="q17" id="q17a" value="A"><label for="q17a">A The residential course developed his leadership skills.</label></div>
-    <div class="mcq-option" data-q="17"><input type="checkbox" name="q17" id="q17b" value="B"><label for="q17b">B The training in use of ropes and knots was quite brief.</label></div>
-    <div class="mcq-option" data-q="17"><input type="checkbox" name="q17" id="q17c" value="C"><label for="q17c">C The training exercises have built up his mental strength.</label></div>
-    <div class="mcq-option" data-q="17"><input type="checkbox" name="q17" id="q17d" value="D"><label for="q17d">D The casualty care activities were particularly challenging for him.</label></div>
-    <div class="mcq-option" data-q="17"><input type="checkbox" name="q17" id="q17e" value="E"><label for="q17e">E The wave tank activities provided practice in survival techniques.</label></div>
-</div>
-
-<div class="instruction"><strong>Questions 19 and 20</strong><br>Choose <strong>TWO</strong> letters, A–E.</div>
-<div class="mcq-block">
-    <p>Which <strong>TWO</strong> things does David find most motivating about the work he does?</p>
-    <div class="mcq-option" data-q="19"><input type="checkbox" name="q19" id="q19a" value="A"><label for="q19a">A working as part of a team</label></div>
-    <div class="mcq-option" data-q="19"><input type="checkbox" name="q19" id="q19b" value="B"><label for="q19b">B experiences when working in winter</label></div>
-    <div class="mcq-option" data-q="19"><input type="checkbox" name="q19" id="q19c" value="C"><label for="q19c">C being thanked by those he has helped</label></div>
-    <div class="mcq-option" data-q="19"><input type="checkbox" name="q19" id="q19d" value="D"><label for="q19d">D the fact that it keeps him fit</label></div>
-    <div class="mcq-option" data-q="19"><input type="checkbox" name="q19" id="q19e" value="E"><label for="q19e">E the chance to develop new equipment</label></div>
-</div>
-
-<!-- ========== PART 3 ========== -->
-<h2>PART 3 — Questions 21–30</h2>
-<div class="instruction"><strong>Questions 21–24</strong><br>Choose the correct letter, A, B or C.</div>
-<div class="mcq-block">
-    <p style="font-weight:bold; margin-bottom:8px;">21 At first, Don thought the topic of recycling footwear might be too</p>
-    <div class="mcq-option" data-q="21" data-val="A"><input type="radio" name="q21" id="q21a" value="A"><label for="q21a">A limited in scope.</label></div>
-    <div class="mcq-option" data-q="21" data-val="B"><input type="radio" name="q21" id="q21b" value="B"><label for="q21b">B hard to research.</label></div>
-    <div class="mcq-option" data-q="21" data-val="C"><input type="radio" name="q21" id="q21c" value="C"><label for="q21c">C boring for listeners.</label></div>
-
-    <p style="font-weight:bold; margin:20px 0 8px;">22 When discussing trainers, Bella and Don disagree about</p>
-    <div class="mcq-option" data-q="22" data-val="A"><input type="radio" name="q22" id="q22a" value="A"><label for="q22a">A how popular they are among young people.</label></div>
-    <div class="mcq-option" data-q="22" data-val="B"><input type="radio" name="q22" id="q22b" value="B"><label for="q22b">B how suitable they are for school.</label></div>
-    <div class="mcq-option" data-q="22" data-val="C"><input type="radio" name="q22" id="q22c" value="C"><label for="q22c">C how quickly they wear out.</label></div>
-
-    <p style="font-weight:bold; margin:20px 0 8px;">23 Bella says that she sometimes recycles shoes because</p>
-    <div class="mcq-option" data-q="23" data-val="A"><input type="radio" name="q23" id="q23a" value="A"><label for="q23a">A they no longer fit.</label></div>
-    <div class="mcq-option" data-q="23" data-val="B"><input type="radio" name="q23" id="q23b" value="B"><label for="q23b">B she no longer likes them.</label></div>
-    <div class="mcq-option" data-q="23" data-val="C"><input type="radio" name="q23" id="q23c" value="C"><label for="q23c">C they are no longer in fashion.</label></div>
-
-    <p style="font-weight:bold; margin:20px 0 8px;">24 What did the article say that confused Don?</p>
-    <div class="mcq-option" data-q="24" data-val="A"><input type="radio" name="q24" id="q24a" value="A"><label for="q24a">A Public consumption of footwear has risen.</label></div>
-    <div class="mcq-option" data-q="24" data-val="B"><input type="radio" name="q24" id="q24b" value="B"><label for="q24b">B Less footwear is recycled now than in the past.</label></div>
-    <div class="mcq-option" data-q="24" data-val="C"><input type="radio" name="q24" id="q24c" value="C"><label for="q24c">C People dispose of more footwear than they used to.</label></div>
-</div>
-
-<div class="instruction"><strong>Questions 25–28</strong><br>What reasons did the recycling manager give for rejecting footwear?<br>Choose <strong>FOUR</strong> answers from the box and write the correct letter A–F next to 25–28.</div>
-<div class="matching-block">
-    <table style="margin:0 auto 20px; border:1px solid #ccc; padding:10px; background:#fff;">
-        <tr><td>A</td><td>one shoe was missing</td></tr>
-        <tr><td>B</td><td>the colour of one shoe had faded</td></tr>
-        <tr><td>C</td><td>one shoe had a hole in it</td></tr>
-        <tr><td>D</td><td>the shoes were brand new</td></tr>
-        <tr><td>E</td><td>the shoes were too dirty</td></tr>
-        <tr><td>F</td><td>the stitching on the shoes was broken</td></tr>
-    </table>
-    <table class="matching-table">
-        <tr><td class="q-number">25</td><td>the high‑heeled shoes</td><td><select class="matching-select" id="q25" data-q="25"><option value="">—</option><option>A</option><option>B</option><option>C</option><option>D</option><option>E</option><option>F</option></select></td></tr>
-        <tr><td class="q-number">26</td><td>the ankle boots</td><td><select class="matching-select" id="q26" data-q="26"><option value="">—</option><option>A</option><option>B</option><option>C</option><option>D</option><option>E</option><option>F</option></select></td></tr>
-        <tr><td class="q-number">27</td><td>the baby shoes</td><td><select class="matching-select" id="q27" data-q="27"><option value="">—</option><option>A</option><option>B</option><option>C</option><option>D</option><option>E</option><option>F</option></select></td></tr>
-        <tr><td class="q-number">28</td><td>the trainers</td><td><select class="matching-select" id="q28" data-q="28"><option value="">—</option><option>A</option><option>B</option><option>C</option><option>D</option><option>E</option><option>F</option></select></td></tr>
-    </table>
-</div>
-
-<div class="instruction"><strong>Questions 29–30</strong><br>Choose the correct letter, A, B or C.</div>
-<div class="mcq-block">
-    <p style="font-weight:bold; margin-bottom:8px;">29 Why did the project to make 'new' shoes out of old shoes fail?</p>
-    <div class="mcq-option" data-q="29" data-val="A"><input type="radio" name="q29" id="q29a" value="A"><label for="q29a">A People believed the 'new' pairs of shoes were unhygienic.</label></div>
-    <div class="mcq-option" data-q="29" data-val="B"><input type="radio" name="q29" id="q29b" value="B"><label for="q29b">B There were not enough good parts to use in the old shoes.</label></div>
-    <div class="mcq-option" data-q="29" data-val="C"><input type="radio" name="q29" id="q29c" value="C"><label for="q29c">C The shoes in the 'new' pairs were not completely alike.</label></div>
-
-    <p style="font-weight:bold; margin:20px 0 8px;">30 Bella and Don agree that they can present their topic</p>
-    <div class="mcq-option" data-q="30" data-val="A"><input type="radio" name="q30" id="q30a" value="A"><label for="q30a">A from a new angle.</label></div>
-    <div class="mcq-option" data-q="30" data-val="B"><input type="radio" name="q30" id="q30b" value="B"><label for="q30b">B with relevant images.</label></div>
-    <div class="mcq-option" data-q="30" data-val="C"><input type="radio" name="q30" id="q30c" value="C"><label for="q30c">C in a straightforward way.</label></div>
-</div>
-
-<!-- ========== PART 4 ========== -->
-<h2>PART 4 — Questions 31–40</h2>
-<div class="instruction"><strong>Questions 31–40</strong><br>Complete the notes below.<br>Write <strong>ONE WORD ONLY</strong> for each answer.</div>
-<div class="notes-block">
-    <div class="notes-title">Tardigrades</div>
-    <p>more than 1,000 species, 0.05–1.2 millimetres long</p>
-    <p>also known as water 'bears' (due to how they <span class="q-number">31.</span><input type="text" class="input-field" id="q31" placeholder="Answer">)</p>
-    <p>and 'moss piglets')</p>
-    <p style="font-weight:bold; margin:15px 0 5px;">Physical appearance</p>
-    <div class="question-line"><span>a</span><span class="q-number">32.</span><input type="text" class="input-field" id="q32" placeholder="Answer"><span>round body and four pairs of legs</span></div>
-    <div class="question-line"><span>claws or</span><span class="q-number">33.</span><input type="text" class="input-field" id="q33" placeholder="Answer"><span>for gripping</span></div>
-    <p>absence of respiratory organs</p>
-    <div class="question-line"><span>body filled with a liquid that carries both</span><span class="q-number">34.</span><input type="text" class="input-field" id="q34" placeholder="Answer"><span>and blood</span></div>
-    <div class="question-line"><span>mouth shaped like a</span><span class="q-number">35.</span><input type="text" class="input-field" id="q35" placeholder="Answer"><span>with teeth called stylets</span></div>
-    
-    <p style="font-weight:bold; margin:20px 0 5px;">Habitat</p>
-    <p>often found at the bottom of a lake or on plants</p>
-    <div class="question-line"><span>very resilient and can exist in very low or high</span><span class="q-number">36.</span><input type="text" class="input-field" id="q36" placeholder="Answer"></div>
-    
-    <p style="font-weight:bold; margin:20px 0 5px;">Cryptobiosis</p>
-    <p>In dry conditions, they roll into a ball called a 'tun'.</p>
-    <p>They stay alive with a much lower metabolism than usual.</p>
-    <div class="question-line"><span>A type of</span><span class="q-number">37.</span><input type="text" class="input-field" id="q37" placeholder="Answer"><span>ensures their DNA is not damaged.</span></div>
-    <div class="question-line"><span>Research is underway to find out how many days they can stay alive in</span><span class="q-number">38.</span><input type="text" class="input-field" id="q38" placeholder="Answer"></div>
-    
-    <p style="font-weight:bold; margin:20px 0 5px;">Feeding</p>
-    <div class="question-line"><span>consume liquids, e.g., those found in moss or</span><span class="q-number">39.</span><input type="text" class="input-field" id="q39" placeholder="Answer"></div>
-    <p>may eat other tardigrades</p>
-    
-    <p style="font-weight:bold; margin:20px 0 5px;">Conservation status</p>
-    <div class="question-line"><span>They are not considered to be</span><span class="q-number">40.</span><input type="text" class="input-field" id="q40" placeholder="Answer"></div>
-</div>
-
-<!-- Status Bar -->
-<div class="question-status">
-    <span class="part-label">Part 1</span>
-    <div class="q-indicator" data-q="1">1</div><div class="q-indicator" data-q="2">2</div><div class="q-indicator" data-q="3">3</div><div class="q-indicator" data-q="4">4</div><div class="q-indicator" data-q="5">5</div><div class="q-indicator" data-q="6">6</div><div class="q-indicator" data-q="7">7</div><div class="q-indicator" data-q="8">8</div><div class="q-indicator" data-q="9">9</div><div class="q-indicator" data-q="10">10</div>
-    <div class="part-separator"></div><span class="part-label">Part 2</span>
-    <div class="q-indicator" data-q="11">11</div><div class="q-indicator" data-q="12">12</div><div class="q-indicator" data-q="13">13</div><div class="q-indicator" data-q="14">14</div><div class="q-indicator" data-q="15">15</div><div class="q-indicator" data-q="16">16</div><div class="q-indicator" data-q="17">17</div><div class="q-indicator" data-q="18">18</div><div class="q-indicator" data-q="19">19</div><div class="q-indicator" data-q="20">20</div>
-    <div class="part-separator"></div><span class="part-label">Part 3</span>
-    <div class="q-indicator" data-q="21">21</div><div class="q-indicator" data-q="22">22</div><div class="q-indicator" data-q="23">23</div><div class="q-indicator" data-q="24">24</div><div class="q-indicator" data-q="25">25</div><div class="q-indicator" data-q="26">26</div><div class="q-indicator" data-q="27">27</div><div class="q-indicator" data-q="28">28</div><div class="q-indicator" data-q="29">29</div><div class="q-indicator" data-q="30">30</div>
-    <div class="part-separator"></div><span class="part-label">Part 4</span>
-    <div class="q-indicator" data-q="31">31</div><div class="q-indicator" data-q="32">32</div><div class="q-indicator" data-q="33">33</div><div class="q-indicator" data-q="34">34</div><div class="q-indicator" data-q="35">35</div><div class="q-indicator" data-q="36">36</div><div class="q-indicator" data-q="37">37</div><div class="q-indicator" data-q="38">38</div><div class="q-indicator" data-q="39">39</div><div class="q-indicator" data-q="40">40</div>
-</div>
-<button class="clear-btn" onclick="clearAll()">🗑️ Clear All Answers & Highlights</button>
-<div class="nav-container">
-    <a href="index.html" class="back-main-btn">← Home</a>
-    <a href="reading-intro.html" class="next-btn">Next: Reading →</a>
-</div>
-        </div><!-- /content -->
-    </div><!-- /container -->
+        <button class="clear-btn" onclick="clearAll()">🗑️ Clear All</button>
+    </div>
 
 <script>
-const STORAGE_KEY = 'Cambridge19_Test2_Listening';
-const passageId = 'listening-cambridge19-test2';
+const STORAGE_KEY = 'C19T2_Listening';
 let currentRange = null;
 let activeHighlight = null;
 
-// UPDATE NAV STATUS
-function updateStatus() {
-    for (let q = 1; q <= 40; q++) {
-        const btn = document.querySelector(`.q-indicator[data-q="${q}"]`);
-        if (!btn) continue;
-        const val = (localStorage.getItem(`${STORAGE_KEY}_q${q}`) || '').trim();
-        btn.classList.toggle('answered', val.length > 0);
-    }
+// === UPDATE NAV SHADING ===
+function updateNav() {
+    document.querySelectorAll('.q-btn').forEach(btn => {
+        const q = btn.dataset.q;
+        const val = localStorage.getItem(`${STORAGE_KEY}_q${q}`) || '';
+        btn.classList.toggle('answered', val.trim().length > 0);
+    });
 }
 
-// VALIDATE SELECTION — only highlight in passage area, not in inputs
-function isSelectionValid(sel) {
+// === SAVE ANSWER ===
+function saveAnswer(q, val) {
+    localStorage.setItem(`${STORAGE_KEY}_q${q}`, val);
+    updateNav();
+}
+
+// === HIGHLIGHTS SAVE/LOAD ===
+function saveHighlights() {
+    const data = [];
+    document.querySelectorAll('.highlight').forEach(h => {
+        data.push({ html: h.outerHTML, note: h.dataset.note || '' });
+    });
+    localStorage.setItem(`${STORAGE_KEY}_hl`, JSON.stringify(data));
+}
+
+// === SELECTION VALID ===
+function isSelOk(sel) {
     if (!sel || sel.isCollapsed || !sel.toString().trim()) return false;
     try {
-        const r = sel.getRangeAt(0);
-        const p = r.commonAncestorContainer.nodeType === Node.TEXT_NODE
-            ? r.commonAncestorContainer.parentElement : r.commonAncestorContainer;
-        const inArea = document.getElementById('passageArea').contains(p);
-        const inInput = p.closest('input,textarea,button,select,.context-menu,.note-box');
-        return inArea && !inInput;
+        const par = sel.getRangeAt(0).commonAncestorContainer.parentElement || sel.getRangeAt(0).commonAncestorContainer;
+        return document.getElementById('mainArea').contains(par) && !par.closest('input,textarea,select,button');
     } catch { return false; }
 }
 
-// SAVE HIGHLIGHTS
-function saveHighlights() {
-    const highlights = document.querySelectorAll('#passageArea .highlight');
-    const data = Array.from(highlights).map(h => ({
-        html: h.outerHTML,
-        text: h.textContent,
-        note: h.getAttribute('data-note') || ''
-    }));
-    localStorage.setItem(`${passageId}_highlights`, JSON.stringify(data));
-}
-
-// LOAD & RESTORE HIGHLIGHTS — COMPLETELY FIXED
-function loadHighlights() {
-    try {
-        const saved = localStorage.getItem(`${passageId}_highlights`);
-        if (!saved) return;
-        const highlights = JSON.parse(saved);
-        // We don't auto-restore HTML to avoid structure corruption — highlights persist until cleared
-    } catch (e) {
-        console.log('Highlights load skipped:', e);
-    }
-}
-
-// DRAGGABLE NOTE BOX
-const noteBox = document.getElementById('noteBox');
-const noteText = document.getElementById('noteText');
-const noteClose = document.getElementById('noteClose');
-const noteDragHandle = document.getElementById('noteDragHandle');
-let isDraggingNote = false;
-let dragOffsetX = 0, dragOffsetY = 0;
-
-noteClose.addEventListener('click', () => {
-    noteBox.style.display = 'none';
-    activeHighlight = null;
-});
-
-noteText.addEventListener('input', () => {
-    if (activeHighlight) {
-        activeHighlight.setAttribute('data-note', noteText.value);
-        saveHighlights();
-    }
-});
-
-document.addEventListener('mousedown', e => {
-    if (!noteDragHandle.contains(e.target)) return;
-    isDraggingNote = true;
-    const rc = noteBox.getBoundingClientRect();
-    dragOffsetX = e.clientX - rc.left;
-    dragOffsetY = e.clientY - rc.top;
-    noteBox.style.zIndex = '9999';
-});
-
-document.addEventListener('mousemove', e => {
-    if (!isDraggingNote) return;
-    noteBox.style.left = (e.clientX - dragOffsetX) + 'px';
-    noteBox.style.top = (e.clientY - dragOffsetY) + 'px';
-});
-
-document.addEventListener('mouseup', () => { isDraggingNote = false; });
-
-// CONTEXT MENU — RIGHT-CLICK
-const contextMenu = document.getElementById('contextMenu');
+// === RIGHT-CLICK MENU ===
+const ctx = document.getElementById('ctxMenu');
 document.addEventListener('contextmenu', e => {
     const sel = window.getSelection();
     const targetHl = e.target.closest('.highlight');
-    
+    ctx.style.display = 'none';
+
     if (targetHl) {
         e.preventDefault();
         activeHighlight = targetHl;
         const rc = targetHl.getBoundingClientRect();
-        contextMenu.style.left = (rc.left + window.scrollX) + 'px';
-        contextMenu.style.top = (rc.bottom + window.scrollY + 5) + 'px';
-        contextMenu.style.display = 'block';
-    }
-    else if (isSelectionValid(sel)) {
+        ctx.style.left = (rc.left + window.scrollX) + 'px';
+        ctx.style.top = (rc.bottom + window.scrollY + 5) + 'px';
+        ctx.style.display = 'block';
+    } else if (isSelOk(sel)) {
         e.preventDefault();
         currentRange = sel.getRangeAt(0).cloneRange();
         const rc = currentRange.getBoundingClientRect();
-        contextMenu.style.left = (rc.left + window.scrollX) + 'px';
-        contextMenu.style.top = (rc.bottom + window.scrollY + 5) + 'px';
-        contextMenu.style.display = 'block';
+        ctx.style.left = (rc.left + window.scrollX) + 'px';
+        ctx.style.top = (rc.bottom + window.scrollY + 5) + 'px';
+        ctx.style.display = 'block';
         activeHighlight = null;
-    }
-    else {
-        contextMenu.style.display = 'none';
     }
 });
 
 document.addEventListener('click', e => {
-    if (!contextMenu.contains(e.target)) contextMenu.style.display = 'none';
+    if (!ctx.contains(e.target)) ctx.style.display = 'none';
 });
 
-// 1. HIGHLIGHT SELECTED TEXT
-document.getElementById('menuHighlight').addEventListener('click', () => {
+// === HIGHLIGHT ACTION ===
+document.getElementById('doHighlight').addEventListener('click', () => {
     if (!currentRange) return;
     try {
         const sp = document.createElement('span');
         sp.className = 'highlight';
-        sp.textContent = currentRange.toString().trim() || currentRange.toString();
+        sp.textContent = currentRange.toString();
         currentRange.deleteContents();
         currentRange.insertNode(sp);
         window.getSelection().removeAllRanges();
         saveHighlights();
-    } catch { 
-        alert('⚠️ Please select a smaller amount of text and try again.'); 
-    }
-    contextMenu.style.display = 'none';
+    } catch { alert('Select smaller text please.'); }
+    ctx.style.display = 'none';
 });
 
-// 2. ADD NOTE — creates highlight if needed, opens note box
-document.getElementById('menuAddNote').addEventListener('click', () => {
-    contextMenu.style.display = 'none';
+// === NOTE ACTION ===
+const noteBox = document.getElementById('noteBox');
+const noteText = document.getElementById('noteText');
+document.getElementById('doNote').addEventListener('click', () => {
+    ctx.style.display = 'none';
     if (!activeHighlight) {
         if (!currentRange) return;
         try {
             const sp = document.createElement('span');
             sp.className = 'highlight';
-            sp.textContent = currentRange.toString().trim() || currentRange.toString();
+            sp.textContent = currentRange.toString();
             currentRange.deleteContents();
             currentRange.insertNode(sp);
             activeHighlight = sp;
             window.getSelection().removeAllRanges();
             saveHighlights();
-        } catch { 
-            alert('⚠️ Please select a smaller amount of text and try again.'); 
-            return; 
-        }
+        } catch { alert('Select smaller text please.'); return; }
     }
-    // Add note marker if not present
     if (!activeHighlight.querySelector('.note-marker')) {
-        const marker = document.createElement('span');
-        marker.className = 'note-marker';
-        marker.textContent = '!';
-        activeHighlight.appendChild(marker);
+        const m = document.createElement('span');
+        m.className = 'note-marker';
+        m.textContent = '!';
+        activeHighlight.appendChild(m);
     }
-    // Position and show note box
     const rc = activeHighlight.getBoundingClientRect();
     noteBox.style.left = (rc.right + window.scrollX + 10) + 'px';
     noteBox.style.top = (rc.top + window.scrollY) + 'px';
     noteBox.style.display = 'block';
-    noteText.value = activeHighlight.getAttribute('data-note') || '';
+    noteText.value = activeHighlight.dataset.note || '';
     noteText.focus();
 });
 
-// 3. REMOVE HIGHLIGHT & NOTE
-document.getElementById('menuRemove').addEventListener('click', () => {
-    contextMenu.style.display = 'none';
+noteText.addEventListener('input', () => {
+    if (activeHighlight) {
+        activeHighlight.dataset.note = noteText.value;
+        saveHighlights();
+    }
+});
+document.getElementById('noteClose').addEventListener('click', () => {
+    noteBox.style.display = 'none';
+    activeHighlight = null;
+});
+
+// === REMOVE HIGHLIGHT ===
+document.getElementById('doRemove').addEventListener('click', () => {
+    ctx.style.display = 'none';
     noteBox.style.display = 'none';
     if (!activeHighlight) return;
-    // Restore plain text
-    activeHighlight.parentNode.replaceChild(
-        document.createTextNode(activeHighlight.textContent), 
-        activeHighlight
-    );
+    activeHighlight.parentNode.replaceChild(document.createTextNode(activeHighlight.textContent), activeHighlight);
     activeHighlight.parentNode.normalize();
     activeHighlight = null;
     saveHighlights();
 });
 
-// SAVE ANSWER TO LOCALSTORAGE
-function saveAnswer(q, val) {
-    localStorage.setItem(`${STORAGE_KEY}_q${q}`, val);
-    updateStatus();
-}
-
-// CLEAR EVERYTHING
+// === CLEAR ALL ===
 function clearAll() {
-    if (!confirm('⚠️ Clear all answers and highlights? This cannot be undone.')) return;
-    for (let q = 1; q <= 40; q++) localStorage.removeItem(`${STORAGE_KEY}_q${q}`);
-    localStorage.removeItem(`${passageId}_highlights`);
-    // Clear inputs
-    document.querySelectorAll('.input-field').forEach(i => { 
-        i.value = ''; 
-        i.classList.remove('filled'); 
-    });
-    document.querySelectorAll('input[type=radio], input[type=checkbox]').forEach(i => i.checked = false);
-    document.querySelectorAll('.mcq-option').forEach(o => o.classList.remove('checked'));
+    if (!confirm('Clear all answers and highlights?')) return;
+    localStorage.clear();
+    document.querySelectorAll('.input-field').forEach(i => { i.value = ''; i.classList.remove('filled'); });
+    document.querySelectorAll('input[type=radio],input[type=checkbox]').forEach(i => i.checked = false);
     document.querySelectorAll('.matching-select').forEach(s => s.selectedIndex = 0);
-    // Remove highlights — restore plain text
     document.querySelectorAll('.highlight').forEach(h => {
         h.parentNode.replaceChild(document.createTextNode(h.textContent), h);
         h.parentNode.normalize();
     });
     noteBox.style.display = 'none';
-    updateStatus();
+    updateNav();
 }
 
-// INITIALIZE ON PAGE LOAD
+// === INIT ===
 document.addEventListener('DOMContentLoaded', () => {
-    // Audio error handling
-    document.getElementById('audioPlayer').addEventListener('error', () => {
-        document.getElementById('audioStatus').style.display = 'block';
+    // Load saved answers
+    document.querySelectorAll('.input-field').forEach(inp => {
+        const q = inp.dataset.q;
+        const v = localStorage.getItem(`${STORAGE_KEY}_q${q}`) || '';
+        inp.value = v;
+        if (v) inp.classList.add('filled');
+        inp.addEventListener('input', () => {
+            saveAnswer(q, inp.value);
+            inp.classList.toggle('filled', inp.value.trim() !== '');
+        });
     });
-    
-    loadHighlights();
-    
-    // TEXT INPUTS — Q1–10, 31–40
-    [1,2,3,4,5,6,7,8,9,10,31,32,33,34,35,36,37,38,39,40].
+    document.querySelectorAll('input[type=radio],input[type=checkbox]').forEach(inp => {
+        const q = inp.dataset.q;
+        const saved = localStorage.getItem(`${STORAGE_KEY}_q${q}`);
+        if (inp.value === saved) inp.checked = true;
+        inp.addEventListener('change', () => saveAnswer(q, inp.value));
+    });
+    document.querySelectorAll('.matching-select').forEach(s => {
+        const q = s.dataset.q;
+        const saved = localStorage.getItem(`${STORAGE_KEY}_q${q}`) || '';
+        s.value = saved;
+        s.addEventListener('change', () => saveAnswer(q, s.value));
+    });
+    updateNav();
+});
+</script>
+</body>
+</html>
