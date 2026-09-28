@@ -328,6 +328,20 @@
 <p>The first major instances of machine breaking took place in 1811 in the county of Nottingham, and the practice soon spread across the country. Machine‑breaking Luddites attacked and burned factories, and in some cases they even exchanged gunfire with company guards and soldiers. The workers wanted employers to stop installing new machinery, but the British government responded to the uprisings by making machine‑breaking punishable by death. The unrest finally reached its peak in April 1812, when a few Luddites were shot during an attack on a mill near Huddersfield. In the days that followed, other Luddites were arrested, and dozens were hanged or transported to Australia. By 1813, the Luddite resistance had all but vanished.</p>
                 </div>
             </div>
+            <div class="passage-section" id="passage-2">
+                <h2>READING PASSAGE 2</h2>
+                <div class="instruction">You should spend about 20 minutes on Questions 14–26, which are based on Reading Passage 2 below.</div>
+                <div class="passage-text">
+                    <p style="color:#999; font-style:italic;">Paste Passage 2 text here...</p>
+                </div>
+            </div>
+            <div class="passage-section" id="passage-3">
+                <h2>READING PASSAGE 3</h2>
+                <div class="instruction">You should spend about 20 minutes on Questions 27–40, which are based on Reading Passage 3 below.</div>
+                <div class="passage-text">
+                    <p style="color:#999; font-style:italic;">Paste Passage 3 text here...</p>
+                </div>
+            </div>
         </div>
         
         <!-- RIGHT PANEL: QUESTIONS -->
@@ -450,18 +464,26 @@
                     </div>
                 </div>
             </div>
+            <div class="questions-block" id="questions-2">
+                <h3>Questions 14–26</h3>
+                <p style="color:#888; font-style:italic; padding:15px;">Paste Passage 2 questions here...</p>
+            </div>
+            <div class="questions-block" id="questions-3">
+                <h3>Questions 27–40</h3>
+                <p style="color:#888; font-style:italic; padding:15px;">Paste Passage 3 questions here...</p>
+            </div>
         </div>
     </div>
     
-    <!-- BOTTOM NAVIGATION -->
+    <!-- BOTTOM NAVIGATION — FULL 1–40 INDICATORS -->
     <div class="bottom-nav">
         <!-- FAR LEFT: Back & Clear -->
-        <div style="display:flex; gap:8px; align-items:center;">
+        <div style="display:flex; gap:8px; align-items:center; flex-shrink:0;">
             <a href="reading-intro.html" class="back-btn">← Back</a>
             <button class="clear-btn" id="clearAllBtn">🗑️ Clear</button>
         </div>
         
-        <!-- CENTER: Question Indicators -->
+        <!-- CENTER: ALL 40 QUESTION INDICATORS -->
         <div class="nav-group">
             <span class="part-label">P1:</span>
             <div class="q-indicator" data-q="1" data-passage="1">1</div>
@@ -477,6 +499,37 @@
             <div class="q-indicator" data-q="11" data-passage="1">11</div>
             <div class="q-indicator" data-q="12" data-passage="1">12</div>
             <div class="q-indicator" data-q="13" data-passage="1">13</div>
+            
+            <span class="part-label">P2:</span>
+            <div class="q-indicator" data-q="14" data-passage="2">14</div>
+            <div class="q-indicator" data-q="15" data-passage="2">15</div>
+            <div class="q-indicator" data-q="16" data-passage="2">16</div>
+            <div class="q-indicator" data-q="17" data-passage="2">17</div>
+            <div class="q-indicator" data-q="18" data-passage="2">18</div>
+            <div class="q-indicator" data-q="19" data-passage="2">19</div>
+            <div class="q-indicator" data-q="20" data-passage="2">20</div>
+            <div class="q-indicator" data-q="21" data-passage="2">21</div>
+            <div class="q-indicator" data-q="22" data-passage="2">22</div>
+            <div class="q-indicator" data-q="23" data-passage="2">23</div>
+            <div class="q-indicator" data-q="24" data-passage="2">24</div>
+            <div class="q-indicator" data-q="25" data-passage="2">25</div>
+            <div class="q-indicator" data-q="26" data-passage="2">26</div>
+            
+            <span class="part-label">P3:</span>
+            <div class="q-indicator" data-q="27" data-passage="3">27</div>
+            <div class="q-indicator" data-q="28" data-passage="3">28</div>
+            <div class="q-indicator" data-q="29" data-passage="3">29</div>
+            <div class="q-indicator" data-q="30" data-passage="3">30</div>
+            <div class="q-indicator" data-q="31" data-passage="3">31</div>
+            <div class="q-indicator" data-q="32" data-passage="3">32</div>
+            <div class="q-indicator" data-q="33" data-passage="3">33</div>
+            <div class="q-indicator" data-q="34" data-passage="3">34</div>
+            <div class="q-indicator" data-q="35" data-passage="3">35</div>
+            <div class="q-indicator" data-q="36" data-passage="3">36</div>
+            <div class="q-indicator" data-q="37" data-passage="3">37</div>
+            <div class="q-indicator" data-q="38" data-passage="3">38</div>
+            <div class="q-indicator" data-q="39" data-passage="3">39</div>
+            <div class="q-indicator" data-q="40" data-passage="3">40</div>
         </div>
         
         <!-- FAR RIGHT: Next -->
@@ -484,11 +537,21 @@
     </div>
 
 <script>
-const STORAGE_KEY = 'Cambridge19_Test1_Reading_P1';
-const passageId = 'reading-cambridge19-test1-p1';
+const STORAGE_KEY = 'Cambridge19_Test1_Reading';
+const passageId = 'reading-cambridge19-test1';
+let currentPassage = 1;
 let currentRange = null;
 let activeHighlight = null;
 let currentQuestionNum = 1;
+
+// SWITCH PASSAGE
+function switchPassage(passageNum) {
+    currentPassage = passageNum;
+    document.querySelectorAll('.passage-section').forEach(p => p.classList.remove('active'));
+    document.getElementById(`passage-${passageNum}`).classList.add('active');
+    document.querySelectorAll('.questions-block').forEach(q => q.classList.remove('active'));
+    document.getElementById(`questions-${passageNum}`).classList.add('active');
+}
 
 // Update current question highlighting
 function setCurrentQuestion(qNum) {
@@ -505,7 +568,7 @@ function setCurrentQuestion(qNum) {
 
 // STATUS UPDATE — Shade answered boxes green
 function updateStatus() {
-    for (let q = 1; q <= 13; q++) {
+    for (let q = 1; q <= 40; q++) {
         const btn = document.querySelector(`.q-indicator[data-q="${q}"]`);
         if (!btn) continue;
         let val = localStorage.getItem(`${STORAGE_KEY}_q${q}`) || '';
@@ -513,10 +576,12 @@ function updateStatus() {
     }
 }
 
-// CLICK QUESTION INDICATOR → Highlight row
+// CLICK QUESTION INDICATOR → Switch passage + highlight row
 document.querySelectorAll('.q-indicator').forEach(btn => {
     btn.addEventListener('click', () => {
+        const passageNum = parseInt(btn.dataset.passage);
         const qNum = parseInt(btn.dataset.q);
+        switchPassage(passageNum);
         setCurrentQuestion(qNum);
         const target = document.getElementById(`q${qNum}`);
         if (target) {
@@ -691,7 +756,7 @@ function saveAnswer(q, val) {
 // CLEAR ALL
 function clearAllData() {
     if (!confirm('⚠️ Are you sure you want to clear ALL answers, highlights, and notes? This cannot be undone.')) return;
-    for (let q = 1; q <= 13; q++) {
+    for (let q = 1; q <= 40; q++) {
         localStorage.removeItem(`${STORAGE_KEY}_q${q}`);
     }
     localStorage.removeItem(`${passageId}_highlights`);
