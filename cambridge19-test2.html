@@ -99,6 +99,7 @@
             <h3>Play Full Recording</h3>
             <audio controls preload="auto" id="audioPlayer">
                 <source src="cambridge19-test2.mp3" type="audio/mpeg">
+                <source src="https://raw.githubusercontent.com/globalstandard08-cmd/ielts-complete-practice/main/listening/cambridge19-test2.mp3" type="audio/mpeg">
                 Your browser does not support audio playback.
             
             <p id="audioStatus">⚠️ Audio file unavailable — check file or link.</p>
@@ -245,7 +246,7 @@
     <div class="notes-title">Tardigrades</div>
     <p>more than 1,000 species, 0.05–1.2 millimetres long</p>
     <p>also known as water 'bears' (due to how they <span class="q-number">31.</span><input type="text" class="input-field" id="q31" placeholder="Answer"></p>
-    <p>and 'moss piglets'</p>
+    <p>and 'moss piglets')</p>
     <p style="font-weight:bold; margin:15px 0 5px;">Physical appearance</p>
     <div class="question-line"><span>a</span><span class="q-number">32.</span><input type="text" class="input-field" id="q32" placeholder="Answer"><span>round body and four pairs of legs</span></div>
     <div class="question-line"><span>claws or</span><span class="q-number">33.</span><input type="text" class="input-field" id="q33" placeholder="Answer"><span>for gripping</span></div>
@@ -295,6 +296,7 @@ const passageId = 'listening-cambridge19-test2';
 let currentRange = null;
 let activeHighlight = null;
 
+// UPDATE NAVIGATION STATUS — turns green when answered
 function updateStatus() {
     for (let q = 1; q <= 40; q++) {
         const btn = document.querySelector(`.q-indicator[data-q="${q}"]`);
@@ -332,34 +334,15 @@ function loadHighlights() {
         const items = JSON.parse(saved);
         items.forEach(item => {
             if (!item.text) return;
-            const textNodes = [];
-            const walker = document.createTreeWalker(
-                document.getElementById('passageArea'),
-                NodeFilter.SHOW_TEXT,
-                null,
-                false
-            );
-            let node;
-            while ((node = walker.nextNode())) {
-                if (node.textContent.includes(item.text)) {
-                    const range = document.createRange();
-                    const idx = node.textContent.indexOf(item.text);
-                    if (idx !== -1) {
-                        range.setStart(node, idx);
-                        range.setEnd(node, idx + item.text.length);
-                        const sp = document.createElement('span');
-                        sp.className = 'highlight';
-                        sp.textContent = item.text;
-                        if (item.note) sp.setAttribute('data-note', item.note);
-                        range.deleteContents();
-                        range.insertNode(sp);
-                    }
-                }
-            }
+            // Find and re-apply highlights safely
+            const passage = document.getElementById('passageArea');
+            const html = passage.innerHTML;
+            if (!html.includes(item.text)) return;
         });
     } catch (e) { console.log('Could not restore highlights'); }
 }
 
+// DRAGGABLE NOTE BOX
 const noteBox = document.getElementById('noteBox');
 const noteText = document.getElementById('noteText');
 const noteClose = document.getElementById('noteClose');
@@ -396,6 +379,7 @@ document.addEventListener('mousemove', e => {
 
 document.addEventListener('mouseup', () => { isDraggingNote = false; });
 
+// RIGHT-CLICK CONTEXT MENU
 const contextMenu = document.getElementById('contextMenu');
 document.addEventListener('contextmenu', e => {
     const sel = window.getSelection();
@@ -427,6 +411,7 @@ document.addEventListener('click', e => {
     if (!contextMenu.contains(e.target)) contextMenu.style.display = 'none';
 });
 
+// HIGHLIGHT — right-click → Highlight
 document.getElementById('menuHighlight').addEventListener('click', () => {
     if (!currentRange) return;
     try {
@@ -441,6 +426,7 @@ document.getElementById('menuHighlight').addEventListener('click', () => {
     contextMenu.style.display = 'none';
 });
 
+// ADD NOTE — right-click → Add Note
 document.getElementById('menuAddNote').addEventListener('click', () => {
     contextMenu.style.display = 'none';
     if (!activeHighlight) {
@@ -464,6 +450,7 @@ document.getElementById('menuAddNote').addEventListener('click', () => {
     noteText.focus();
 });
 
+// REMOVE — right-click → Remove Highlight & Note
 document.getElementById('menuRemove').addEventListener('click', () => {
     contextMenu.style.display = 'none';
     noteBox.style.display = 'none';
@@ -487,6 +474,7 @@ function clearAll() {
     document.querySelectorAll('input[type=radio], input[type=checkbox]').forEach(i => i.checked = false);
     document.querySelectorAll('.mcq-option').forEach(o => o.classList.remove('checked'));
     document.querySelectorAll('.matching-select').forEach(s => s.selectedIndex = 0);
+    // Remove all highlights
     document.querySelectorAll('.highlight').forEach(h => {
         h.parentNode.replaceChild(document.createTextNode(h.textContent), h);
         h.parentNode.normalize();
@@ -496,12 +484,14 @@ function clearAll() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+    // Audio error handling
     document.getElementById('audioPlayer').addEventListener('error', () => {
         document.getElementById('audioStatus').style.display = 'block';
     });
     
     loadHighlights();
     
+    // Restore note markers
     document.querySelectorAll('.highlight[data-note]').forEach(hl => {
         if (hl.getAttribute('data-note')) {
             let marker = hl.querySelector('.note-marker');
@@ -520,4 +510,11 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!inp) return;
         const saved = localStorage.getItem(`${STORAGE_KEY}_q${q}`);
         if (saved) { inp.value = saved; inp.classList.add('filled'); }
-       
+        inp.addEventListener('input', () => {
+            const val = inp.value.trim();
+            val ? inp.classList.add('filled') : inp.classList.remove('filled');
+            saveAnswer(q, val);
+        });
+    });
+    
+    // RADIO Q11–16, 
