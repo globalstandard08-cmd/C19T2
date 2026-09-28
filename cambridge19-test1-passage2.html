@@ -95,6 +95,11 @@
             background: #fff;
         }
         .ans-box.filled { background: #f5f8ff; border-color: #1f3a5f; }
+        .ans-box-group {
+            display: flex;
+            gap: 6px;
+            margin-left: 8px;
+        }
         .input-answer { 
             width: 220px; 
             padding: 7px 10px; 
@@ -414,7 +419,7 @@
                 </div>
             </div>
             
-            <!-- Questions 23–24 -->
+            <!-- Questions 23–24 — TWO ANSWERS EACH -->
             <div class="questions-block">
                 <h3>Questions 23 and 24</h3>
                 <div class="instruction">Choose <strong>TWO</strong> letters: <strong>A–E</strong>.<br>Write the correct letters in boxes <strong>23 and 24</strong> on your answer sheet.</div>
@@ -422,31 +427,22 @@
                 <p style="margin: 10px 0; font-weight:500;">Which <strong>TWO</strong> facts about Emma Raducanu's withdrawal from the Wimbledon tournament are mentioned in the text?</p>
                 
                 <div class="q-row" id="q23">
-                    <span class="q-num">23</span>
-                    <div style="display:flex; flex-direction:column; gap:4px; margin-top:2px;">
-                        <label class="mc-option"><input type="checkbox" name="q23" value="A"> A the stage at which she dropped out of the tournament</label>
-                        <label class="mc-option"><input type="checkbox" name="q23" value="B"> B symptoms of her performance stress at the tournament</label>
-                        <label class="mc-option"><input type="checkbox" name="q23" value="C"> C measures which she had taken to manage her stress levels</label>
-                        <label class="mc-option"><input type="checkbox" name="q23" value="D"> D aspects of the Wimbledon tournament which increased her stress levels</label>
-                        <label class="mc-option"><input type="checkbox" name="q23" value="E"> E reactions to her social media posts about her experience at Wimbledon</label>
+                    <span class="q-num">23, 24</span>
+                    <div style="display:flex; flex-direction:column; gap:4px; margin-top:2px; flex:1;">
+                        <label class="mc-option"><input type="checkbox" name="q23-24" value="A"> A the stage at which she dropped out of the tournament</label>
+                        <label class="mc-option"><input type="checkbox" name="q23-24" value="B"> B symptoms of her performance stress at the tournament</label>
+                        <label class="mc-option"><input type="checkbox" name="q23-24" value="C"> C measures which she had taken to manage her stress levels</label>
+                        <label class="mc-option"><input type="checkbox" name="q23-24" value="D"> D aspects of the Wimbledon tournament which increased her stress levels</label>
+                        <label class="mc-option"><input type="checkbox" name="q23-24" value="E"> E reactions to her social media posts about her experience at Wimbledon</label>
                     </div>
-                    <input type="text" class="ans-box" id="ans23" maxlength="1" placeholder="">
-                </div>
-                
-                <div class="q-row" id="q24">
-                    <span class="q-num">24</span>
-                    <div style="display:flex; flex-direction:column; gap:4px; margin-top:2px;">
-                        <label class="mc-option"><input type="checkbox" name="q24" value="A"> A the stage at which she dropped out of the tournament</label>
-                        <label class="mc-option"><input type="checkbox" name="q24" value="B"> B symptoms of her performance stress at the tournament</label>
-                        <label class="mc-option"><input type="checkbox" name="q24" value="C"> C measures which she had taken to manage her stress levels</label>
-                        <label class="mc-option"><input type="checkbox" name="q24" value="D"> D aspects of the Wimbledon tournament which increased her stress levels</label>
-                        <label class="mc-option"><input type="checkbox" name="q24" value="E"> E reactions to her social media posts about her experience at Wimbledon</label>
+                    <div class="ans-box-group">
+                        <input type="text" class="ans-box" id="ans23" maxlength="1" placeholder="">
+                        <input type="text" class="ans-box" id="ans24" maxlength="1" placeholder="">
                     </div>
-                    <input type="text" class="ans-box" id="ans24" maxlength="1" placeholder="">
                 </div>
             </div>
             
-            <!-- Questions 25–26 -->
+            <!-- Questions 25–26 — TWO ANSWERS EACH -->
             <div class="questions-block">
                 <h3>Questions 25 and 26</h3>
                 <div class="instruction">Choose <strong>TWO</strong> letters: <strong>A–E</strong>.<br>Write the correct letters in boxes <strong>25 and 26</strong> on your answer sheet.</div>
@@ -454,27 +450,18 @@
                 <p style="margin: 10px 0; font-weight:500;">Which <strong>TWO</strong> facts about anxiety are mentioned in Paragraph E of the text?</p>
                 
                 <div class="q-row" id="q25">
-                    <span class="q-num">25</span>
-                    <div style="display:flex; flex-direction:column; gap:4px; margin-top:2px;">
-                        <label class="mc-option"><input type="checkbox" name="q25" value="A"> A the factors which determine how severe it may be</label>
-                        <label class="mc-option"><input type="checkbox" name="q25" value="B"> B how long it takes for its effects to become apparent</label>
-                        <label class="mc-option"><input type="checkbox" name="q25" value="C"> C which of its symptoms is most frequently encountered</label>
-                        <label class="mc-option"><input type="checkbox" name="q25" value="D"> D the types of athletes who are most likely to suffer from it</label>
-                        <label class="mc-option"><input type="checkbox" name="q25" value="E"> E the harm that can result if athletes experience it too often</label>
+                    <span class="q-num">25, 26</span>
+                    <div style="display:flex; flex-direction:column; gap:4px; margin-top:2px; flex:1;">
+                        <label class="mc-option"><input type="checkbox" name="q25-26" value="A"> A the factors which determine how severe it may be</label>
+                        <label class="mc-option"><input type="checkbox" name="q25-26" value="B"> B how long it takes for its effects to become apparent</label>
+                        <label class="mc-option"><input type="checkbox" name="q25-26" value="C"> C which of its symptoms is most frequently encountered</label>
+                        <label class="mc-option"><input type="checkbox" name="q25-26" value="D"> D the types of athletes who are most likely to suffer from it</label>
+                        <label class="mc-option"><input type="checkbox" name="q25-26" value="E"> E the harm that can result if athletes experience it too often</label>
                     </div>
-                    <input type="text" class="ans-box" id="ans25" maxlength="1" placeholder="">
-                </div>
-                
-                <div class="q-row" id="q26">
-                    <span class="q-num">26</span>
-                    <div style="display:flex; flex-direction:column; gap:4px; margin-top:2px;">
-                        <label class="mc-option"><input type="checkbox" name="q26" value="A"> A the factors which determine how severe it may be</label>
-                        <label class="mc-option"><input type="checkbox" name="q26" value="B"> B how long it takes for its effects to become apparent</label>
-                        <label class="mc-option"><input type="checkbox" name="q26" value="C"> C which of its symptoms is most frequently encountered</label>
-                        <label class="mc-option"><input type="checkbox" name="q26" value="D"> D the types of athletes who are most likely to suffer from it</label>
-                        <label class="mc-option"><input type="checkbox" name="q26" value="E"> E the harm that can result if athletes experience it too often</label>
+                    <div class="ans-box-group">
+                        <input type="text" class="ans-box" id="ans25" maxlength="1" placeholder="">
+                        <input type="text" class="ans-box" id="ans26" maxlength="1" placeholder="">
                     </div>
-                    <input type="text" class="ans-box" id="ans26" maxlength="1" placeholder="">
                 </div>
             </div>
         </div>
@@ -769,25 +756,41 @@ for (let q = 19; q <= 22; q++) {
     });
 }
 
-// CHECKBOX → ANSWER BOX SYNC — Q23–26
-function syncCheckboxes(q) {
-    const checked = document.querySelectorAll(`input[name="q${q}"]:checked`);
-    let vals = [];
-    checked.forEach(cb => vals.push(cb.value));
-    // For Q23/24 and Q25/26 — each box takes ONE letter
-    saveAnswer(q, vals.join(','));
+// CHECKBOX → TWO ANSWER BOXES SYNC
+function syncTwoAnswerBoxes(groupName, boxId1, boxId2, qNum1, qNum2) {
+    const checked = document.querySelectorAll(`input[name="${groupName}"]:checked`);
+    const vals = Array.from(checked).map(cb => cb.value).slice(0, 2);
+    
+    const box1 = document.getElementById(boxId1);
+    const box2 = document.getElementById(boxId2);
+    
+    box1.value = vals[0] || '';
+    box1.classList.toggle('filled', !!vals[0]);
+    box2.value = vals[1] || '';
+    box2.classList.toggle('filled', !!vals[1]);
+    
+    saveAnswer(qNum1, vals[0] || '');
+    saveAnswer(qNum2, vals[1] || '');
 }
 
-document.querySelectorAll('input[type="checkbox"]').forEach(cb => {
-    cb.addEventListener('change', () => {
-        const q = cb.name.replace('q', '');
-        syncCheckboxes(parseInt(q));
-        // Show selected letter in the answer box
-        const box = document.getElementById(`ans${q}`);
-        const checked = document.querySelectorAll(`input[name="q${q}"]:checked`);
-        const vals = Array.from(checked).map(c => c.value).slice(0,1);
-        box.value = vals.join('');
-        box.classList.toggle('filled', vals.length > 0);
+document.querySelectorAll('input[name="q23-24"]').forEach(cb => {
+    cb.addEventListener('change', () => syncTwoAnswerBoxes('q23-24', 'ans23', 'ans24', 23, 24));
+});
+document.querySelectorAll('input[name="q25-26"]').forEach(cb => {
+    cb.addEventListener('change', () => syncTwoAnswerBoxes('q25-26', 'ans25', 'ans26', 25, 26));
+});
+
+// Manual typing in boxes also saves
+['ans23','ans24','ans25','ans26'].forEach((id, idx, arr) => {
+    const q = parseInt(id.replace('ans',''));
+    const box = document.getElementById(id);
+    box.addEventListener('input', () => {
+        let val = box.value.trim().toUpperCase();
+        if (val.length > 1) val = val[0];
+        if (val && !['A','B','C','D','E'].includes(val)) val = '';
+        box.value = val;
+        box.classList.toggle('filled', val !== '');
+        saveAnswer(q, val);
     });
 });
 
@@ -837,21 +840,30 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
     
-    // Restore answers Q23–26 (checkboxes)
-    for (let q = 23; q <= 26; q++) {
-        const saved = localStorage.getItem(`${STORAGE_KEY}_q${q}`);
-        if (saved) {
-            const vals = saved.split(',');
-            document.querySelectorAll(`input[name="q${q}"]`).forEach(cb => {
-                cb.checked = vals.includes(cb.value);
-            });
-            // Show first selected letter in box
-            const box = document.getElementById(`ans${q}`);
-            if (vals.length > 0) {
-                box.value = vals[0];
-                box.classList.add('filled');
-            }
-        }
+    // Restore answers Q23–24
+    const v23 = localStorage.getItem(`${STORAGE_KEY}_q23`) || '';
+    const v24 = localStorage.getItem(`${STORAGE_KEY}_q24`) || '';
+    if (v23 || v24) {
+        document.querySelectorAll('input[name="q23-24"]').forEach(cb => {
+            cb.checked = (cb.value === v23) || (cb.value === v24);
+        });
+        document.getElementById('ans23').value = v23;
+        document.getElementById('ans23').classList.toggle('filled', !!v23);
+        document.getElementById('ans24').value = v24;
+        document.getElementById('ans24').classList.toggle('filled', !!v24);
+    }
+    
+    // Restore answers Q25–26
+    const v25 = localStorage.getItem(`${STORAGE_KEY}_q25`) || '';
+    const v26 = localStorage.getItem(`${STORAGE_KEY}_q26`) || '';
+    if (v25 || v26) {
+        document.querySelectorAll('input[name="q25-26"]').forEach(cb => {
+            cb.checked = (cb.value === v25) || (cb.value === v26);
+        });
+        document.getElementById('ans25').value = v25;
+        document.getElementById('ans25').classList.toggle('filled', !!v25);
+        document.getElementById('ans26').value = v26;
+        document.getElementById('ans26').classList.toggle('filled', !!v26);
     }
     
     setCurrentQuestion(14);
