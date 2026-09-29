@@ -717,24 +717,24 @@ for (let q = 27; q <= 32; q++) {
         saveAnswer(q, val);
     });
 }
-// Q33–37 — YES / NO / NOT GIVEN — FIXED: allows typing
+// Q33–37 — YES / NO / NOT GIVEN — FIXED
 for (let q = 33; q <= 37; q++) {
     const box = document.getElementById(`ans${q}`);
     box.addEventListener('input', () => {
-        let val = box.value.trim().toUpperCase();
-        // Allow typing naturally — only validate on blur
+        let val = box.value.toUpperCase();
         box.value = val;
         box.classList.toggle('filled', ['YES','NO','NOT GIVEN'].includes(val));
         saveAnswer(q, val);
     });
-    // Clean up only when user finishes typing
     box.addEventListener('blur', () => {
         let val = box.value.trim().toUpperCase();
         if (!['YES','NO','NOT GIVEN'].includes(val)) {
-            box.value = '';
             box.classList.remove('filled');
+            return;
         }
-        saveAnswer(q, box.value);
+        box.value = val;
+        box.classList.add('filled');
+        saveAnswer(q, val);
     });
 }
 // Q38–40 — Multiple Choice
