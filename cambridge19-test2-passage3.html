@@ -80,7 +80,7 @@
         }
         .q-num { font-weight: bold; min-width: 28px; color: #1f3a5f; flex-shrink: 0; }
         .ans-box {
-            width: 90px;
+            width: 140px;
             height: 36px;
             border: 1px solid #333;
             border-radius: 2px;
@@ -330,25 +330,15 @@
             
             <div class="passage-text">
 <p>Let us start by looking at a modern 'genius', Maryam Mirzakhani, who died at the early age of 40. She was the only woman to win the Fields Medal — the mathematical equivalent of a Nobel prize. It would be easy to assume that someone as special as Mirzakhani must have been one of those 'gifted' children, those who have an extraordinary ability in a specific sphere of activity or knowledge. But look closer and a different story emerges.</p>
-
 <p>Mirzakhani was born in Tehran, Iran. She went to a highly selective girls' school but maths wasn't her interest — reading was. She loved novels and would read anything she could lay her hands on. As for maths, she did rather poorly at it for the first couple of years in her middle school, but became interested when her elder brother told her about what he'd learned. He shared a famous maths problem from a magazine that fascinated her — and she was hooked.</p>
-
 <p>In adult life it is clear that she was curious, excited by what she did and also resolute in the face of setbacks. One of her comments sums it up: 'Of course, the most rewarding part is the "Aha" moment, the excitement of discovery and enjoyment of understanding something new… But most of the time, doing mathematics for me is like being on a long hike with no trail and no end in sight.' That trail took her to the heights of original research into mathematics.</p>
-
 <p>Is her background unusual? Apparently not. Most Nobel prize winners were exceptional in childhood. Einstein was slow to talk as a baby. He failed the general part of the entry test to Zurich Polytechnic — though they let him in because of high physics and maths scores. He struggled at work initially, but he kept plugging away and eventually rewrote the laws of Newtonian mechanics with his theory of relativity.</p>
-
 <p>There has been a considerable amount of research on high performance over the last century that suggests it goes way beyond intelligence. On top of that, research is clear that brains are flexible, new neural pathways can be created, and IQ isn't fixed. For example, just because you can read stories with hundreds of pages at the age of five doesn't mean you will still be ahead of your contemporaries in your teens.</p>
-
 <p>While the jury is out on giftedness being innate and other factors potentially making the difference, what is certain is that the behaviours associated with high levels of performance are replicable and most can be taught — even traits such as curiosity.</p>
-
 <p>According to my colleague Prof Deborah Eyre, with whom I have collaborated on the book Great Minds and How to Grow Them, the latest neuroscience and psychological research suggests most individuals can reach levels of performance associated in school with the gifted and talented. However, they must be taught the right attitudes and approaches to their learning and develop the attributes of high performers — curiosity, persistence and hard work, for example — an approach Eyre calls 'high performance learning'. Critically, they need the right support in developing those approaches at home as well as at school.</p>
-
 <p>Prof Anders Ericsson, an eminent education psychologist at Florida State University, US, is co-author of <em>Peak: Secrets from the New Science of Expertise</em>. After research going back to 1980 into diverse achievements, from music to memory to sport, he doesn't think unique and innate talents are at the heart of performance. Deliberate practice, that stretches you every step of the way, and around 10,000 hours of it, is what produces the goods. It's not a magic number — the highest performers move on to doing a whole lot more, of course. Ericsson's memory research is particularly interesting because random students, trained in memory techniques for the study, went on to outperform others thought to have innately superior memories — those who you might call gifted.</p>
-
 <p>But it is perhaps the work of Benjamin Bloom, another distinguished American educationalist working in the 1980s, that gives the most pause for thought. Bloom's team looked at a group of extraordinarily high achieving people in disciplines as varied as ballet, swimming, piano, tennis, maths, sculpture and neurology. He found a pattern of parents encouraging and supporting their children, often in areas they enjoyed themselves. Bloom's outstanding people had worked very hard and consistently at something they had become hooked on when at a young age, and their parents all emerged as having strong work ethics themselves.</p>
-
 <p>Eyre says we know how high performers learn. From what she has developed a high performance learning approach. She is working on this with a group of schools, both in Britain and abroad. Some spin-off research, which looked in detail at 24 of the 3,000 children being studied who were succeeding despite difficult circumstances, found something remarkable. Half were getting free school meals because of poverty, more than half were living with a single parent, and four in five were living in disadvantaged areas. Interviews uncovered strong evidence of an adult or adults in the child's life who valued and supported education, either in the immediate or extended family or in the child's wider community. Children talked about the need to work hard at school, to listen in class and keep trying.</p>
-
 <p>Let us end with Einstein, the epitome of a genius. He clearly had curiosity, character and determination but it was undetected. Did he think he was a genius or even gifted? He once wrote: 'It's not that I'm so smart, it's just that I stay with problems longer. Most people say it is the intellect which makes a great scientist. They are wrong: it is character.'</p>
             </div>
         </div>
@@ -544,14 +534,12 @@
         
         <a href="writing-intro.html" class="next-passage-btn">Next →</a>
     </div>
-
 <script>
 const STORAGE_KEY = 'Cambridge19_Test2_Reading';
 const passageId = 'cambridge19-test2-passage3';
 let currentRange = null;
 let activeHighlight = null;
 let currentQuestionNum = 27;
-
 function setCurrentQuestion(qNum) {
     document.querySelectorAll('.q-row.current').forEach(r => r.classList.remove('current'));
     document.querySelectorAll('.q-indicator.current').forEach(b => b.classList.remove('current'));
@@ -561,7 +549,6 @@ function setCurrentQuestion(qNum) {
     if (row) row.classList.add('current');
     if (indicator) indicator.classList.add('current');
 }
-
 function updateStatus() {
     for (let q = 1; q <= 40; q++) {
         const btn = document.querySelector(`.q-indicator[data-q="${q}"]`);
@@ -570,7 +557,6 @@ function updateStatus() {
         btn.classList.toggle('answered', val.trim().length > 0);
     }
 }
-
 document.querySelectorAll('.q-indicator').forEach(btn => {
     btn.addEventListener('click', () => {
         const qNum = parseInt(btn.dataset.q);
@@ -579,7 +565,6 @@ document.querySelectorAll('.q-indicator').forEach(btn => {
         if (target) target.scrollIntoView({behavior:'smooth', block:'center'});
     });
 });
-
 function isSelectionValid(sel) {
     if (!sel || sel.isCollapsed || !sel.toString().trim()) return false;
     try {
@@ -592,7 +577,6 @@ function isSelectionValid(sel) {
         return (inPassage || inQuestions) && !inInput;
     } catch { return false; }
 }
-
 function saveHighlightsData() {
     const highlights = [];
     document.querySelectorAll('.highlight').forEach((hl, idx) => {
@@ -604,7 +588,6 @@ function saveHighlightsData() {
     });
     localStorage.setItem(`${passageId}_highlights`, JSON.stringify(highlights));
 }
-
 function restoreNoteMarkers() {
     document.querySelectorAll('.highlight').forEach(hl => {
         if (hl.getAttribute('data-note') && !hl.querySelector('.note-marker')) {
@@ -615,7 +598,6 @@ function restoreNoteMarkers() {
         }
     });
 }
-
 const noteBox = document.getElementById('noteBox');
 const noteText = document.getElementById('noteText');
 const noteClose = document.getElementById('noteClose');
@@ -636,7 +618,6 @@ noteText.addEventListener('input', () => {
         saveHighlightsData();
     }
 });
-
 let isDraggingNote = false, dragOffsetX = 0, dragOffsetY = 0;
 document.addEventListener('mousedown', e => {
     if (!e.target.closest('.note-header')) return;
@@ -651,7 +632,6 @@ document.addEventListener('mousemove', e => {
     noteBox.style.top = (e.clientY - dragOffsetY) + 'px';
 });
 document.addEventListener('mouseup', () => isDraggingNote = false);
-
 const contextMenu = document.getElementById('contextMenu');
 document.addEventListener('contextmenu', e => {
     const sel = window.getSelection();
@@ -676,7 +656,6 @@ document.addEventListener('contextmenu', e => {
     }
 });
 document.addEventListener('click', e => { if (!contextMenu.contains(e.target)) contextMenu.style.display = 'none'; });
-
 document.getElementById('menuHighlight').addEventListener('click', () => {
     if (!currentRange) return;
     try {
@@ -690,7 +669,6 @@ document.getElementById('menuHighlight').addEventListener('click', () => {
     } catch { alert('⚠️ Select smaller text.'); }
     contextMenu.style.display = 'none';
 });
-
 document.getElementById('menuAddNote').addEventListener('click', () => {
     contextMenu.style.display = 'none';
     if (!activeHighlight) {
@@ -713,7 +691,6 @@ document.getElementById('menuAddNote').addEventListener('click', () => {
     noteText.value = activeHighlight.getAttribute('data-note') || '';
     noteText.focus();
 });
-
 document.getElementById('menuRemove').addEventListener('click', () => {
     contextMenu.style.display = 'none';
     noteBox.style.display = 'none';
@@ -724,12 +701,10 @@ document.getElementById('menuRemove').addEventListener('click', () => {
     activeHighlight = null;
     saveHighlightsData();
 });
-
 function saveAnswer(q, val) {
     localStorage.setItem(`${STORAGE_KEY}_q${q}`, val);
     updateStatus();
 }
-
 // Q27–32 — Single letter A–K only
 for (let q = 27; q <= 32; q++) {
     const box = document.getElementById(`ans${q}`);
@@ -742,20 +717,26 @@ for (let q = 27; q <= 32; q++) {
         saveAnswer(q, val);
     });
 }
-
-// Q33–37 — STRICT real exam mode: only YES / NO / NOT GIVEN
+// Q33–37 — YES / NO / NOT GIVEN — FIXED: allows typing
 for (let q = 33; q <= 37; q++) {
     const box = document.getElementById(`ans${q}`);
     box.addEventListener('input', () => {
-        let val = box.value.trim();
-        // Only exact matches accepted — no shortcuts
-        if (!['YES','NO','NOT GIVEN'].includes(val)) val = '';
+        let val = box.value.trim().toUpperCase();
+        // Allow typing naturally — only validate on blur
         box.value = val;
-        box.classList.toggle('filled', val !== '');
+        box.classList.toggle('filled', ['YES','NO','NOT GIVEN'].includes(val));
         saveAnswer(q, val);
     });
+    // Clean up only when user finishes typing
+    box.addEventListener('blur', () => {
+        let val = box.value.trim().toUpperCase();
+        if (!['YES','NO','NOT GIVEN'].includes(val)) {
+            box.value = '';
+            box.classList.remove('filled');
+        }
+        saveAnswer(q, box.value);
+    });
 }
-
 // Q38–40 — Multiple Choice
 function syncMCBox(qNum, groupName) {
     const checked = document.querySelector(`input[name="${groupName}"]:checked`);
@@ -770,7 +751,6 @@ function syncMCBox(qNum, groupName) {
         saveAnswer(qNum, '');
     }
 }
-
 ['38','39','40'].forEach(q => {
     document.querySelectorAll(`input[name="q${q}"]`).forEach(cb => {
         cb.addEventListener('change', () => syncMCBox(parseInt(q), `q${q}`));
@@ -788,7 +768,6 @@ function syncMCBox(qNum, groupName) {
         saveAnswer(parseInt(q), val);
     });
 });
-
 function clearAllData() {
     if (!confirm('⚠️ Are you sure you want to clear ALL answers, highlights, and notes? This cannot be undone.')) return;
     for (let q = 1; q <= 40; q++) localStorage.removeItem(`${STORAGE_KEY}_q${q}`);
@@ -804,7 +783,6 @@ function clearAllData() {
     location.reload();
 }
 document.getElementById('clearAllBtn').addEventListener('click', clearAllData);
-
 document.addEventListener('DOMContentLoaded', () => {
     restoreNoteMarkers();
     
@@ -817,7 +795,10 @@ document.addEventListener('DOMContentLoaded', () => {
     for (let q = 33; q <= 37; q++) {
         const box = document.getElementById(`ans${q}`);
         const saved = localStorage.getItem(`${STORAGE_KEY}_q${q}`);
-        if (saved && ['YES','NO','NOT GIVEN'].includes(saved)) { box.value = saved; box.classList.add('filled'); }
+        if (saved && ['YES','NO','NOT GIVEN'].includes(saved.toUpperCase())) { 
+            box.value = saved.toUpperCase(); 
+            box.classList.add('filled'); 
+        }
     }
     for (let q = 38; q <= 40; q++) {
         const box = document.getElementById(`ans${q}`);
