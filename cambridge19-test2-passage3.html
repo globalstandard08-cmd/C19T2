@@ -57,7 +57,6 @@
         }
         .passage-text { font-size: 16px; line-height: 1.7; }
         .passage-text p { margin-bottom: 14px; text-align: justify; }
-        .para-label { font-weight: bold; color: #1f3a5f; display: inline-block; min-width: 24px; }
         
         /* RIGHT: QUESTIONS PANEL */
         .questions-pane { 
@@ -81,7 +80,7 @@
         }
         .q-num { font-weight: bold; min-width: 28px; color: #1f3a5f; flex-shrink: 0; }
         .ans-box {
-            width: 36px;
+            width: 90px;
             height: 36px;
             border: 1px solid #333;
             border-radius: 2px;
@@ -89,29 +88,15 @@
             align-items: center;
             justify-content: center;
             font-weight: bold;
-            font-size: 16px;
+            font-size: 14px;
             text-transform: uppercase;
             margin-left: 8px;
             background: #fff;
+            padding: 0 6px;
         }
         .ans-box.filled { background: #f5f8ff; border-color: #1f3a5f; }
-        .ans-box-group {
-            display: flex;
-            gap: 6px;
-            margin-left: 8px;
-        }
-        .input-answer { 
-            width: 220px; 
-            padding: 7px 10px; 
-            border: 1px solid #ddd; 
-            border-radius: 4px; 
-            font-size: 16px; 
-            background: #ffffff; 
-        }
-        .input-answer:focus { outline: none; border-color: #1f3a5f; }
-        .input-answer.filled { background-color: #f5f8ff; border-color: #1f3a5f; }
         
-        /* CHECKBOX STYLE FOR MULTIPLE CHOICE */
+        /* MULTIPLE CHOICE */
         .mc-option {
             display: flex;
             align-items: flex-start;
@@ -301,7 +286,6 @@
         }
         .clear-btn:hover { background-color: #b91c1c; }
         
-        /* LIST BOX FOR MATCHING */
         .match-options {
             border: 1px solid #ddd;
             border-radius: 4px;
@@ -421,7 +405,7 @@
                 </div>
             </div>
             
-            <!-- Questions 33–37 — Yes / No / Not Given -->
+            <!-- Questions 33–37 — YES / NO / NOT GIVEN -->
             <div class="questions-block">
                 <h3>Questions 33–37</h3>
                 <div class="instruction">Do the following statements agree with the claims of the writer in Reading Passage 3?<br><br>In boxes <strong>33–37</strong> on your answer sheet, write<br>
@@ -435,27 +419,27 @@
                 <div class="q-row" id="q33">
                     <span class="q-num">33</span>
                     <span>Many people who ended up winning prestigious intellectual prizes only reached an average standard when young.</span>
-                    <input type="text" class="ans-box" id="ans33" maxlength="9" placeholder="">
+                    <input type="text" class="ans-box" id="ans33" placeholder="">
                 </div>
                 <div class="q-row" id="q34">
                     <span class="q-num">34</span>
                     <span>Einstein's failures as a young man were due to his lack of confidence.</span>
-                    <input type="text" class="ans-box" id="ans34" maxlength="9" placeholder="">
+                    <input type="text" class="ans-box" id="ans34" placeholder="">
                 </div>
                 <div class="q-row" id="q35">
                     <span class="q-num">35</span>
                     <span>It is difficult to reach agreement on whether some children are actually born gifted.</span>
-                    <input type="text" class="ans-box" id="ans35" maxlength="9" placeholder="">
+                    <input type="text" class="ans-box" id="ans35" placeholder="">
                 </div>
                 <div class="q-row" id="q36">
                     <span class="q-num">36</span>
                     <span>Einstein was upset by the public's view of his life's work.</span>
-                    <input type="text" class="ans-box" id="ans36" maxlength="9" placeholder="">
+                    <input type="text" class="ans-box" id="ans36" placeholder="">
                 </div>
                 <div class="q-row" id="q37">
                     <span class="q-num">37</span>
                     <span>Einstein put his success down to the speed at which he dealt with scientific questions.</span>
-                    <input type="text" class="ans-box" id="ans37" maxlength="9" placeholder="">
+                    <input type="text" class="ans-box" id="ans37" placeholder="">
                 </div>
             </div>
             
@@ -571,11 +555,9 @@ let currentQuestionNum = 27;
 function setCurrentQuestion(qNum) {
     document.querySelectorAll('.q-row.current').forEach(r => r.classList.remove('current'));
     document.querySelectorAll('.q-indicator.current').forEach(b => b.classList.remove('current'));
-    
     currentQuestionNum = qNum;
     const row = document.getElementById(`q${qNum}`);
     const indicator = document.querySelector(`.q-indicator[data-q="${qNum}"]`);
-    
     if (row) row.classList.add('current');
     if (indicator) indicator.classList.add('current');
 }
@@ -594,9 +576,7 @@ document.querySelectorAll('.q-indicator').forEach(btn => {
         const qNum = parseInt(btn.dataset.q);
         setCurrentQuestion(qNum);
         const target = document.getElementById(`q${qNum}`);
-        if (target) {
-            target.scrollIntoView({behavior:'smooth', block:'center'});
-        }
+        if (target) target.scrollIntoView({behavior:'smooth', block:'center'});
     });
 });
 
@@ -627,13 +607,11 @@ function saveHighlightsData() {
 
 function restoreNoteMarkers() {
     document.querySelectorAll('.highlight').forEach(hl => {
-        if (hl.getAttribute('data-note')) {
-            if (!hl.querySelector('.note-marker')) {
-                const marker = document.createElement('span');
-                marker.className = 'note-marker';
-                marker.textContent = '!';
-                hl.appendChild(marker);
-            }
+        if (hl.getAttribute('data-note') && !hl.querySelector('.note-marker')) {
+            const marker = document.createElement('span');
+            marker.className = 'note-marker';
+            marker.textContent = '!';
+            hl.appendChild(marker);
         }
     });
 }
@@ -641,10 +619,7 @@ function restoreNoteMarkers() {
 const noteBox = document.getElementById('noteBox');
 const noteText = document.getElementById('noteText');
 const noteClose = document.getElementById('noteClose');
-noteClose.addEventListener('click', () => { 
-    noteBox.style.display = 'none'; 
-    activeHighlight = null; 
-});
+noteClose.addEventListener('click', () => { noteBox.style.display = 'none'; activeHighlight = null; });
 noteText.addEventListener('input', () => {
     if (activeHighlight) {
         activeHighlight.setAttribute('data-note', noteText.value);
@@ -755,7 +730,7 @@ function saveAnswer(q, val) {
     updateStatus();
 }
 
-// Q27–32 — Single letter A–K
+// Q27–32 — Single letter A–K only
 for (let q = 27; q <= 32; q++) {
     const box = document.getElementById(`ans${q}`);
     box.addEventListener('input', () => {
@@ -768,14 +743,12 @@ for (let q = 27; q <= 32; q++) {
     });
 }
 
-// Q33–37 — YES / NO / NOT GIVEN
+// Q33–37 — STRICT real exam mode: only YES / NO / NOT GIVEN
 for (let q = 33; q <= 37; q++) {
     const box = document.getElementById(`ans${q}`);
     box.addEventListener('input', () => {
-        let val = box.value.trim().toUpperCase();
-        if (val === 'Y') val = 'YES';
-        if (val === 'N') val = 'NO';
-        if (val === 'NG' || val === 'NOT') val = 'NOT GIVEN';
+        let val = box.value.trim();
+        // Only exact matches accepted — no shortcuts
         if (!['YES','NO','NOT GIVEN'].includes(val)) val = '';
         box.value = val;
         box.classList.toggle('filled', val !== '');
@@ -783,7 +756,7 @@ for (let q = 33; q <= 37; q++) {
     });
 }
 
-// Q38–40 — Multiple Choice Radio + Box Sync
+// Q38–40 — Multiple Choice
 function syncMCBox(qNum, groupName) {
     const checked = document.querySelector(`input[name="${groupName}"]:checked`);
     const box = document.getElementById(`ans${qNum}`);
@@ -802,7 +775,6 @@ function syncMCBox(qNum, groupName) {
     document.querySelectorAll(`input[name="q${q}"]`).forEach(cb => {
         cb.addEventListener('change', () => syncMCBox(parseInt(q), `q${q}`));
     });
-    // Manual typing also saves
     const box = document.getElementById(`ans${q}`);
     box.addEventListener('input', () => {
         let val = box.value.trim().toUpperCase();
@@ -810,7 +782,6 @@ function syncMCBox(qNum, groupName) {
         if (val && !['A','B','C','D'].includes(val)) val = '';
         box.value = val;
         box.classList.toggle('filled', val !== '');
-        // Sync radio button
         document.querySelectorAll(`input[name="q${q}"]`).forEach(cb => {
             cb.checked = (cb.value === val);
         });
@@ -820,19 +791,14 @@ function syncMCBox(qNum, groupName) {
 
 function clearAllData() {
     if (!confirm('⚠️ Are you sure you want to clear ALL answers, highlights, and notes? This cannot be undone.')) return;
-    for (let q = 1; q <= 40; q++) {
-        localStorage.removeItem(`${STORAGE_KEY}_q${q}`);
-    }
+    for (let q = 1; q <= 40; q++) localStorage.removeItem(`${STORAGE_KEY}_q${q}`);
     localStorage.removeItem(`${passageId}_highlights`);
     document.querySelectorAll('input[type="radio"]').forEach(i => i.checked = false);
-    document.querySelectorAll('.ans-box').forEach(i => {
-        i.value = '';
-        i.classList.remove('filled');
-    });
+    document.querySelectorAll('.ans-box').forEach(i => { i.value = ''; i.classList.remove('filled'); });
     document.querySelectorAll('.highlight').forEach(hl => {
-        const parent = hl.parentNode;
-        parent.replaceChild(document.createTextNode(hl.textContent), hl);
-        parent.normalize();
+        const p = hl.parentNode;
+        p.replaceChild(document.createTextNode(hl.textContent), hl);
+        p.normalize();
     });
     noteBox.style.display = 'none';
     location.reload();
@@ -842,36 +808,24 @@ document.getElementById('clearAllBtn').addEventListener('click', clearAllData);
 document.addEventListener('DOMContentLoaded', () => {
     restoreNoteMarkers();
     
-    // Restore Q27–32
+    // Restore saved answers
     for (let q = 27; q <= 32; q++) {
         const box = document.getElementById(`ans${q}`);
         const saved = localStorage.getItem(`${STORAGE_KEY}_q${q}`);
-        if (saved && saved.length === 1) {
-            box.value = saved.toUpperCase();
-            box.classList.add('filled');
-        }
+        if (saved && saved.length === 1) { box.value = saved.toUpperCase(); box.classList.add('filled'); }
     }
-    
-    // Restore Q33–37
     for (let q = 33; q <= 37; q++) {
         const box = document.getElementById(`ans${q}`);
         const saved = localStorage.getItem(`${STORAGE_KEY}_q${q}`);
-        if (saved) {
-            box.value = saved;
-            box.classList.add('filled');
-        }
+        if (saved && ['YES','NO','NOT GIVEN'].includes(saved)) { box.value = saved; box.classList.add('filled'); }
     }
-    
-    // Restore Q38–40
     for (let q = 38; q <= 40; q++) {
         const box = document.getElementById(`ans${q}`);
         const saved = localStorage.getItem(`${STORAGE_KEY}_q${q}`);
-        if (saved) {
+        if (saved && ['A','B','C','D'].includes(saved.toUpperCase())) {
             box.value = saved.toUpperCase();
             box.classList.add('filled');
-            document.querySelectorAll(`input[name="q${q}"]`).forEach(cb => {
-                cb.checked = (cb.value === saved.toUpperCase());
-            });
+            document.querySelectorAll(`input[name="q${q}"]`).forEach(cb => { cb.checked = (cb.value === saved.toUpperCase()); });
         }
     }
     
