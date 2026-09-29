@@ -60,26 +60,23 @@
         </div>
     </div>
 <script>
-// --- STORAGE KEYS — MATCHES YOUR READING PAGES EXACTLY ---
+// --- STORAGE KEYS — ALL PAGES MUST USE THESE EXACT NAMES ---
 const STORAGE_LISTENING = 'Cambridge19_Test2_Listening';
-const STORAGE_READING = 'Cambridge19_Test2_Reading';
-const STORAGE_WRITING_T1 = 'Cambridge19_Test2_Writing_writingT2Task1';
-const STORAGE_WRITING_T2 = 'Cambridge19_Test2_Writing_writingT2Task2';
+const STORAGE_READING = 'Cambridge19_Test2_Reading';  // ← ALL Reading pages use this SAME key
+const STORAGE_WRITING_T1 = 'Cambridge19_Test2_Writing_Task1';
+const STORAGE_WRITING_T2 = 'Cambridge19_Test2_Writing_Task2';
 
-// --- SIMPLE & RELIABLE: Direct lookup ---
 function getAnswer(prefix, qNum) {
     const key = `${prefix}_q${qNum}`;
     const val = localStorage.getItem(key);
     return val ? val.trim() : '';
 }
 
-// --- MAKE ROW ---
 function makeRow(qNum, answer) {
     const display = answer || '<span class="empty">— No answer provided —</span>';
     return `<div class="answer-row"><span class="q-num">${qNum}</span><span class="user-ans"><strong>Your Answer:</strong> ${display}</span></div>`;
 }
 
-// --- RENDER SECTION ---
 function renderSection(containerId, prefix, startQ, endQ) {
     const container = document.getElementById(containerId);
     let html = '';
@@ -89,14 +86,12 @@ function renderSection(containerId, prefix, startQ, endQ) {
     container.innerHTML = html;
 }
 
-// --- RENDER WRITING ---
 function renderWritingBox(containerId, storageKey) {
     const container = document.getElementById(containerId);
     const content = localStorage.getItem(storageKey);
     container.innerHTML = content?.trim() ? content : '<span class="empty">— No response submitted —</span>';
 }
 
-// --- DOWNLOAD ---
 function downloadAnswers() {
     let text = 'YOUR ANSWERS — Cambridge 19 Test 2\nGenerated: ' + new Date().toLocaleString() + '\n' + '='.repeat(50) + '\n\n';
     text += '🎧 LISTENING\n' + '-'.repeat(30) + '\n';
@@ -113,28 +108,25 @@ function downloadAnswers() {
     document.body.removeChild(a); URL.revokeObjectURL(url);
 }
 
-// --- CLEAR ALL ---
 function clearAllData() {
-    if (!confirm('⚠️ Clear ALL answers, highlights, notes, writing?\n\nThis cannot be undone. Only do this before starting fresh.')) {
+    if (!confirm('⚠️ Clear ALL answers, highlights, notes, writing?\n\nThis cannot be undone.')) {
         return;
     }
     
     for (let q = 1; q <= 40; q++) localStorage.removeItem(`${STORAGE_LISTENING}_q${q}`);
     for (let q = 1; q <= 40; q++) localStorage.removeItem(`${STORAGE_READING}_q${q}`);
     
-    // Clear passage highlight/note data
-    ['listening','passage1','passage2','passage3'].forEach(id => {
+    ['passage1','passage2','passage3'].forEach(id => {
         localStorage.removeItem(`cambridge19-test2-${id}_highlights`);
     });
     
     localStorage.removeItem(STORAGE_WRITING_T1);
     localStorage.removeItem(STORAGE_WRITING_T2);
     
-    alert('✅ All cleared. Ready for next test taker.');
+    alert('✅ All cleared.');
     location.reload();
 }
 
-// --- LOAD EVERYTHING ---
 document.addEventListener('DOMContentLoaded', () => {
     renderSection('listening-p1', STORAGE_LISTENING, 1, 10);
     renderSection('listening-p2', STORAGE_LISTENING, 11, 20);
