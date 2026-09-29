@@ -60,43 +60,16 @@
         </div>
     </div>
 <script>
-// --- STORAGE KEYS — TEST 2 ---
-const TEST_SUFFIX = 'Test2';
-const BASE_KEY = `Cambridge19_${TEST_SUFFIX}`;
-const KEY_LISTENING = `${BASE_KEY}_Listening`;
-const KEY_READING    = `${BASE_KEY}_Reading`;
-const KEY_WRITING_T1 = `${BASE_KEY}_Writing_writingT2Task1`;
-const KEY_WRITING_T2 = `${BASE_KEY}_Writing_writingT2Task2`;
-const PASSAGE_IDS = [
-    `listening-cambridge19-${TEST_SUFFIX}`,
-    `reading-cambridge19-${TEST_SUFFIX}-p1`,
-    `reading-cambridge19-${TEST_SUFFIX}-p2`,
-    `reading-cambridge19-${TEST_SUFFIX}-p3`
-];
+// --- STORAGE KEYS — MATCHES YOUR READING PAGES EXACTLY ---
+const STORAGE_LISTENING = 'Cambridge19_Test2_Listening';
+const STORAGE_READING = 'Cambridge19_Test2_Reading';
+const STORAGE_WRITING_T1 = 'Cambridge19_Test2_Writing_writingT2Task1';
+const STORAGE_WRITING_T2 = 'Cambridge19_Test2_Writing_writingT2Task2';
 
-// --- HELPER: Get paired answer ---
-function getPairedAnswer(prefix, combinedKey, index) {
-    let val = localStorage.getItem(`${prefix}_${combinedKey}`);
-    if (!val) val = localStorage.getItem(`${prefix}_q${combinedKey}`);
-    if (!val) val = localStorage.getItem(`${prefix}_qq${combinedKey}`);
-    if (!val) return '';
-    const parts = val.split(',');
-    return parts[index] || '';
-}
-
-// --- GET SAVED ANSWER ---
-function getSavedAnswer(prefix, qNum) {
-    if (prefix === KEY_LISTENING) {
-        const val = localStorage.getItem(`${prefix}_q${qNum}`);
-        return val ? val.trim() : '';
-    }
-    if (qNum === 20 || qNum === 21) {
-        return getPairedAnswer(prefix, 'q20q21', qNum === 20 ? 0 : 1);
-    }
-    if (qNum === 22 || qNum === 23) {
-        return getPairedAnswer(prefix, 'q22q23', qNum === 22 ? 0 : 1);
-    }
-    const val = localStorage.getItem(`${prefix}_q${qNum}`);
+// --- SIMPLE & RELIABLE: Direct lookup ---
+function getAnswer(prefix, qNum) {
+    const key = `${prefix}_q${qNum}`;
+    const val = localStorage.getItem(key);
     return val ? val.trim() : '';
 }
 
@@ -111,7 +84,7 @@ function renderSection(containerId, prefix, startQ, endQ) {
     const container = document.getElementById(containerId);
     let html = '';
     for (let q = startQ; q <= endQ; q++) {
-        html += makeRow(q, getSavedAnswer(prefix, q));
+        html += makeRow(q, getAnswer(prefix, q));
     }
     container.innerHTML = html;
 }
@@ -127,10 +100,10 @@ function renderWritingBox(containerId, storageKey) {
 function downloadAnswers() {
     let text = 'YOUR ANSWERS — Cambridge 19 Test 2\nGenerated: ' + new Date().toLocaleString() + '\n' + '='.repeat(50) + '\n\n';
     text += '🎧 LISTENING\n' + '-'.repeat(30) + '\n';
-    for (let q = 1; q <= 40; q++) text += `Q${String(q).padStart(2,' ')}: ${getSavedAnswer(KEY_LISTENING, q) || '— No answer —'}\n`;
+    for (let q = 1; q <= 40; q++) text += `Q${String(q).padStart(2,' ')}: ${getAnswer(STORAGE_LISTENING, q) || '— No answer —'}\n`;
     text += '\n📖 READING\n' + '-'.repeat(30) + '\n';
-    for (let q = 1; q <= 40; q++) text += `Q${String(q).padStart(2,' ')}: ${getSavedAnswer(KEY_READING, q) || '— No answer —'}\n`;
-    text += '\n✍️ WRITING\n' + '-'.repeat(30) + '\nTask 1:\n' + (localStorage.getItem(KEY_WRITING_T1) || '— No response —') + '\n\nTask 2:\n' + (localStorage.getItem(KEY_WRITING_T2) || '— No response —') + '\n';
+    for (let q = 1; q <= 40; q++) text += `Q${String(q).padStart(2,' ')}: ${getAnswer(STORAGE_READING, q) || '— No answer —'}\n`;
+    text += '\n✍️ WRITING\n' + '-'.repeat(30) + '\nTask 1:\n' + (localStorage.getItem(STORAGE_WRITING_T1) || '— No response —') + '\n\nTask 2:\n' + (localStorage.getItem(STORAGE_WRITING_T2) || '— No response —') + '\n';
     
     const blob = new Blob([text], {type:'text/plain;charset=utf-8'});
     const url = URL.createObjectURL(blob);
@@ -146,33 +119,34 @@ function clearAllData() {
         return;
     }
     
-    for (let q = 1; q <= 40; q++) localStorage.removeItem(`${KEY_LISTENING}_q${q}`);
-    for (let q = 1; q <= 40; q++) localStorage.removeItem(`${KEY_READING}_q${q}`);
-    localStorage.removeItem(`${KEY_READING}_q20q21`);
-    localStorage.removeItem(`${KEY_READING}_qq20q21`);
-    localStorage.removeItem(`${KEY_READING}_q22q23`);
-    localStorage.removeItem(`${KEY_READING}_qq22q23`);
+    for (let q = 1; q <= 40; q++) localStorage.removeItem(`${STORAGE_LISTENING}_q${q}`);
+    for (let q = 1; q <= 40; q++) localStorage.removeItem(`${STORAGE_READING}_q${q}`);
     
-    PASSAGE_IDS.forEach(id => localStorage.removeItem(`${id}_highlights`));
+    // Clear passage highlight/note data
+    ['listening','passage1','passage2','passage3'].forEach(id => {
+        localStorage.removeItem(`cambridge19-test2-${id}_highlights`);
+    });
     
-    localStorage.removeItem(KEY_WRITING_T1);
-    localStorage.removeItem(KEY_WRITING_T2);
+    localStorage.removeItem(STORAGE_WRITING_T1);
+    localStorage.removeItem(STORAGE_WRITING_T2);
     
     alert('✅ All cleared. Ready for next test taker.');
     location.reload();
 }
 
-// --- LOAD ---
+// --- LOAD EVERYTHING ---
 document.addEventListener('DOMContentLoaded', () => {
-    renderSection('listening-p1', KEY_LISTENING, 1, 10);
-    renderSection('listening-p2', KEY_LISTENING, 11, 20);
-    renderSection('listening-p3', KEY_LISTENING, 21, 30);
-    renderSection('listening-p4', KEY_LISTENING, 31, 40);
-    renderSection('reading-p1', KEY_READING, 1, 13);
-    renderSection('reading-p2', KEY_READING, 14, 26);
-    renderSection('reading-p3', KEY_READING, 27, 40);
-    renderWritingBox('writing-task1', KEY_WRITING_T1);
-    renderWritingBox('writing-task2', KEY_WRITING_T2);
+    renderSection('listening-p1', STORAGE_LISTENING, 1, 10);
+    renderSection('listening-p2', STORAGE_LISTENING, 11, 20);
+    renderSection('listening-p3', STORAGE_LISTENING, 21, 30);
+    renderSection('listening-p4', STORAGE_LISTENING, 31, 40);
+    
+    renderSection('reading-p1', STORAGE_READING, 1, 13);
+    renderSection('reading-p2', STORAGE_READING, 14, 26);
+    renderSection('reading-p3', STORAGE_READING, 27, 40);
+    
+    renderWritingBox('writing-task1', STORAGE_WRITING_T1);
+    renderWritingBox('writing-task2', STORAGE_WRITING_T2);
 });
 </script>
 </body>
