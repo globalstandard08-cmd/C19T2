@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Answers — Cambridge 19 Test 1</title>
+    <title>Your Answers — Cambridge 19 Test 2</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }
         body { background: #f4f6f9; padding: 20px; line-height: 1.7; }
@@ -27,7 +27,7 @@
 </head>
 <body>
     <div class="container">
-        <h1>📋 Your Answers — Cambridge 19 Test 1</h1>
+        <h1>📋 Your Answers — Cambridge 19 Test 2</h1>
         <!-- LISTENING -->
         <h2>🎧 Listening</h2>
         <h3>Part 1 — Questions 1–10</h3>
@@ -60,12 +60,19 @@
         </div>
     </div>
 <script>
-// --- STORAGE KEYS ---
-const KEY_LISTENING = 'Cambridge19_Test1_Listening';
-const KEY_READING    = 'Cambridge19_Test1_Reading';
-const KEY_WRITING_T1 = 'task1Input';
-const KEY_WRITING_T2 = 'task2Input';
-const PASSAGE_IDS = ['listening-cambridge19-test1', 'reading-cambridge19-test1-p1', 'reading-cambridge19-test1-p2', 'reading-cambridge19-test1-p3'];
+// --- STORAGE KEYS — TEST 2 ---
+const TEST_SUFFIX = 'Test2';
+const BASE_KEY = `Cambridge19_${TEST_SUFFIX}`;
+const KEY_LISTENING = `${BASE_KEY}_Listening`;
+const KEY_READING    = `${BASE_KEY}_Reading`;
+const KEY_WRITING_T1 = `${BASE_KEY}_Writing_writingT2Task1`;
+const KEY_WRITING_T2 = `${BASE_KEY}_Writing_writingT2Task2`;
+const PASSAGE_IDS = [
+    `listening-cambridge19-${TEST_SUFFIX}`,
+    `reading-cambridge19-${TEST_SUFFIX}-p1`,
+    `reading-cambridge19-${TEST_SUFFIX}-p2`,
+    `reading-cambridge19-${TEST_SUFFIX}-p3`
+];
 
 // --- HELPER: Get paired answer ---
 function getPairedAnswer(prefix, combinedKey, index) {
@@ -79,19 +86,16 @@ function getPairedAnswer(prefix, combinedKey, index) {
 
 // --- GET SAVED ANSWER ---
 function getSavedAnswer(prefix, qNum) {
-    // Listening — all individual keys
     if (prefix === KEY_LISTENING) {
         const val = localStorage.getItem(`${prefix}_q${qNum}`);
         return val ? val.trim() : '';
     }
-    // Reading paired keys
     if (qNum === 20 || qNum === 21) {
         return getPairedAnswer(prefix, 'q20q21', qNum === 20 ? 0 : 1);
     }
     if (qNum === 22 || qNum === 23) {
         return getPairedAnswer(prefix, 'q22q23', qNum === 22 ? 0 : 1);
     }
-    // Standard single key
     const val = localStorage.getItem(`${prefix}_q${qNum}`);
     return val ? val.trim() : '';
 }
@@ -121,7 +125,7 @@ function renderWritingBox(containerId, storageKey) {
 
 // --- DOWNLOAD ---
 function downloadAnswers() {
-    let text = 'YOUR ANSWERS — Cambridge 19 Test 1\nGenerated: ' + new Date().toLocaleString() + '\n' + '='.repeat(50) + '\n\n';
+    let text = 'YOUR ANSWERS — Cambridge 19 Test 2\nGenerated: ' + new Date().toLocaleString() + '\n' + '='.repeat(50) + '\n\n';
     text += '🎧 LISTENING\n' + '-'.repeat(30) + '\n';
     for (let q = 1; q <= 40; q++) text += `Q${String(q).padStart(2,' ')}: ${getSavedAnswer(KEY_LISTENING, q) || '— No answer —'}\n`;
     text += '\n📖 READING\n' + '-'.repeat(30) + '\n';
@@ -131,31 +135,26 @@ function downloadAnswers() {
     const blob = new Blob([text], {type:'text/plain;charset=utf-8'});
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
-    a.href = url; a.download = 'Cambridge19_Test1_Your_Answers.txt';
+    a.href = url; a.download = 'Cambridge19_Test2_Your_Answers.txt';
     document.body.appendChild(a); a.click();
     document.body.removeChild(a); URL.revokeObjectURL(url);
 }
 
-// --- CLEAR ALL — COMPLETE WIPE FOR NEXT TEST TAKER ---
+// --- CLEAR ALL ---
 function clearAllData() {
     if (!confirm('⚠️ Clear ALL answers, highlights, notes, writing?\n\nThis cannot be undone. Only do this before starting fresh.')) {
         return;
     }
     
-    // Clear Listening answers
     for (let q = 1; q <= 40; q++) localStorage.removeItem(`${KEY_LISTENING}_q${q}`);
-    
-    // Clear Reading answers — single and paired formats
     for (let q = 1; q <= 40; q++) localStorage.removeItem(`${KEY_READING}_q${q}`);
     localStorage.removeItem(`${KEY_READING}_q20q21`);
     localStorage.removeItem(`${KEY_READING}_qq20q21`);
     localStorage.removeItem(`${KEY_READING}_q22q23`);
     localStorage.removeItem(`${KEY_READING}_qq22q23`);
     
-    // Clear highlights/notes from all pages
     PASSAGE_IDS.forEach(id => localStorage.removeItem(`${id}_highlights`));
     
-    // Clear Writing
     localStorage.removeItem(KEY_WRITING_T1);
     localStorage.removeItem(KEY_WRITING_T2);
     
