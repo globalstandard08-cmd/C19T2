@@ -54,14 +54,16 @@
             display: flex;
             align-items: stretch;
             gap: 0;
+            min-height: 600px;
         }
         .question-panel {
             width: 48%;
             padding: 20px 25px 25px;
             background-color: #fefefe;
-            border-right: 1px solid #e2e8f0;
             display: flex;
             flex-direction: column;
+            overflow-y: auto;
+            min-width: 300px;
         }
         .question-panel h2 {
             font-size: 20px;
@@ -96,8 +98,38 @@
             margin: 0 auto;
             padding: 10px;
         }
+        
+        /* ===== RESIZABLE DIVIDER — matches real exam ===== */
+        .divider {
+            width: 6px;
+            background-color: #c5d2e3;
+            cursor: col-resize;
+            position: relative;
+            transition: background-color 0.15s;
+            flex-shrink: 0;
+        }
+        .divider:hover, .divider.dragging {
+            background-color: #1f3a5f;
+        }
+        .divider::after {
+            content: '⟷';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 14px;
+            color: #6b7280;
+            pointer-events: none;
+            opacity: 0.5;
+        }
+        .divider:hover::after, .divider.dragging::after {
+            color: #ffffff;
+            opacity: 1;
+        }
+        
         .writing-panel {
-            width: 52%;
+            flex: 1;
+            min-width: 300px;
             padding: 20px 25px;
             display: flex;
             flex-direction: column;
@@ -196,8 +228,16 @@
             .split-layout {
                 flex-direction: column;
             }
-            .question-panel, .writing-panel {
+            .divider {
                 width: 100%;
+                height: 6px;
+                cursor: row-resize;
+            }
+            .divider::after {
+                content: '↕';
+            }
+            .question-panel, .writing-panel {
+                width: 100% !important;
                 border-right: none;
                 border-bottom: 1px solid #e2e8f0;
             }
@@ -219,8 +259,8 @@
         <h1>WRITING — TASK 1</h1>
         <p>You should spend about 20 minutes on this task.</p>
     </div>
-    <div class="split-layout">
-        <div class="question-panel">
+    <div class="split-layout" id="splitLayout">
+        <div class="question-panel" id="questionPanel">
             <h2>WRITING TASK 1</h2>
             <div class="instruction-box">
                 The plans below show a harbour in 2000 and how it looks today.<br><br>
@@ -231,6 +271,10 @@
                 <img src="C19T2writing.png" alt="Harbour in 2000 and today" class="task-image">
             </div>
         </div>
+        
+        <!-- DRAGGABLE DIVIDER -->
+        <div class="divider" id="divider"></div>
+        
         <div class="writing-panel">
             <textarea id="writingT2Task1" placeholder="Write your response here..."></textarea>
             <div class="word-count" id="task1Count">Words: 0 / 150 minimum</div>
@@ -250,6 +294,47 @@
 <script>
 const STORAGE_KEY = 'Cambridge19_Test2_Writing';
 
+// ===== PANEL RESIZING — matches real IELTS =====
+const questionPanel = document.getElementById('questionPanel');
+const divider = document.getElementById('divider');
+const splitLayout = document.getElementById('splitLayout');
+
+let isDragging = false;
+
+function startDrag(e) {
+    if (window.innerWidth <= 900) return; // disable vertical drag on mobile
+    isDragging = true;
+    divider.classList.add('dragging');
+    document.body.style.cursor = 'col-resize';
+    document.body.style.userSelect = 'none';
+}
+
+function doDrag(e) {
+    if (!isDragging) return;
+    if (window.innerWidth <= 900) return;
+    
+    const rect = splitLayout.getBoundingClientRect();
+    const newWidth = ((e.clientX - rect.left) / rect.width) * 100;
+    
+    // Min/max limits: 25% – 75%
+    if (newWidth >= 25 && newWidth <= 75) {
+        questionPanel.style.width = newWidth + '%';
+    }
+}
+
+function endDrag() {
+    isDragging = false;
+    divider.classList.remove('dragging');
+    document.body.style.cursor = '';
+    document.body.style.userSelect = '';
+}
+
+divider.addEventListener('mousedown', startDrag);
+document.addEventListener('mousemove', doDrag);
+document.addEventListener('mouseup', endDrag);
+document.addEventListener('mouseleave', endDrag);
+
+// ===== WORD COUNT & AUTO-SAVE =====
 function countWords(id, countId, min) {
     const text = document.getElementById(id).value.trim();
     const num = text ? text.replace(/\s+/g, ' ').split(' ').length : 0;
