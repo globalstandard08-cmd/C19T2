@@ -30,9 +30,9 @@
     <div class="container">
         <h1>📋 Your Answers — Cambridge 19 Test 2</h1>
 
-        <!-- 🔍 DEBUG — Shows ALL saved keys -->
+        <!-- 🔍 DEBUG — Shows ALL keys actually stored -->
         <div class="debug-box">
-            <strong>🔍 Detected Keys:</strong>
+            <strong>🔍 Keys Found:</strong>
             <div id="debug-keys">Loading...</div>
         </div>
 
@@ -47,7 +47,7 @@
         <h3>Part 4 — Questions 31–40</h3>
         <div id="listening-p4"></div>
 
-        <!-- READING — Matches your file pattern exactly -->
+        <!-- READING -->
         <h2>📖 Reading</h2>
         <h3>Passage 1 — Questions 1–13</h3>
         <div id="reading-p1"></div>
@@ -56,7 +56,7 @@
         <h3>Passage 3 — Questions 27–40</h3>
         <div id="reading-p3"></div>
 
-        <!-- WRITING — Matches your file pattern exactly -->
+        <!-- WRITING — ✅ MATCHES YOUR SAVING CODE EXACTLY -->
         <h2>✍️ Writing</h2>
         <h3>Task 1</h3>
         <div id="writing-task1" class="writing-box"></div>
@@ -72,35 +72,28 @@
     </div>
 
 <script>
-// 🔍 First: Show ALL keys so we see exactly what's being saved
+// Show ALL keys for debugging
 const ALL_KEYS = Object.keys(localStorage);
-const REL_KEYS = ALL_KEYS.filter(k => k.includes('cambridge19') && k.includes('test2'));
+const REL_KEYS = ALL_KEYS.filter(k => k.includes('Cambridge19_Test2'));
 document.getElementById('debug-keys').textContent = 
-    REL_KEYS.length ? REL_KEYS.join('\n') : '⚠️ No keys found. Answer something first!';
+    REL_KEYS.length ? REL_KEYS.join('\n') : '⚠️ No keys found. Write something first!';
 
 // ==============================================
-// ✅ STORAGE KEYS — MATCH YOUR FILE NAMING EXACTLY
+// ✅ EXACT MATCH to YOUR saving code pattern
 // ==============================================
-const READING_P1_PREFIX = 'reading-cambridge19-test2-passage1';
-const READING_P2_PREFIX = 'reading-cambridge19-test2-passage2';
-const READING_P3_PREFIX = 'reading-cambridge19-test2-passage3';
-const LISTENING_PREFIX = 'listening-cambridge19-test2';
-const WRITING_T1_KEY = 'writing-cambridge19-test2-task1';
-const WRITING_T2_KEY = 'writing-cambridge19-test2-task2';
+const STORAGE_BASE = 'Cambridge19_Test2';
+const STORAGE_LISTENING = `${STORAGE_BASE}_Listening`;
+const STORAGE_READING = `${STORAGE_BASE}_Reading`;
+const STORAGE_WRITING = `${STORAGE_BASE}_Writing`;
+
+// Writing keys — EXACT match from your code
+const STORAGE_WRITING_T1 = `${STORAGE_WRITING}_writingT2Task1`;
+const STORAGE_WRITING_T2 = `${STORAGE_WRITING}_writingT2Task2`;
 
 function getAnswer(prefix, qNum) {
-    // Try: prefix_qN, prefixqN, prefix-N
-    const keys = [
-        `${prefix}_q${qNum}`,
-        `${prefix}q${qNum}`,
-        `${prefix}-q${qNum}`,
-        `${prefix}_${qNum}`
-    ];
-    for (const k of keys) {
-        const v = localStorage.getItem(k);
-        if (v) return v.trim();
-    }
-    return '';
+    const key = `${prefix}_q${qNum}`;
+    const val = localStorage.getItem(key);
+    return val ? val.trim() : '';
 }
 
 function makeRow(qNum, answer) {
@@ -126,17 +119,13 @@ function renderWritingBox(containerId, storageKey) {
 function downloadAnswers() {
     let text = 'YOUR ANSWERS — Cambridge 19 Test 2\nGenerated: ' + new Date().toLocaleString() + '\n' + '='.repeat(50) + '\n\n';
     text += '🎧 LISTENING\n' + '-'.repeat(30) + '\n';
-    for (let q = 1; q <= 40; q++) text += `Q${String(q).padStart(2,' ')}: ${getAnswer(LISTENING_PREFIX, q) || '— No answer —'}\n`;
-    
+    for (let q = 1; q <= 40; q++) text += `Q${String(q).padStart(2,' ')}: ${getAnswer(STORAGE_LISTENING, q) || '— No answer —'}\n`;
     text += '\n📖 READING\n' + '-'.repeat(30) + '\n';
-    for (let q = 1; q <= 13; q++) text += `Q${String(q).padStart(2,' ')}: ${getAnswer(READING_P1_PREFIX, q) || '— No answer —'}\n`;
-    for (let q = 14; q <= 26; q++) text += `Q${String(q).padStart(2,' ')}: ${getAnswer(READING_P2_PREFIX, q) || '— No answer —'}\n`;
-    for (let q = 27; q <= 40; q++) text += `Q${String(q).padStart(2,' ')}: ${getAnswer(READING_P3_PREFIX, q) || '— No answer —'}\n`;
-    
+    for (let q = 1; q <= 40; q++) text += `Q${String(q).padStart(2,' ')}: ${getAnswer(STORAGE_READING, q) || '— No answer —'}\n`;
     text += '\n✍️ WRITING\n' + '-'.repeat(30) + '\nTask 1:\n' + 
-        (localStorage.getItem(WRITING_T1_KEY) || '— No response —') + 
+        (localStorage.getItem(STORAGE_WRITING_T1) || '— No response —') + 
         '\n\nTask 2:\n' + 
-        (localStorage.getItem(WRITING_T2_KEY) || '— No response —') + '\n';
+        (localStorage.getItem(STORAGE_WRITING_T2) || '— No response —') + '\n';
     
     const blob = new Blob([text], {type:'text/plain;charset=utf-8'});
     const url = URL.createObjectURL(blob);
@@ -147,27 +136,27 @@ function downloadAnswers() {
 }
 
 function clearAllData() {
-    if (!confirm('⚠️ Clear ALL answers? This cannot be undone.')) return;
+    if (!confirm('⚠️ Clear ALL answers, writing, and highlights?\nThis cannot be undone.')) return;
     REL_KEYS.forEach(k => localStorage.removeItem(k));
-    alert('✅ All cleared.');
+    alert('✅ All answers cleared.');
     location.reload();
 }
 
 document.addEventListener('DOMContentLoaded', () => {
     // Listening
-    renderSection('listening-p1', LISTENING_PREFIX, 1, 10);
-    renderSection('listening-p2', LISTENING_PREFIX, 11, 20);
-    renderSection('listening-p3', LISTENING_PREFIX, 21, 30);
-    renderSection('listening-p4', LISTENING_PREFIX, 31, 40);
+    renderSection('listening-p1', STORAGE_LISTENING, 1, 10);
+    renderSection('listening-p2', STORAGE_LISTENING, 11, 20);
+    renderSection('listening-p3', STORAGE_LISTENING, 21, 30);
+    renderSection('listening-p4', STORAGE_LISTENING, 31, 40);
     
-    // Reading — ONE PER PASSAGE matching your file structure
-    renderSection('reading-p1', READING_P1_PREFIX, 1, 13);
-    renderSection('reading-p2', READING_P2_PREFIX, 14, 26);
-    renderSection('reading-p3', READING_P3_PREFIX, 27, 40);
+    // Reading
+    renderSection('reading-p1', STORAGE_READING, 1, 13);
+    renderSection('reading-p2', STORAGE_READING, 14, 26);
+    renderSection('reading-p3', STORAGE_READING, 27, 40);
     
-    // Writing — EXACT file names
-    renderWritingBox('writing-task1', WRITING_T1_KEY);
-    renderWritingBox('writing-task2', WRITING_T2_KEY);
+    // Writing — ✅ PERFECT MATCH to your writing page
+    renderWritingBox('writing-task1', STORAGE_WRITING_T1);
+    renderWritingBox('writing-task2', STORAGE_WRITING_T2);
 });
 </script>
 </body>
