@@ -23,18 +23,11 @@
         .download { background: #10b981; color: white; }
         .clear { background: #dc2626; color: white; }
         .clear:hover { background: #b91c1c; }
-        .debug-box { background: #fff3cd; border: 1px solid #ffc107; padding: 15px; margin-bottom: 20px; border-radius: 6px; font-family: monospace; font-size: 12px; white-space: pre-wrap; }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>📋 Your Answers — Cambridge 19 Test 2</h1>
-
-        <!-- 🔍 DEBUG — Shows ALL keys actually stored -->
-        <div class="debug-box">
-            <strong>🔍 Keys Found:</strong>
-            <div id="debug-keys">Loading...</div>
-        </div>
 
         <!-- LISTENING -->
         <h2>🎧 Listening</h2>
@@ -56,7 +49,7 @@
         <h3>Passage 3 — Questions 27–40</h3>
         <div id="reading-p3"></div>
 
-        <!-- WRITING — ✅ MATCHES YOUR SAVING CODE EXACTLY -->
+        <!-- WRITING -->
         <h2>✍️ Writing</h2>
         <h3>Task 1</h3>
         <div id="writing-task1" class="writing-box"></div>
@@ -72,23 +65,15 @@
     </div>
 
 <script>
-// Show ALL keys for debugging
+// ✅ EXACT KEY PATTERNS FROM YOUR STORAGE — no guessing
+const STORAGE_LISTENING = 'Cambridge19_Test2_Listening';
+const STORAGE_READING = 'Cambridge19_Test2_Reading';
+const STORAGE_WRITING_T1 = 'Cambridge19_Test2_Writing_writingT2Task1';
+const STORAGE_WRITING_T2 = 'Cambridge19_Test2_Writing_writingT2Task2';
+
+// Get ALL relevant keys for clear function
 const ALL_KEYS = Object.keys(localStorage);
 const REL_KEYS = ALL_KEYS.filter(k => k.includes('Cambridge19_Test2'));
-document.getElementById('debug-keys').textContent = 
-    REL_KEYS.length ? REL_KEYS.join('\n') : '⚠️ No keys found. Write something first!';
-
-// ==============================================
-// ✅ EXACT MATCH to YOUR saving code pattern
-// ==============================================
-const STORAGE_BASE = 'Cambridge19_Test2';
-const STORAGE_LISTENING = `${STORAGE_BASE}_Listening`;
-const STORAGE_READING = `${STORAGE_BASE}_Reading`;
-const STORAGE_WRITING = `${STORAGE_BASE}_Writing`;
-
-// Writing keys — EXACT match from your code
-const STORAGE_WRITING_T1 = `${STORAGE_WRITING}_writingT2Task1`;
-const STORAGE_WRITING_T2 = `${STORAGE_WRITING}_writingT2Task2`;
 
 function getAnswer(prefix, qNum) {
     const key = `${prefix}_q${qNum}`;
@@ -154,7 +139,7 @@ document.addEventListener('DOMContentLoaded', () => {
     renderSection('reading-p2', STORAGE_READING, 14, 26);
     renderSection('reading-p3', STORAGE_READING, 27, 40);
     
-    // Writing — ✅ PERFECT MATCH to your writing page
+    // Writing — exact matches from your confirmed keys
     renderWritingBox('writing-task1', STORAGE_WRITING_T1);
     renderWritingBox('writing-task2', STORAGE_WRITING_T2);
 });
